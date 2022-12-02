@@ -11,18 +11,18 @@ import java.io.PrintWriter;
 @WebServlet(name = "BestPerformer", urlPatterns = "/performers")
 public class BestPerformer extends HttpServlet {
 
+    String SHOW_PERFORMERS =
+            " <p><b>Choose best performer?</b></p>" +
+                    " <p>Performer 1<Br>" +
+                    " <p>Performer 2<Br>" +
+                    " <p>Performer 3<Br>" +
+                    " <p>Performer 4<Br>";
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-
-        String html = " <p><b>Choose best performer?</b></p>" +
-                " <p>Singer 1<Br>" +
-                " <p>Singer 2<Br>" +
-                " <p>Singer 3<Br>" +
-                " <p>Singer 4<Br>";
-
-        writer.write(html);
+        writer.write(SHOW_PERFORMERS);
     }
 }

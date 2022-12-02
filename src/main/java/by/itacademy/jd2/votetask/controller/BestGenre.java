@@ -11,24 +11,24 @@ import java.io.PrintWriter;
 @WebServlet(name = "BestGenre", urlPatterns = "/genres")
 public class BestGenre extends HttpServlet {
 
+    String SHOW_GENRES =
+            " <p><b>Choose best performer?</b></p>" +
+                    " <p>Genre 1<Br>" +
+                    " <p>Genre 2<Br>" +
+                    " <p>Genre 3<Br>" +
+                    " <p>Genre 4<Br>" +
+                    " <p>Genre 5<Br>" +
+                    " <p>Genre 6<Br>" +
+                    " <p>Genre 7<Br>" +
+                    " <p>Genre 8<Br>" +
+                    " <p>Genre 9<Br>" +
+                    " <p>Genre 10<Br>";
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-
-        String html = " <p><b>Choose best performer?</b></p>" +
-                " <p>Genre 1<Br>" +
-                " <p>Genre 2<Br>" +
-                " <p>Genre 3<Br>" +
-                " <p>Genre 4<Br>" +
-                " <p>Genre 5<Br>" +
-                " <p>Genre 6<Br>" +
-                " <p>Genre 7<Br>" +
-                " <p>Genre 8<Br>" +
-                " <p>Genre 9<Br>" +
-                " <p>Genre 10<Br>";
-
-        writer.write(html);
+        writer.write(SHOW_GENRES);
     }
 }
