@@ -13,6 +13,10 @@ public class Performer {
         countVotePerformer += 1;
     }
 
+    public int getCountVotePerformer() {
+        return countVotePerformer;
+    }
+
     public static int getQUANTITY() {
         return QUANTITY;
     }

@@ -14,8 +14,8 @@ public class Genre {
         countVoteGenre += 1;
     }
 
-    public String getGenreName() {
-        return genreName;
+    public int getCountVoteGenre() {
+        return countVoteGenre;
     }
 
     public static int getQUANTITY() {

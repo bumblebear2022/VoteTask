@@ -2,7 +2,6 @@ package by.itacademy.jd2.votetask.controller;
 
 import by.itacademy.jd2.votetask.service.VoteExtractInfo;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,12 +10,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 
-@WebServlet(name = "Vote", urlPatterns = "/vote")
-public class Vote extends HttpServlet {
+@WebServlet(name = "VoteServlet", urlPatterns = "/vote")
+public class VoteServlet extends HttpServlet {
 
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         doPost(req, resp);
     }
 
@@ -26,13 +25,14 @@ public class Vote extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
         Map<String, String[]> parameterMap = req.getParameterMap();
-        VoteExtractInfo util = new VoteExtractInfo();
-        util.infoExtraction(parameterMap);
+        VoteExtractInfo voteExtractInfo = VoteExtractInfo.getInstance();
+        boolean genreException = voteExtractInfo.infoExtraction(parameterMap);
 
-        if(true){
-            writer.write("Success");
+
+        if(genreException){
+            throw new IllegalArgumentException("Genre Exception");
         }else{
-            //throw Http exception
+            writer.write("Success");
         }
     }
 }
