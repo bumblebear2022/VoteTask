@@ -4,11 +4,12 @@ import by.itacademy.jd2.votetask.domain.Performer;
 
 import java.util.Map;
 
-public class PerformerDao implements Dao {
+public class PerformerDao implements Dao <Performer> {
     Performer performer;
     @Override
-    public void create() {
-        performer = new Performer();
+    public Performer create(String name) {
+        performer = new Performer(name);
+        return performer;
     }
 
     @Override

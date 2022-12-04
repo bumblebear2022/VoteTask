@@ -7,7 +7,8 @@ public class Genre {
 
     private int countVoteGenre;
 
-    public Genre() {
+    public Genre(String genreName) {
+        this.genreName = genreName;
     }
     public void countVoteGenreIncrement() {
         countVoteGenre += 1;

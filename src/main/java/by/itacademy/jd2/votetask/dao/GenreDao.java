@@ -4,13 +4,14 @@ import by.itacademy.jd2.votetask.domain.Genre;
 
 import java.util.Map;
 
-public class GenreDao implements Dao {
+public class GenreDao implements Dao<Genre> {
 
     Genre genre;
 
     @Override
-   public void create(){
-        genre = new Genre();
+    public Genre create(String name) {
+        genre = new Genre(name);
+        return genre;
     }
 
     @Override
@@ -22,9 +23,5 @@ public class GenreDao implements Dao {
     public Map<String, Integer> voteResult() {
         return null;
     }
-
-
-
-
 
 }
