@@ -3,9 +3,7 @@ package by.itacademy.jd2.votetask.utils;
 import by.itacademy.jd2.votetask.domain.About;
 import by.itacademy.jd2.votetask.domain.Genre;
 import by.itacademy.jd2.votetask.domain.Performer;
-import by.itacademy.jd2.votetask.domain.Vote;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public final class VoteInfoExtractUtil {
