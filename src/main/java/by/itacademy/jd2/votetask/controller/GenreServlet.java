@@ -1,6 +1,8 @@
 package by.itacademy.jd2.votetask.controller;
 
-import javax.servlet.ServletException;
+import by.itacademy.jd2.votetask.domain.Genre;
+import by.itacademy.jd2.votetask.utils.ServletShowListUtil;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -8,21 +10,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "BestPerformer", urlPatterns = "/performers")
-public class BestPerformer extends HttpServlet {
+@WebServlet(name = "GenreServlet", urlPatterns = "/genres")
+public class GenreServlet extends HttpServlet {
 
-    String SHOW_PERFORMERS =
-            " <p><b>Choose best performer?</b></p>" +
-                    " <p>Performer 1<Br>" +
-                    " <p>Performer 2<Br>" +
-                    " <p>Performer 3<Br>" +
-                    " <p>Performer 4<Br>";
+    int INITIAL_GENRES_QUANTITY = Genre.getQUANTITY();
+    String GENRE = "Genre";
+    StringBuffer HEADER_GENRES = new StringBuffer("<p><b>Choose 3-5 genres: </b></p>");
+    String SHOW_GENRES = ServletShowListUtil.showEntityList(HEADER_GENRES, GENRE, INITIAL_GENRES_QUANTITY);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-        writer.write(SHOW_PERFORMERS);
+        writer.write(SHOW_GENRES);
     }
+
 }
