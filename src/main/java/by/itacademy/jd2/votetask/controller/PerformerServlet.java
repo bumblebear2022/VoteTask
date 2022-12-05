@@ -32,7 +32,7 @@ public class PerformerServlet extends HttpServlet {
 
     private static String buildHtml(String header, List<String> content) {
         String collect = String.join(BR, content);
-        return header + BR + collect;
+        return header + collect;
     }
 
 

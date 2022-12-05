@@ -19,6 +19,7 @@ public class VoteServlet extends HttpServlet {
     private final VoteExtractor voteExtractor = new VoteExtractor();
     private final VoteValidator voteValidator = new VoteValidator();
     private final VoteService voteService = new VoteService();
+    private final String TAGGED_SUCCESS = "<p><b>SUCCESS</b></p>";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -27,7 +28,9 @@ public class VoteServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         Map<String, String[]> parameterMap = req.getParameterMap();
         Vote extractedVote = voteExtractor.extract(parameterMap);
-        voteValidator.validate(extractedVote);
+        voteValidator.validate(extractedVote,req,resp);
         voteService.addVote(extractedVote);
+        writer.write(TAGGED_SUCCESS);
+
     }
 }

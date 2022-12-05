@@ -20,23 +20,11 @@ public class Vote {
         return performer;
     }
 
-    public void setPerformer(String performer) {
-        this.performer = performer;
-    }
-
     public List<String> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<String> genres) {
-        this.genres = genres;
-    }
-
     public String getInfo() {
         return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
     }
 }

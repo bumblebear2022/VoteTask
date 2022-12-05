@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 public class About {
 
-    private String text;
+    private final String text;
 
-    private LocalDateTime time;
+    private final LocalDateTime time;
 
     public About(String text, LocalDateTime time) {
         this.text = text;
@@ -17,15 +17,7 @@ public class About {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
     public LocalDateTime getTime() {
         return time;
-    }
-
-    public void setTime(LocalDateTime time) {
-        this.time = time;
     }
 }

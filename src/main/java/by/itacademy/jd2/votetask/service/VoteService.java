@@ -5,7 +5,7 @@ import by.itacademy.jd2.votetask.domain.Vote;
 
 public class VoteService {
 
-    VotesContentHolder votesContentHolder = new VotesContentHolder();
+    VotesContentHolder votesContentHolder = VotesContentHolder.getInstance();
 
     public void addVote(Vote vote){
         votesContentHolder.performerVoteIncrement(vote);

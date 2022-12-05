@@ -4,7 +4,7 @@ import java.util.List;
 
 public class PerformersContentHolder implements IPerformersDao {
 
-   private static final List<String> PERFORMERS =List.of("p","p2");
+   private static final List<String> PERFORMERS =List.of("Performer 1","Performer 2","Performer 3","Performer 4");
 
    @Override
     public List<String> readAll(){

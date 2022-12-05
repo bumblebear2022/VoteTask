@@ -1,3 +1,7 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,8 +9,13 @@
     <title>Exception</title>
 </head>
 <body>
-<h2>Wrong quantity of genres</h2>
-<p>Type: 418</p>
-<p>Message: You are teapot</p>
+<h2>Wrong vote input</h2>
+<p>Type: 422</p>
+<p>Unprocessable Entity</p>
+
+<c:forEach var="exception" items="${exceptionList}">
+    <p>${exception}</p> <br>
+</c:forEach>
+
 </body>
 </html>

@@ -12,14 +12,13 @@ public class VoteExtractor {
     private static final String GENRE_LOWER_CASE = "genre";
     private static final String ABOUT_LOWER_CASE = "about";
 
-    public Vote extract(Map<String, String[]> voteMap){
+    public Vote extract(Map<String, String[]> voteMap) {
         String[] performers = voteMap.get(PERFORMER_LOWER_CASE);
         String performer = performers[0];
         String[] genres = voteMap.get(GENRE_LOWER_CASE);
         List<String> genresList = Arrays.asList(genres);
         String[] abouts = voteMap.get(ABOUT_LOWER_CASE);
         String about = abouts[0];
-        return new Vote(performer,genresList,about);
-
+        return new Vote(performer, genresList, about);
     }
 }
