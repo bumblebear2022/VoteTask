@@ -4,24 +4,24 @@ import java.util.List;
 
 public class Vote {
 
-    private String performer;
+    private final String voiceForPerformer;
 
-    private List<String> genres;
+    private final List<String> voicesForGenres;
 
-    private String info;
+    private final String info;
 
-    public Vote(String performer, List<String> genres, String info) {
-        this.performer = performer;
-        this.genres = genres;
+    public Vote(String performer, List<String> voicesForGenres, String info) {
+        this.voiceForPerformer = performer;
+        this.voicesForGenres = voicesForGenres;
         this.info = info;
     }
 
-    public String getPerformer() {
-        return performer;
+    public String getVoiceForPerformer() {
+        return voiceForPerformer;
     }
 
-    public List<String> getGenres() {
-        return genres;
+    public List<String> getVoicesForGenres() {
+        return voicesForGenres;
     }
 
     public String getInfo() {

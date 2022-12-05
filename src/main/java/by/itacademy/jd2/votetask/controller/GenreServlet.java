@@ -1,7 +1,7 @@
 package by.itacademy.jd2.votetask.controller;
 
-import by.itacademy.jd2.votetask.service.GenreService;
-import by.itacademy.jd2.votetask.service.IGenreService;
+import by.itacademy.jd2.votetask.service.genre.GenreService;
+import by.itacademy.jd2.votetask.service.genre.IGenreService;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +14,7 @@ import java.util.List;
 @WebServlet(name = "GenreServlet", urlPatterns = "/genres")
 public class GenreServlet extends HttpServlet {
 
-    public static final String BR = "<br/>";
+    private static final String BR = "<br>";
 
     private final IGenreService genreService = new GenreService();
 
@@ -25,13 +25,14 @@ public class GenreServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
 
         String header = genreService.getHeader();
+        String footer = genreService.getFooter();
         List<String> content = genreService.getContent();
-        String htmlResult = buildHtml(header, content);
+        String htmlResult = buildHtml(header, footer, content);
         writer.write(htmlResult);
     }
 
-    private static String buildHtml(String header, List<String> content) {
+    private static String buildHtml(String header, String footer, List<String> content) {
         String collect = String.join(BR, content);
-        return header + collect;
+        return header + collect + footer;
     }
 }

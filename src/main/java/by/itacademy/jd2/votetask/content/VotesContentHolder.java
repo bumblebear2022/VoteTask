@@ -1,10 +1,14 @@
 package by.itacademy.jd2.votetask.content;
 
 import by.itacademy.jd2.votetask.domain.About;
+import by.itacademy.jd2.votetask.domain.Genre;
+import by.itacademy.jd2.votetask.domain.Performer;
 import by.itacademy.jd2.votetask.domain.Vote;
+import by.itacademy.jd2.votetask.util.SortMapUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,38 +16,43 @@ import java.util.Map;
 public class VotesContentHolder {
 
     private static VotesContentHolder INSTANCE;
+
     private VotesContentHolder() {
         initPerformerVotes();
         initGenreVotes();
     }
 
-    private final Map<String, Integer> performerVotes = new HashMap<>();
+    private final Map<String, Integer> votesForPerformers = new HashMap<>();
 
-    private final Map<String, Integer> genreVotes = new HashMap<>();
+    private final Map<String, Integer> votesForGenres = new HashMap<>();
 
-    private final List<About> voteInfos = new ArrayList<>();
+    private final List<About> voteTexts = new ArrayList<>();
 
-    public static VotesContentHolder getInstance(){
-        if(INSTANCE == null){
+    private final IPerformersDao<Performer> performersDao = new PerformersContentHolder();
+
+    private final IGenresDao<Genre> genresDao = new GenresContentHolder();
+
+    public static VotesContentHolder getInstance() {
+        if (INSTANCE == null) {
             INSTANCE = new VotesContentHolder();
         }
         return INSTANCE;
     }
 
     public void performerVoteIncrement(Vote vote) {
-        String performer = vote.getPerformer();
-        Integer currentVotes = performerVotes.get(performer);
+        String performer = vote.getVoiceForPerformer();
+        Integer currentVotes = votesForPerformers.get(performer);
         if (currentVotes != null) {
-            performerVotes.put(performer, currentVotes + 1);
+            votesForPerformers.put(performer, currentVotes + 1);
         }
     }
 
     public void genreVoteIncrement(Vote vote) {
-        List<String> genres = vote.getGenres();
+        List<String> genres = vote.getVoicesForGenres();
         for (String genre : genres) {
-            Integer currentVotes = genreVotes.get(genre);
+            Integer currentVotes = votesForGenres.get(genre);
             if (currentVotes != null) {
-                genreVotes.put(genre, currentVotes + 1);
+                votesForGenres.put(genre, currentVotes + 1);
             }
         }
     }
@@ -53,39 +62,37 @@ public class VotesContentHolder {
         if (info != null) {
             LocalDateTime localDateTime = LocalDateTime.now();
             About about = new About(info, localDateTime);
-            voteInfos.add(about);
+            voteTexts.add(about);
         }
     }
 
     private void initPerformerVotes() {
-        performerVotes.put("Performer 1", 0);
-        performerVotes.put("Performer 2", 0);
-        performerVotes.put("Performer 3", 0);
-        performerVotes.put("Performer 4", 0);
+        List<Performer> performers = performersDao.readAll();
+        for (Performer performer : performers) {
+            votesForPerformers.put(performer.getNickName(), 0);
+        }
     }
 
     private void initGenreVotes() {
-        genreVotes.put("Genre 1", 0);
-        genreVotes.put("Genre 2", 0);
-        genreVotes.put("Genre 3", 0);
-        genreVotes.put("Genre 4", 0);
-        genreVotes.put("Genre 5", 0);
-        genreVotes.put("Genre 6", 0);
-        genreVotes.put("Genre 7", 0);
-        genreVotes.put("Genre 8", 0);
-        genreVotes.put("Genre 9", 0);
-        genreVotes.put("Genre 10", 0);
+        List<Genre> genres = genresDao.readAll();
+        for (Genre genre : genres) {
+            votesForGenres.put(genre.getTitle(), 0);
+        }
+
     }
 
-    public Map<String, Integer> getPerformerVotes() {
-        return performerVotes;
+    public Map<String, Integer> getSortedPerformerVotes() {
+        return SortMapUtil.sortMap(votesForPerformers);
     }
 
-    public Map<String, Integer> getGenreVotes() {
-        return genreVotes;
+    public Map<String, Integer> getSortedGenreVotes() {
+        return SortMapUtil.sortMap(votesForGenres);
     }
 
-    public List<About> getVoteInfos() {
-        return voteInfos;
+    public List<About> getSortedVoteInfos() {
+        Collections.sort(voteTexts);
+        return voteTexts;
     }
+
+
 }

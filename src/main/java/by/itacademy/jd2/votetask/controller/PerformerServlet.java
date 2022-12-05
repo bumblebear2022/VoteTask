@@ -1,7 +1,7 @@
 package by.itacademy.jd2.votetask.controller;
 
-import by.itacademy.jd2.votetask.service.IPerformerService;
-import by.itacademy.jd2.votetask.service.PerformerService;
+import by.itacademy.jd2.votetask.service.performer.IPerformerService;
+import by.itacademy.jd2.votetask.service.performer.PerformerService;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,7 +15,7 @@ import java.util.List;
 public class PerformerServlet extends HttpServlet {
 
 
-    public static final String BR = "<br/>";
+    private static final String BR = "<br>";
     private final IPerformerService performerService = new PerformerService();
 
     @Override
@@ -23,18 +23,17 @@ public class PerformerServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-
         String header = performerService.getHeader();
+        String footer = performerService.getFooter();
         List<String> content = performerService.getContent();
-        String htmlResult = buildHtml(header, content);
+        String htmlResult = buildHtml(header, footer, content);
         writer.write(htmlResult);
     }
 
-    private static String buildHtml(String header, List<String> content) {
+    private static String buildHtml(String header, String footer, List<String> content) {
         String collect = String.join(BR, content);
-        return header + collect;
+        return header + collect + footer;
     }
-
 
 
 }

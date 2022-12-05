@@ -14,30 +14,35 @@ import java.util.Map;
 
 @WebServlet(name = "VoteResultServlet", urlPatterns = "/vote_result")
 public class VoteResultServlet extends HttpServlet {
+    private static final String HEADER_PERFORMERS_RESULT = "<p>Total score among Performers:</p>";
+    private static final String HEADER_GENRES_RESULT = "<p>Total score among Genres:</p>";
+    private static final String HEADER_ABOUT_RESULT = "<p>Info about voters:</p>";
+    private static final String BR = "<br>";
+    private final VotesContentHolder votesContentHolder = VotesContentHolder.getInstance();
 
-    VotesContentHolder votesContentHolder = VotesContentHolder.getInstance();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
 
-        Map<String, Integer> performers = votesContentHolder.getPerformerVotes();
+        Map<String, Integer> performers = votesContentHolder.getSortedPerformerVotes();
 
+        writer.write(HEADER_PERFORMERS_RESULT);
         for (Map.Entry<String, Integer> performer : performers.entrySet()) {
-            writer.write("<p>"+ performer.getKey() + "  " + performer.getValue() + "<p>");
+            writer.write("<p>" + performer.getKey() + "  " + performer.getValue() + "</p>");
         }
 
-                Map<String, Integer> genres = votesContentHolder.getGenreVotes();
-
+        Map<String, Integer> genres = votesContentHolder.getSortedGenreVotes();
+        writer.write(BR + HEADER_GENRES_RESULT);
         for (Map.Entry<String, Integer> genre : genres.entrySet()) {
-            writer.write("<p>"+ genre.getKey() + "  " + genre.getValue() + "<p>");
+            writer.write("<p>" + genre.getKey() + "  " + genre.getValue() + "</p>");
         }
 
-        List<About> voteInfos = votesContentHolder.getVoteInfos();
-
+        List<About> voteInfos = votesContentHolder.getSortedVoteInfos();
+        writer.write(BR + HEADER_ABOUT_RESULT);
         for (About about : voteInfos) {
-            writer.write("<p>"+ about.getTime() + "  " + about.getText() + "<p>");
+            writer.write("<p>" + about.getTime() + "  " + about.getText() + "</p>");
         }
     }
 }

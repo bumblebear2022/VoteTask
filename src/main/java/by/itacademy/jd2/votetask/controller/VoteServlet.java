@@ -1,9 +1,9 @@
 package by.itacademy.jd2.votetask.controller;
 
 import by.itacademy.jd2.votetask.domain.Vote;
-import by.itacademy.jd2.votetask.service.VoteExtractor;
-import by.itacademy.jd2.votetask.service.VoteService;
-import by.itacademy.jd2.votetask.service.VoteValidator;
+import by.itacademy.jd2.votetask.service.vote.VoteExtractor;
+import by.itacademy.jd2.votetask.service.vote.VoteService;
+import by.itacademy.jd2.votetask.service.vote.VoteValidator;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,9 +28,8 @@ public class VoteServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         Map<String, String[]> parameterMap = req.getParameterMap();
         Vote extractedVote = voteExtractor.extract(parameterMap);
-        voteValidator.validate(extractedVote,req,resp);
+        voteValidator.validate(extractedVote, req, resp);
         voteService.addVote(extractedVote);
         writer.write(TAGGED_SUCCESS);
-
     }
 }

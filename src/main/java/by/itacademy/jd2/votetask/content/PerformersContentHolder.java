@@ -1,13 +1,16 @@
 package by.itacademy.jd2.votetask.content;
 
+import by.itacademy.jd2.votetask.domain.Performer;
+
 import java.util.List;
 
-public class PerformersContentHolder implements IPerformersDao {
+public class PerformersContentHolder implements IPerformersDao<Performer> {
 
-   private static final List<String> PERFORMERS =List.of("Performer 1","Performer 2","Performer 3","Performer 4");
+    private static final List<Performer> PERFORMERS = List.of(new Performer("Performer 1"),
+            new Performer("Performer 2"), new Performer("Performer 3"), new Performer("Performer 4"));
 
-   @Override
-    public List<String> readAll(){
+    @Override
+    public List<Performer> readAll() {
         return PERFORMERS;
     }
 
