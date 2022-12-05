@@ -1,28 +1,31 @@
 package by.itacademy.jd2.votetask.domain;
 
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Map;
-import java.util.TreeMap;
+import java.time.LocalDateTime;
 
 public class About {
-    private static About INSTANCE;
 
-    Map<LocalTime,String> about = new TreeMap<>();
+    private String text;
 
-    public static About getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new About();
-        }
-        return INSTANCE;
+    private LocalDateTime time;
+
+    public About(String text, LocalDateTime time) {
+        this.text = text;
+        this.time = time;
     }
 
-    public void addAbout(LocalTime time, String about){
-        LocalTime timeWithoutMillis = time.truncatedTo(ChronoUnit.SECONDS);
-        this.about.put(timeWithoutMillis, about);
+    public String getText() {
+        return text;
     }
 
-    public Map<LocalTime,String> getAbout() {
-        return about;
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalDateTime time) {
+        this.time = time;
     }
 }

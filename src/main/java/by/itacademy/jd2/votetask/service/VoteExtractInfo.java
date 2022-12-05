@@ -15,9 +15,9 @@ public class VoteExtractInfo {
 
 
     private static VoteExtractInfo INSTANCE;
-    private static final String PERFORMER_LOWER_CASE = "performer";
-    private static final String GENRE_LOWER_CASE = "genre";
-    private static final String ABOUT_LOWER_CASE = "about";
+
+
+
 
     protected String performer1Name = "Performer1";
     protected String performer2Name = "Performer2";

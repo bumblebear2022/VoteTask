@@ -1,6 +1,9 @@
 package by.itacademy.jd2.votetask.controller;
 
-import by.itacademy.jd2.votetask.service.VoteExtractInfo;
+import by.itacademy.jd2.votetask.domain.Vote;
+import by.itacademy.jd2.votetask.service.VoteExtractor;
+import by.itacademy.jd2.votetask.service.VoteService;
+import by.itacademy.jd2.votetask.service.VoteValidator;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,26 +16,18 @@ import java.util.Map;
 @WebServlet(name = "VoteServlet", urlPatterns = "/vote")
 public class VoteServlet extends HttpServlet {
 
+    private final VoteExtractor voteExtractor = new VoteExtractor();
+    private final VoteValidator voteValidator = new VoteValidator();
+    private final VoteService voteService = new VoteService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        doPost(req, resp);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
         Map<String, String[]> parameterMap = req.getParameterMap();
-        VoteExtractInfo voteExtractInfo = VoteExtractInfo.getInstance();
-        boolean genreException = voteExtractInfo.infoExtraction(parameterMap);
-
-
-        if(genreException){
-            throw new IllegalArgumentException("Genre Exception");
-        }else{
-            writer.write("Success");
-        }
+        Vote extractedVote = voteExtractor.extract(parameterMap);
+        voteValidator.validate(extractedVote);
+        voteService.addVote(extractedVote);
     }
 }
