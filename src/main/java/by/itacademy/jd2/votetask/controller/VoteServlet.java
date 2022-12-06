@@ -22,7 +22,7 @@ public class VoteServlet extends HttpServlet {
     private final String TAGGED_SUCCESS = "<p><b>SUCCESS</b></p>";
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();

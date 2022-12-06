@@ -1,6 +1,6 @@
 package by.itacademy.jd2.votetask.service.vote;
 
-import by.itacademy.jd2.votetask.content.VotesContentHolder;
+import by.itacademy.jd2.votetask.controller.VotesContentHolder;
 import by.itacademy.jd2.votetask.domain.Vote;
 
 public class VoteService {

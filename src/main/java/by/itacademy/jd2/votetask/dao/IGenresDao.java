@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.content;
+package by.itacademy.jd2.votetask.dao;
 
 public interface IGenresDao<T> extends Dao<T> {
 

@@ -1,6 +1,5 @@
 package by.itacademy.jd2.votetask.controller;
 
-import by.itacademy.jd2.votetask.content.VotesContentHolder;
 import by.itacademy.jd2.votetask.domain.About;
 
 import javax.servlet.annotation.WebServlet;

@@ -1,7 +1,7 @@
 package by.itacademy.jd2.votetask.service.genre;
 
-import by.itacademy.jd2.votetask.content.GenresContentHolder;
-import by.itacademy.jd2.votetask.content.IGenresDao;
+import by.itacademy.jd2.votetask.dao.GenresDao;
+import by.itacademy.jd2.votetask.dao.IGenresDao;
 import by.itacademy.jd2.votetask.domain.Genre;
 
 import java.util.List;
@@ -11,7 +11,7 @@ public class GenreService implements IGenreService {
     private static final String HEADER = "<p><b>Choose 3-5 genres:</b></p>";
     private static final String FOOTER = "<p><b>Also write few words in about section...</b></p>";
 
-    private final IGenresDao<Genre> genresDao = new GenresContentHolder();
+    private final IGenresDao<Genre> genresDao = new GenresDao();
 
     @Override
     public String getHeader() {

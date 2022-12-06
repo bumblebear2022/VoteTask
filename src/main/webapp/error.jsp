@@ -10,8 +10,7 @@
 </head>
 <body>
 <h2>Wrong vote input</h2>
-<p>Type: 422</p>
-<p>Unprocessable Entity</p>
+<p>Type: 418</p>
 
 <c:forEach var="exception" items="${exceptionList}">
     <p>${exception}</p> <br>

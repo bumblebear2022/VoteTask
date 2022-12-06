@@ -1,7 +1,7 @@
 package by.itacademy.jd2.votetask.service.performer;
 
-import by.itacademy.jd2.votetask.content.IPerformersDao;
-import by.itacademy.jd2.votetask.content.PerformersContentHolder;
+import by.itacademy.jd2.votetask.dao.IPerformersDao;
+import by.itacademy.jd2.votetask.dao.PerformersDao;
 import by.itacademy.jd2.votetask.domain.Performer;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public class PerformerService implements IPerformerService {
 
     private static final String FOOTER = "<p><b>Thanks for your vote!</b></p>";
 
-    private final IPerformersDao<Performer> performersDao = new PerformersContentHolder();
+    private final IPerformersDao<Performer> performersDao = new PerformersDao();
 
     @Override
     public String getHeader() {

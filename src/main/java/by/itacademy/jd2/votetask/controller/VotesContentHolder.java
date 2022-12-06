@@ -1,5 +1,9 @@
-package by.itacademy.jd2.votetask.content;
+package by.itacademy.jd2.votetask.controller;
 
+import by.itacademy.jd2.votetask.dao.GenresDao;
+import by.itacademy.jd2.votetask.dao.IGenresDao;
+import by.itacademy.jd2.votetask.dao.IPerformersDao;
+import by.itacademy.jd2.votetask.dao.PerformersDao;
 import by.itacademy.jd2.votetask.domain.About;
 import by.itacademy.jd2.votetask.domain.Genre;
 import by.itacademy.jd2.votetask.domain.Performer;
@@ -28,9 +32,9 @@ public class VotesContentHolder {
 
     private final List<About> voteTexts = new ArrayList<>();
 
-    private final IPerformersDao<Performer> performersDao = new PerformersContentHolder();
+    private final IPerformersDao<Performer> performersDao = new PerformersDao();
 
-    private final IGenresDao<Genre> genresDao = new GenresContentHolder();
+    private final IGenresDao<Genre> genresDao = new GenresDao();
 
     public static VotesContentHolder getInstance() {
         if (INSTANCE == null) {
