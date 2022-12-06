@@ -1,24 +1,27 @@
 package by.itacademy.jd2.votetask.domain;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 
-public class About {
-    private static About INSTANCE;
+public class About implements Comparable<About> {
 
-    ArrayList<String> about = new ArrayList<>();
+    private final String text;
+    private final LocalDateTime time;
 
-    public static About getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new About();
-        }
-        return INSTANCE;
+    public About(String text, LocalDateTime time) {
+        this.text = text;
+        this.time = time;
     }
 
-    public void addAbout(String about){
-        this.about.add(about);
+    public String getText() {
+        return text;
     }
 
-    public ArrayList<String> getAbout() {
-        return about;
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    @Override
+    public int compareTo(About about) {
+        return getTime().compareTo(about.getTime());
     }
 }

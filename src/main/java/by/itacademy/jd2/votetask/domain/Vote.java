@@ -1,42 +1,30 @@
 package by.itacademy.jd2.votetask.domain;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Vote {
 
+    private final String voiceForPerformer;
 
-    private String  performerName;
+    private final List<String> voicesForGenres;
 
-    private ArrayList<String > genreNames;
+    private final String info;
 
-    private String about;
-
-    public Vote() {
+    public Vote(String performer, List<String> voicesForGenres, String info) {
+        this.voiceForPerformer = performer;
+        this.voicesForGenres = voicesForGenres;
+        this.info = info;
     }
 
-
-
-    public String getPerformerName() {
-        return performerName;
+    public String getVoiceForPerformer() {
+        return voiceForPerformer;
     }
 
-    public void setPerformerName(String performerName) {
-        this.performerName = performerName;
+    public List<String> getVoicesForGenres() {
+        return voicesForGenres;
     }
 
-    public ArrayList<String> getGenreNames() {
-        return genreNames;
-    }
-
-    public void setGenreNames(ArrayList<String> genreNames) {
-        this.genreNames = genreNames;
-    }
-
-    public String getAbout() {
-        return about;
-    }
-
-    public void setAbout(String about) {
-        this.about = about;
+    public String getInfo() {
+        return info;
     }
 }
