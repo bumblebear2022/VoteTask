@@ -3,7 +3,7 @@ package by.itacademy.jd2.votetask.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class VoteDto {
+public class RequestDto {
 
     private final String voiceForPerformer;
 
@@ -13,7 +13,7 @@ public class VoteDto {
 
     private final LocalDateTime time;
 
-    public VoteDto(String voiceForPerformer, List<String> voicesForGenres, String info, LocalDateTime time) {
+    public RequestDto(String voiceForPerformer, List<String> voicesForGenres, String info, LocalDateTime time) {
         this.voiceForPerformer = voiceForPerformer;
         this.voicesForGenres = voicesForGenres;
         this.info = info;

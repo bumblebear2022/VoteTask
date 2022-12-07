@@ -19,18 +19,19 @@ public class StatisticsService implements IStatisticsService {
 
     private final IVoteDao<Vote> voteDao = VoteDaoSingleton.getInstance();
 
-    public VoteResultDto getVoteResult(){
+    public VoteResultDto getVoteResult() {
         List<Vote> votes = voteDao.readAll();
         Map<String, Long> sortedPerformerVotes = getSortedPerformerVotes(votes);
         Map<String, Long> sortedGenreVotes = getSortedGenreVotes(votes);
         Map<LocalDateTime, String> sortedVoteInfos = getSortedVoteInfos(votes);
-        return new VoteResultDto(sortedPerformerVotes,sortedGenreVotes,sortedVoteInfos);
+        return new VoteResultDto(sortedPerformerVotes, sortedGenreVotes, sortedVoteInfos);
     }
 
 
     private Map<String, Long> getSortedPerformerVotes(List<Vote> votes) {
         Map<String, Long> votesForPerformers = votes.stream()
                 .collect(Collectors.groupingBy(Vote::getVoiceForPerformer, Collectors.counting()));
+
         return SortMapUtil.sortByValue(votesForPerformers);
     }
 
@@ -44,7 +45,7 @@ public class StatisticsService implements IStatisticsService {
 
     private Map<LocalDateTime, String> getSortedVoteInfos(List<Vote> votes) {
         return votes.stream()
-                .collect(Collectors.toMap(Vote::getTime, Vote::getInfo,(a,b)-> a, TreeMap::new));
+                .collect(Collectors.toMap(Vote::getTime, Vote::getInfo, (a, b) -> a, TreeMap::new));
     }
 
 }

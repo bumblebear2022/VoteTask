@@ -6,9 +6,7 @@ import java.util.List;
 public class Vote {
 
     private final String voiceForPerformer;
-
     private final List<String> voicesForGenres;
-
     private final String info;
     private final LocalDateTime time;
 

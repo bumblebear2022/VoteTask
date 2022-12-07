@@ -1,7 +1,7 @@
 package by.itacademy.jd2.votetask.controller;
 
 import by.itacademy.jd2.votetask.domain.Vote;
-import by.itacademy.jd2.votetask.dto.VoteDto;
+import by.itacademy.jd2.votetask.dto.RequestDto;
 import by.itacademy.jd2.votetask.exceptions.InvalidHttpRequestException;
 import by.itacademy.jd2.votetask.exceptions.InvalidVoteException;
 import by.itacademy.jd2.votetask.mapper.VoteMapper;
@@ -40,9 +40,9 @@ public class VoteServlet extends HttpServlet {
         try {
             HttpRequestValidateUtil.validateRequest(parameterMap);
             LocalDateTime localDateTime = LocalDateTime.now();
-            VoteDto extractedVoteDto = extract(parameterMap, localDateTime);
-            VoteValidateUtil.validate(extractedVoteDto);
-            Vote vote = voteMapper.mapToVote(extractedVoteDto);
+            RequestDto extractedRequestDto = extract(parameterMap, localDateTime);
+            VoteValidateUtil.validate(extractedRequestDto);
+            Vote vote = voteMapper.mapToVote(extractedRequestDto);
             voteService.addVote(vote);
             resp.sendRedirect(req.getContextPath() + "/vote_result");
         } catch (InvalidHttpRequestException e) {
@@ -58,13 +58,13 @@ public class VoteServlet extends HttpServlet {
 
 
 
-    private static VoteDto extract(Map<String, String[]> parameterMap, LocalDateTime localDateTime) {
+    private static RequestDto extract(Map<String, String[]> parameterMap, LocalDateTime localDateTime) {
         String[] performers = parameterMap.get(PERFORMER_LOWER_CASE);
         String performer = performers[0];
         String[] genres = parameterMap.get(GENRE_LOWER_CASE);
         List<String> genresList = Arrays.asList(genres);
         String[] abouts = parameterMap.get(ABOUT_LOWER_CASE);
         String about = abouts[0];
-        return new VoteDto(performer, genresList, about, localDateTime);
+        return new RequestDto(performer, genresList, about, localDateTime);
     }
 }

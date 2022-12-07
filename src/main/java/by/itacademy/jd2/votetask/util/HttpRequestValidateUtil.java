@@ -11,7 +11,6 @@ public class HttpRequestValidateUtil {
 
     public static final String KEY_HAVE_NO_WORDS = "Invalid key in request";
     public static final String VALUE_HAVE_NO_WORDS = "Invalid value in request";
-
     private static final Pattern CHECK_PATTERN = Pattern.compile("\\w+");
 
     public static void validateRequest(Map<String, String[]> parameterMap) {

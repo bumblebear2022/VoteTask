@@ -48,6 +48,5 @@ public class VoteViewResultServlet extends HttpServlet {
         for (Map.Entry<LocalDateTime, String> info : infos.entrySet()) {
             writer.write("<p>" + info.getKey().format(FORMATTER) + "  " + info.getValue() + "</p>");
         }
-
     }
 }
