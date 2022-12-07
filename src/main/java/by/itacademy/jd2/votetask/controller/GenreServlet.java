@@ -1,7 +1,10 @@
 package by.itacademy.jd2.votetask.controller;
 
-import by.itacademy.jd2.votetask.service.genre.GenreService;
-import by.itacademy.jd2.votetask.service.genre.IGenreService;
+import by.itacademy.jd2.votetask.dao.GenresDao;
+import by.itacademy.jd2.votetask.dao.IGenresDao;
+import by.itacademy.jd2.votetask.domain.Genre;
+import by.itacademy.jd2.votetask.service.GenreService;
+import by.itacademy.jd2.votetask.service.IGenreService;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,9 +17,12 @@ import java.util.List;
 @WebServlet(name = "GenreServlet", urlPatterns = "/genres")
 public class GenreServlet extends HttpServlet {
 
+    private static final String HEADER = "<p><b>Choose 3-5 genres:</b></p>";
+    private static final String FOOTER = "<p><b>Also write few words in about section...</b></p>";
     private static final String BR = "<br>";
 
-    private final IGenreService genreService = new GenreService();
+    private final IGenresDao<Genre> genresDao = new GenresDao();
+    private final IGenreService genreService = new GenreService(genresDao);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -24,10 +30,8 @@ public class GenreServlet extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
 
-        String header = genreService.getHeader();
-        String footer = genreService.getFooter();
         List<String> content = genreService.getContent();
-        String htmlResult = buildHtml(header, footer, content);
+        String htmlResult = buildHtml(HEADER, FOOTER, content);
         writer.write(htmlResult);
     }
 

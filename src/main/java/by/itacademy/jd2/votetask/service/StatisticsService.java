@@ -1,12 +1,8 @@
-package by.itacademy.jd2.votetask.controller;
+package by.itacademy.jd2.votetask.service;
 
-import by.itacademy.jd2.votetask.dao.GenresDao;
-import by.itacademy.jd2.votetask.dao.IGenresDao;
-import by.itacademy.jd2.votetask.dao.IPerformersDao;
-import by.itacademy.jd2.votetask.dao.PerformersDao;
+import by.itacademy.jd2.votetask.dao.IVoteDao;
+import by.itacademy.jd2.votetask.dao.VoteDao;
 import by.itacademy.jd2.votetask.domain.About;
-import by.itacademy.jd2.votetask.domain.Genre;
-import by.itacademy.jd2.votetask.domain.Performer;
 import by.itacademy.jd2.votetask.domain.Vote;
 import by.itacademy.jd2.votetask.util.SortMapUtil;
 
@@ -17,14 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VotesContentHolder {
+public class StatisticsService implements IStatisticsService {
 
-    private static VotesContentHolder INSTANCE;
-
-    private VotesContentHolder() {
-        initPerformerVotes();
-        initGenreVotes();
-    }
+    private final IVoteDao<Vote> voteDao = new VoteDao();
 
     private final Map<String, Integer> votesForPerformers = new HashMap<>();
 
@@ -32,15 +23,14 @@ public class VotesContentHolder {
 
     private final List<About> voteTexts = new ArrayList<>();
 
-    private final IPerformersDao<Performer> performersDao = new PerformersDao();
 
-    private final IGenresDao<Genre> genresDao = new GenresDao();
-
-    public static VotesContentHolder getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new VotesContentHolder();
+    public StatisticsService() {
+        List<Vote> voteList = voteDao.readAll();
+        for (Vote vote : voteList) {
+            performerVoteIncrement(vote);
+            genreVoteIncrement(vote);
+            addVoteInfo(vote);
         }
-        return INSTANCE;
     }
 
     public void performerVoteIncrement(Vote vote) {
@@ -70,33 +60,18 @@ public class VotesContentHolder {
         }
     }
 
-    private void initPerformerVotes() {
-        List<Performer> performers = performersDao.readAll();
-        for (Performer performer : performers) {
-            votesForPerformers.put(performer.getNickName(), 0);
-        }
-    }
-
-    private void initGenreVotes() {
-        List<Genre> genres = genresDao.readAll();
-        for (Genre genre : genres) {
-            votesForGenres.put(genre.getTitle(), 0);
-        }
-
-    }
-
     public Map<String, Integer> getSortedPerformerVotes() {
         return SortMapUtil.sortMap(votesForPerformers);
     }
 
     public Map<String, Integer> getSortedGenreVotes() {
         return SortMapUtil.sortMap(votesForGenres);
+
     }
 
     public List<About> getSortedVoteInfos() {
         Collections.sort(voteTexts);
         return voteTexts;
     }
-
 
 }

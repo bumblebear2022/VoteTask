@@ -1,12 +1,20 @@
-package by.itacademy.jd2.votetask.service.vote;
+package by.itacademy.jd2.votetask.service;
 
+import by.itacademy.jd2.votetask.dao.IVoteDao;
 import by.itacademy.jd2.votetask.domain.Vote;
+import by.itacademy.jd2.votetask.util.VoteValidateUtil;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class VoteExtractor {
+public class VoteService implements IVoteService{
+
+    private final IVoteDao<Vote> voteDao;
+
+    public VoteService(IVoteDao<Vote> voteDao) {
+        this.voteDao = voteDao;
+    }
 
     private static final String PERFORMER_LOWER_CASE = "performer";
     private static final String GENRE_LOWER_CASE = "genre";
@@ -21,4 +29,11 @@ public class VoteExtractor {
         String about = abouts[0];
         return new Vote(performer, genresList, about);
     }
+
+    public void addVote(Map<String, String[]> voteMap){
+        Vote extractedVote = extract(voteMap);
+        VoteValidateUtil.validate(extractedVote);
+        voteDao.create(extractedVote);
+    }
+
 }
