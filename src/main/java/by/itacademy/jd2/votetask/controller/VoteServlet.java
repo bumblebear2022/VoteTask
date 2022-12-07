@@ -1,13 +1,12 @@
 package by.itacademy.jd2.votetask.controller;
 
-import by.itacademy.jd2.votetask.dao.VoteDao;
-import by.itacademy.jd2.votetask.dao.api.IVoteDao;
 import by.itacademy.jd2.votetask.domain.Vote;
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.exceptions.InvalidHttpRequestException;
 import by.itacademy.jd2.votetask.exceptions.InvalidVoteException;
 import by.itacademy.jd2.votetask.mapper.VoteMapper;
 import by.itacademy.jd2.votetask.service.VoteService;
+import by.itacademy.jd2.votetask.service.factories.VoteServiceSingleton;
 import by.itacademy.jd2.votetask.util.HttpRequestValidateUtil;
 import by.itacademy.jd2.votetask.util.VoteValidateUtil;
 
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -27,18 +25,17 @@ public class VoteServlet extends HttpServlet {
     private static final String PERFORMER_LOWER_CASE = "performer";
     private static final String GENRE_LOWER_CASE = "genre";
     private static final String ABOUT_LOWER_CASE = "about";
-    private final String TAGGED_SUCCESS = "<p><b>SUCCESS</b></p>";
-    private final IVoteDao<Vote> voteDao = new VoteDao();
+    public static final String BR = "<br>";
 
+    private final String TAGGED_SUCCESS = "<p><b>SUCCESS</b></p>";
     private final VoteMapper voteMapper = new VoteMapper();
-    private final VoteService voteService = new VoteService(voteDao);
+    private final VoteService voteService = VoteServiceSingleton.getInstance();
 
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
-        PrintWriter writer = resp.getWriter();
         Map<String, String[]> parameterMap = req.getParameterMap();
         try {
             HttpRequestValidateUtil.validateRequest(parameterMap);
@@ -50,16 +47,16 @@ public class VoteServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/vote_result");
         } catch (InvalidHttpRequestException e) {
             List<String> requestExceptionList = e.getRequestExceptionList();
-            for (String exception : requestExceptionList) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, exception);
-            }
+            String exceptionsHttp = String.join(BR, requestExceptionList);
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, exceptionsHttp);
         } catch (InvalidVoteException e) {
             List<String> voteExceptionList = e.getVoteExceptionList();
-            for (String exception : voteExceptionList) {
-                resp.sendError(HttpServletResponse.SC_EXPECTATION_FAILED, exception);
-            }
+            String voteExceptions = String.join(BR, voteExceptionList);
+            resp.sendError(HttpServletResponse.SC_EXPECTATION_FAILED, voteExceptions);
         }
     }
+
+
 
     private static VoteDto extract(Map<String, String[]> parameterMap, LocalDateTime localDateTime) {
         String[] performers = parameterMap.get(PERFORMER_LOWER_CASE);
