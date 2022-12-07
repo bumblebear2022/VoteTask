@@ -1,9 +1,10 @@
 package by.itacademy.jd2.votetask.service;
 
-import by.itacademy.jd2.votetask.dao.IVoteDao;
+import by.itacademy.jd2.votetask.dao.api.IVoteDao;
 import by.itacademy.jd2.votetask.dao.VoteDao;
 import by.itacademy.jd2.votetask.domain.About;
 import by.itacademy.jd2.votetask.domain.Vote;
+import by.itacademy.jd2.votetask.service.api.IStatisticsService;
 import by.itacademy.jd2.votetask.util.SortMapUtil;
 
 import java.time.LocalDateTime;

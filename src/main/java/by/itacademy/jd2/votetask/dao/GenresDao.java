@@ -1,5 +1,6 @@
 package by.itacademy.jd2.votetask.dao;
 
+import by.itacademy.jd2.votetask.dao.api.IGenresDao;
 import by.itacademy.jd2.votetask.domain.Genre;
 
 import java.util.List;

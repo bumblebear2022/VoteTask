@@ -1,5 +1,6 @@
 package by.itacademy.jd2.votetask.dao;
 
+import by.itacademy.jd2.votetask.dao.api.IVoteDao;
 import by.itacademy.jd2.votetask.domain.Vote;
 
 import java.util.ArrayList;

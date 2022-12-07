@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.dao;
+package by.itacademy.jd2.votetask.dao.api;
 
 import java.util.List;
 

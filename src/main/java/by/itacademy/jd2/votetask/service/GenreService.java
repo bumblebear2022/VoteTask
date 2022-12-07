@@ -1,7 +1,8 @@
 package by.itacademy.jd2.votetask.service;
 
-import by.itacademy.jd2.votetask.dao.IGenresDao;
+import by.itacademy.jd2.votetask.dao.api.IGenresDao;
 import by.itacademy.jd2.votetask.domain.Genre;
+import by.itacademy.jd2.votetask.service.api.IGenreService;
 
 import java.util.List;
 import java.util.stream.Collectors;

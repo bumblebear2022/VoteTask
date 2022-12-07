@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.service;
+package by.itacademy.jd2.votetask.service.api;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package by.itacademy.jd2.votetask.controller;
 
-import by.itacademy.jd2.votetask.dao.IVoteDao;
+import by.itacademy.jd2.votetask.dao.api.IVoteDao;
 import by.itacademy.jd2.votetask.dao.VoteDao;
 import by.itacademy.jd2.votetask.domain.Vote;
 import by.itacademy.jd2.votetask.service.VoteService;

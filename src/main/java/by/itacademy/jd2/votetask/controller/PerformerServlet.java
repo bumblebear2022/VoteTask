@@ -1,10 +1,11 @@
 package by.itacademy.jd2.votetask.controller;
 
-import by.itacademy.jd2.votetask.dao.IPerformersDao;
+import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
 import by.itacademy.jd2.votetask.dao.PerformersDao;
 import by.itacademy.jd2.votetask.domain.Performer;
-import by.itacademy.jd2.votetask.service.IPerformerService;
+import by.itacademy.jd2.votetask.service.api.IPerformerService;
 import by.itacademy.jd2.votetask.service.PerformerService;
+import by.itacademy.jd2.votetask.util.BuildHtmlUtil;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +21,7 @@ public class PerformerServlet extends HttpServlet {
     private static final String HEADER = "<p><b>Choose one performer:</b></p>";
 
     private static final String FOOTER = "<p><b>Thanks for your vote!</b></p>";
-    private static final String BR = "<br>";
+
     private final IPerformersDao<Performer> performersDao = new PerformersDao();
     private final IPerformerService performerService = new PerformerService(performersDao);
 
@@ -30,12 +31,7 @@ public class PerformerServlet extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
         List<String> content = performerService.getContent();
-        String htmlResult = buildHtml(content);
+        String htmlResult = BuildHtmlUtil.build(content,HEADER,FOOTER);
         writer.write(htmlResult);
-    }
-
-    private static String buildHtml(List<String> content) {
-        String collect = String.join(BR, content);
-        return HEADER + collect + FOOTER;
     }
 }
