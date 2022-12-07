@@ -1,10 +1,11 @@
 package by.itacademy.jd2.votetask.controller;
 
 import by.itacademy.jd2.votetask.dao.GenresDao;
-import by.itacademy.jd2.votetask.dao.IGenresDao;
+import by.itacademy.jd2.votetask.dao.api.IGenresDao;
 import by.itacademy.jd2.votetask.domain.Genre;
 import by.itacademy.jd2.votetask.service.GenreService;
-import by.itacademy.jd2.votetask.service.IGenreService;
+import by.itacademy.jd2.votetask.service.api.IGenreService;
+import by.itacademy.jd2.votetask.util.BuildHtmlUtil;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,12 +32,9 @@ public class GenreServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
 
         List<String> content = genreService.getContent();
-        String htmlResult = buildHtml(HEADER, FOOTER, content);
+        String htmlResult = BuildHtmlUtil.build(content,HEADER,FOOTER);
         writer.write(htmlResult);
     }
 
-    private static String buildHtml(String header, String footer, List<String> content) {
-        String collect = String.join(BR, content);
-        return header + collect + footer;
-    }
+
 }
