@@ -1,7 +1,7 @@
 package by.itacademy.jd2.votetask.service.api;
 
-import java.util.Map;
+import by.itacademy.jd2.votetask.dto.VoteDto;
 
 public interface IVoteService {
-    void addVote(Map<String, String[]> voteMap);
+    void addVote(VoteDto voteDto);
 }

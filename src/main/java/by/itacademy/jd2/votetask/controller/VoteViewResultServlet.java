@@ -24,7 +24,5 @@ public class VoteViewResultServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-
-
     }
 }

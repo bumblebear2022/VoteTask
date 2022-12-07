@@ -4,13 +4,13 @@ import java.util.List;
 
 public class InvalidVoteException extends RuntimeException {
 
-    private final List<String> exceptionList;
+    private final List<String> voteExceptionList;
 
-    public InvalidVoteException(List<String> exceptionList) {
-        this.exceptionList = exceptionList;
+    public InvalidVoteException(List<String> voteExceptionList) {
+        this.voteExceptionList = voteExceptionList;
     }
 
-    public List<String> getExceptionList() {
-        return exceptionList;
+    public List<String> getVoteExceptionList() {
+        return voteExceptionList;
     }
 }
