@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class SortMapUtil {
 
-    public static Map<String, Integer> sortMap(Map<String, Integer> mapToSort){
+    public static <T extends Comparable<T>, E> Map<E, T> sortByValue(Map<E, T> mapToSort) {
         return mapToSort
                 .entrySet()
                 .stream()

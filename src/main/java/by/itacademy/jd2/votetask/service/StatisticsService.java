@@ -1,78 +1,50 @@
 package by.itacademy.jd2.votetask.service;
 
 import by.itacademy.jd2.votetask.dao.api.IVoteDao;
-import by.itacademy.jd2.votetask.dao.VoteDao;
-import by.itacademy.jd2.votetask.domain.About;
+import by.itacademy.jd2.votetask.dao.factories.VoteDaoSingleton;
 import by.itacademy.jd2.votetask.domain.Vote;
+import by.itacademy.jd2.votetask.dto.VoteResultDto;
 import by.itacademy.jd2.votetask.service.api.IStatisticsService;
 import by.itacademy.jd2.votetask.util.SortMapUtil;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class StatisticsService implements IStatisticsService {
 
-    private final IVoteDao<Vote> voteDao = new VoteDao();
+    private final IVoteDao<Vote> voteDao = VoteDaoSingleton.getInstance();
 
-    private final Map<String, Integer> votesForPerformers = new HashMap<>();
-
-    private final Map<String, Integer> votesForGenres = new HashMap<>();
-
-    private final List<About> voteTexts = new ArrayList<>();
-
-
-    public StatisticsService() {
-        List<Vote> voteList = voteDao.readAll();
-        for (Vote vote : voteList) {
-            performerVoteIncrement(vote);
-            genreVoteIncrement(vote);
-            addVoteInfo(vote);
-        }
+    public VoteResultDto getVoteResult(){
+        List<Vote> votes = voteDao.readAll();
+        Map<String, Long> sortedPerformerVotes = getSortedPerformerVotes(votes);
+        Map<String, Long> sortedGenreVotes = getSortedGenreVotes(votes);
+        Map<LocalDateTime, String> sortedVoteInfos = getSortedVoteInfos(votes);
+        return new VoteResultDto(sortedPerformerVotes,sortedGenreVotes,sortedVoteInfos);
     }
 
-    public void performerVoteIncrement(Vote vote) {
-        String performer = vote.getVoiceForPerformer();
-        Integer currentVotes = votesForPerformers.get(performer);
-        if (currentVotes != null) {
-            votesForPerformers.put(performer, currentVotes + 1);
-        }
+
+    private Map<String, Long> getSortedPerformerVotes(List<Vote> votes) {
+        Map<String, Long> votesForPerformers = votes.stream()
+                .collect(Collectors.groupingBy(Vote::getVoiceForPerformer, Collectors.counting()));
+        return SortMapUtil.sortByValue(votesForPerformers);
     }
 
-    public void genreVoteIncrement(Vote vote) {
-        List<String> genres = vote.getVoicesForGenres();
-        for (String genre : genres) {
-            Integer currentVotes = votesForGenres.get(genre);
-            if (currentVotes != null) {
-                votesForGenres.put(genre, currentVotes + 1);
-            }
-        }
+    private Map<String, Long> getSortedGenreVotes(List<Vote> votes) {
+        Map<String, Long> votesForGenres = votes.stream()
+                .map(Vote::getVoicesForGenres)
+                .flatMap(Collection::stream)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        return SortMapUtil.sortByValue(votesForGenres);
     }
 
-    public void addVoteInfo(Vote vote) {
-        String info = vote.getInfo();
-        if (info != null) {
-            LocalDateTime localDateTime = LocalDateTime.now();
-            About about = new About(info, localDateTime);
-            voteTexts.add(about);
-        }
-    }
-
-    public Map<String, Integer> getSortedPerformerVotes() {
-        return SortMapUtil.sortMap(votesForPerformers);
-    }
-
-    public Map<String, Integer> getSortedGenreVotes() {
-        return SortMapUtil.sortMap(votesForGenres);
-
-    }
-
-    public List<About> getSortedVoteInfos() {
-        Collections.sort(voteTexts);
-        return voteTexts;
+    private Map<LocalDateTime, String> getSortedVoteInfos(List<Vote> votes) {
+        return votes.stream()
+                .collect(Collectors.toMap(Vote::getTime, Vote::getInfo,(a,b)-> a, TreeMap::new));
     }
 
 }

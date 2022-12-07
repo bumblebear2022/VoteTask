@@ -1,6 +1,6 @@
 package by.itacademy.jd2.votetask.util;
 
-import by.itacademy.jd2.votetask.domain.Vote;
+import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.exceptions.InvalidVoteException;
 
 import java.util.ArrayList;
@@ -11,20 +11,22 @@ public class VoteValidateUtil {
     public static final String GENRE_IS_EMPTY = "Genre is empty";
     public static final String INFO_IS_EMPTY = "Info is empty";
     public static final String WRONG_NUMBER_OF_GENRES = "Wrong number of genres";
+    public static final int MIN_GENRE_CHOICES = 3;
+    public static final int MAX_GENRE_CHOICES = 5;
 
-    public static void validate(Vote vote) {
+    public static void validate(VoteDto voteDto) {
         List<String > errors = new ArrayList<>();
-        if (vote.getVoiceForPerformer().isEmpty()) {
+        if (voteDto.getVoiceForPerformer().isEmpty()) {
             errors.add(PERFORMER_IS_EMPTY);
         }
-        if (vote.getVoicesForGenres().isEmpty()) {
+        if (voteDto.getVoicesForGenres().isEmpty()) {
             errors.add(GENRE_IS_EMPTY);
         }
-        if (vote.getInfo().isEmpty()) {
+        if (voteDto.getInfo().isEmpty()) {
             errors.add(INFO_IS_EMPTY);
         }
-        if (vote.getVoicesForGenres().size() < 3
-                || vote.getVoicesForGenres().size() > 5) {
+        if (voteDto.getVoicesForGenres().size() < MIN_GENRE_CHOICES
+                || voteDto.getVoicesForGenres().size() > MAX_GENRE_CHOICES) {
             errors.add(WRONG_NUMBER_OF_GENRES);
         }
         if(!errors.isEmpty()){

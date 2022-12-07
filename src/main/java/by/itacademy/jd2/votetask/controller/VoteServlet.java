@@ -6,8 +6,10 @@ import by.itacademy.jd2.votetask.domain.Vote;
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.exceptions.InvalidHttpRequestException;
 import by.itacademy.jd2.votetask.exceptions.InvalidVoteException;
+import by.itacademy.jd2.votetask.mapper.VoteMapper;
 import by.itacademy.jd2.votetask.service.VoteService;
 import by.itacademy.jd2.votetask.util.HttpRequestValidateUtil;
+import by.itacademy.jd2.votetask.util.VoteValidateUtil;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,6 +30,7 @@ public class VoteServlet extends HttpServlet {
     private final String TAGGED_SUCCESS = "<p><b>SUCCESS</b></p>";
     private final IVoteDao<Vote> voteDao = new VoteDao();
 
+    private final VoteMapper voteMapper = new VoteMapper();
     private final VoteService voteService = new VoteService(voteDao);
 
 
@@ -39,35 +42,32 @@ public class VoteServlet extends HttpServlet {
         Map<String, String[]> parameterMap = req.getParameterMap();
         try {
             HttpRequestValidateUtil.validateRequest(parameterMap);
+            LocalDateTime localDateTime = LocalDateTime.now();
+            VoteDto extractedVoteDto = extract(parameterMap, localDateTime);
+            VoteValidateUtil.validate(extractedVoteDto);
+            Vote vote = voteMapper.mapToVote(extractedVoteDto);
+            voteService.addVote(vote);
+            resp.sendRedirect(req.getContextPath() + "/vote_result");
         } catch (InvalidHttpRequestException e) {
             List<String> requestExceptionList = e.getRequestExceptionList();
-            for(String exception:requestExceptionList){
-            resp.sendError(400,exception);
+            for (String exception : requestExceptionList) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, exception);
             }
-        }
-        LocalDateTime localDateTime = LocalDateTime.now();
-        VoteDto extractedVoteDto = extract(parameterMap, localDateTime);
-        try {
-            voteService.addVote(extractedVoteDto);
         } catch (InvalidVoteException e) {
             List<String> voteExceptionList = e.getVoteExceptionList();
-            for(String exception : voteExceptionList){
-                resp.sendError(417,exception);
+            for (String exception : voteExceptionList) {
+                resp.sendError(HttpServletResponse.SC_EXPECTATION_FAILED, exception);
             }
         }
-        writer.write(TAGGED_SUCCESS);
     }
 
-
-    private static VoteDto extract(Map<String, String[]> voteMap, LocalDateTime localDateTime) {
-        String[] performers = voteMap.get(PERFORMER_LOWER_CASE);
+    private static VoteDto extract(Map<String, String[]> parameterMap, LocalDateTime localDateTime) {
+        String[] performers = parameterMap.get(PERFORMER_LOWER_CASE);
         String performer = performers[0];
-        String[] genres = voteMap.get(GENRE_LOWER_CASE);
+        String[] genres = parameterMap.get(GENRE_LOWER_CASE);
         List<String> genresList = Arrays.asList(genres);
-        String[] abouts = voteMap.get(ABOUT_LOWER_CASE);
+        String[] abouts = parameterMap.get(ABOUT_LOWER_CASE);
         String about = abouts[0];
         return new VoteDto(performer, genresList, about, localDateTime);
     }
-
-
 }
