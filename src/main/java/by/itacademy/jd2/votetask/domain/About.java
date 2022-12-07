@@ -4,16 +4,16 @@ import java.time.LocalDateTime;
 
 public class About implements Comparable<About> {
 
-    private final String text;
+    private final String info;
     private final LocalDateTime time;
 
-    public About(String text, LocalDateTime time) {
-        this.text = text;
+    public About(String info, LocalDateTime time) {
+        this.info = info;
         this.time = time;
     }
 
-    public String getText() {
-        return text;
+    public String getInfo() {
+        return info;
     }
 
     public LocalDateTime getTime() {

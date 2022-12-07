@@ -1,5 +1,6 @@
 package by.itacademy.jd2.votetask.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class VoteDto {
@@ -10,10 +11,13 @@ public class VoteDto {
 
     private final String info;
 
-    public VoteDto(String voiceForPerformer, List<String> voicesForGenres, String info) {
+    private final LocalDateTime time;
+
+    public VoteDto(String voiceForPerformer, List<String> voicesForGenres, String info, LocalDateTime time) {
         this.voiceForPerformer = voiceForPerformer;
         this.voicesForGenres = voicesForGenres;
         this.info = info;
+        this.time = time;
     }
 
     public String getVoiceForPerformer() {
@@ -26,5 +30,9 @@ public class VoteDto {
 
     public String getInfo() {
         return info;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
     }
 }

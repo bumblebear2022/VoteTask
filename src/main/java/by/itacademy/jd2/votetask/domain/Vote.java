@@ -1,5 +1,6 @@
 package by.itacademy.jd2.votetask.domain;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Vote {
@@ -9,11 +10,13 @@ public class Vote {
     private final List<String> voicesForGenres;
 
     private final String info;
+    private final LocalDateTime time;
 
-    public Vote(String performer, List<String> voicesForGenres, String info) {
-        this.voiceForPerformer = performer;
+    public Vote(String voiceForPerformer, List<String> voicesForGenres, String info, LocalDateTime time) {
+        this.voiceForPerformer = voiceForPerformer;
         this.voicesForGenres = voicesForGenres;
         this.info = info;
+        this.time = time;
     }
 
     public String getVoiceForPerformer() {
@@ -26,5 +29,9 @@ public class Vote {
 
     public String getInfo() {
         return info;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
     }
 }
