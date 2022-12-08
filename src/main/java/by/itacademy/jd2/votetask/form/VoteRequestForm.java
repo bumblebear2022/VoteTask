@@ -14,7 +14,10 @@ public class VoteRequestForm {
     private static final String GENRE_LOWER_CASE = "genre";
     private static final String ABOUT_LOWER_CASE = "about";
 
-    public VoteRequestForm() {
+    private final VoteValidateUtil voteValidateUtil;
+
+    public VoteRequestForm(VoteValidateUtil voteValidateUtil) {
+        this.voteValidateUtil = voteValidateUtil;
     }
 
     public RequestDto doRead(Map<String, String[]> parameterMap) {
@@ -23,7 +26,7 @@ public class VoteRequestForm {
         LocalDateTime localDateTime = LocalDateTime.now();
 
         RequestDto extractedRequestDto = extract(parameterMap, localDateTime);
-        VoteValidateUtil.validate(extractedRequestDto);
+        voteValidateUtil.validate(extractedRequestDto);
 
         return extractedRequestDto;
     }

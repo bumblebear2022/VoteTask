@@ -8,7 +8,6 @@ import by.itacademy.jd2.votetask.form.VoteRequestForm;
 import by.itacademy.jd2.votetask.mapper.VoteMapper;
 import by.itacademy.jd2.votetask.service.VoteService;
 import by.itacademy.jd2.votetask.service.factories.VoteServiceSingleton;
-import by.itacademy.jd2.votetask.util.HttpRequestValidateUtil;
 import by.itacademy.jd2.votetask.util.VoteValidateUtil;
 import by.itacademy.jd2.votetask.util.BuildHtmlUtil;
 
@@ -36,7 +35,7 @@ public class VoteServlet extends HttpServlet {
         Map<String, String[]> parameterMap = req.getParameterMap();
 
         try {
-            VoteRequestForm form = new VoteRequestForm();
+            VoteRequestForm form = new VoteRequestForm(voteValidateUtil);
 
             RequestDto extractedRequestDto = form.doRead(parameterMap);
 
