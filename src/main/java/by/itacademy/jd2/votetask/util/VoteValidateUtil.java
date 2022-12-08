@@ -56,8 +56,8 @@ public class VoteValidateUtil {
             errors.add(PERFORMER_DO_NOT_EXIST);
         }
         for (String voiceForGenre : voicesForGenres) {
-            boolean validGenre = performerList.stream()
-                    .map(Performer::getNickName)
+            boolean validGenre = genresList.stream()
+                    .map(Genre::getTitle)
                     .anyMatch(nick -> nick.equals(voiceForGenre));
             if (!validGenre) {
                 errors.add(GENRE_DO_NOT_EXIST);
