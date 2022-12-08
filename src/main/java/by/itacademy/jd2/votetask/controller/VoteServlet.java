@@ -8,6 +8,8 @@ import by.itacademy.jd2.votetask.form.VoteRequestForm;
 import by.itacademy.jd2.votetask.mapper.VoteMapper;
 import by.itacademy.jd2.votetask.service.VoteService;
 import by.itacademy.jd2.votetask.service.factories.VoteServiceSingleton;
+import by.itacademy.jd2.votetask.util.HttpRequestValidateUtil;
+import by.itacademy.jd2.votetask.util.VoteValidateUtil;
 import by.itacademy.jd2.votetask.util.BuildHtmlUtil;
 
 import javax.servlet.annotation.WebServlet;
@@ -23,6 +25,9 @@ public class VoteServlet extends HttpServlet {
 
     private final VoteMapper voteMapper = new VoteMapper();
     private final VoteService voteService = VoteServiceSingleton.getInstance();
+
+    private final VoteValidateUtil voteValidateUtil = new VoteValidateUtil();
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
