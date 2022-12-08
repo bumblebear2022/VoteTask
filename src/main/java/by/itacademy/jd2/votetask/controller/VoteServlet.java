@@ -26,10 +26,10 @@ public class VoteServlet extends HttpServlet {
     private static final String GENRE_LOWER_CASE = "genre";
     private static final String ABOUT_LOWER_CASE = "about";
     public static final String BR = "<br>";
-
-    private final String TAGGED_SUCCESS = "<p><b>SUCCESS</b></p>";
     private final VoteMapper voteMapper = new VoteMapper();
     private final VoteService voteService = VoteServiceSingleton.getInstance();
+
+    private final VoteValidateUtil voteValidateUtil = new VoteValidateUtil();
 
 
     @Override
@@ -41,7 +41,7 @@ public class VoteServlet extends HttpServlet {
             HttpRequestValidateUtil.validateRequest(parameterMap);
             LocalDateTime localDateTime = LocalDateTime.now();
             RequestDto extractedRequestDto = extract(parameterMap, localDateTime);
-            VoteValidateUtil.validate(extractedRequestDto);
+            voteValidateUtil.validate(extractedRequestDto);
             Vote vote = voteMapper.mapToVote(extractedRequestDto);
             voteService.addVote(vote);
             resp.sendRedirect(req.getContextPath() + "/vote_result");
@@ -55,7 +55,6 @@ public class VoteServlet extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_EXPECTATION_FAILED, voteExceptions);
         }
     }
-
 
 
     private static RequestDto extract(Map<String, String[]> parameterMap, LocalDateTime localDateTime) {
