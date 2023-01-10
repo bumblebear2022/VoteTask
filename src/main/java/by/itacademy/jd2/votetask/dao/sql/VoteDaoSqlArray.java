@@ -6,6 +6,7 @@ import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.exceptions.DataAccessException;
 import by.itacademy.jd2.votetask.util.DataSource;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,10 +15,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
-    private static final String CREATE_QUERY = "INSERT INTO  data.votes (date_time,about) VALUES (?,?);";
-    private static final String CREATE_QUERY_CROSS_PERFORMER = "INSERT INTO  data.vote_genre (id_vote,id_genre) VALUES (?,?);";
-    private static final String CREATE_QUERY_CROSS_GENRE = "INSERT INTO  data.vote_performer (id_vote,id_performer) VALUES (?,?);";
+public class VoteDaoSqlArray implements IVoteDao<SavedVoteDTO> {
+    private static final String CREATE_QUERY = "INSERT INTO  data.genres (name) VALUES (?,?);";
+    private static final String CREATE_QUERY_CROSS_PERFORMER = "INSERT INTO  data.genres (name) VALUES (?,?);";
+    private static final String CREATE_QUERY_CROSS_GENRE = "INSERT INTO  data.genres (name) VALUES (?,?);";
+
     private static final String READ_ALL_QUERY = "SELECT id,name from data.genres";
     private static final String DELETE_QUERY = "DELETE from data.genres where id=?;";
     private static final String EXIST_QUERY = "SELECT EXISTS (SELECT * FROM data.genres WHERE id = ?);";
@@ -30,6 +32,7 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
             preparedStatement.setObject(1, savedVoteDTO.getCreateDateTime());
             preparedStatement.setString(2, savedVoteDTO.getVote().getAbout());
             preparedStatement.executeUpdate();
+
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 resultSet.next();
                 id = resultSet.getLong(1);
@@ -37,11 +40,7 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
         } catch (SQLException e) {
             throw new DataAccessException("SQLException create method :" + e);
         }
-        insertIntoVotePerformerByVoteId(savedVoteDTO, id);
-        insertIntoVoteGenresByVoteId(savedVoteDTO, id);
-    }
 
-    private void insertIntoVotePerformerByVoteId(SavedVoteDTO savedVoteDTO, Long id) {
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY_CROSS_PERFORMER)) {
             preparedStatement.setLong(1, id);
@@ -50,23 +49,36 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
         } catch (SQLException e) {
             throw new DataAccessException("SQLException create method :" + e);
         }
-    }
 
-    private void insertIntoVoteGenresByVoteId(SavedVoteDTO savedVoteDTO, Long id) {
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY_CROSS_GENRE)) {
+            preparedStatement.setLong(1, id);
             List<Long> voicesForGenres = savedVoteDTO.getVote().getVoicesForGenres();
-            for (Long genreId : voicesForGenres) {
-                preparedStatement.setLong(1, id);
-                preparedStatement.setLong(2, genreId);
-                preparedStatement.executeUpdate();
-            }
+            Object[] voicesForGenresArray = voicesForGenres.toArray();
+            Array voices = connection.createArrayOf("bigint", voicesForGenresArray);
+            preparedStatement.setArray(2, voices);
+            preparedStatement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DataAccessException("SQLException create method :" + e);
         }
     }
 
+//    private static final String READ_BY_IDS_QUERY = """
+//            SELECT id,name,price,sale_types
+//            from products
+//            WHERE id = any (?);""";
+//    Array cards = connection.createArrayOf("varchar", cardNumbersArray);
+//        preparedStatement.setArray(1, cards);
 
+//    Array keys = connection.createArrayOf("bigint", keyArray);
+//        preparedStatement.setArray(1, keys);
+
+    //    Object sale_types = resultSet.getArray("sale_types").getArray();
+//    String[] saleTypesArray = (String[]) sale_types;
+//    Set<SaleType> saleTypes = Arrays.stream(saleTypesArray)
+//            .map(SaleType::valueOf)
+//            .collect(Collectors.toSet());
     @Override
     public List<SavedVoteDTO> readAll() {
         try (Connection connection = DataSource.getConnection();
