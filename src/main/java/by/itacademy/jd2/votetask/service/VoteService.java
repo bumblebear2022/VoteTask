@@ -42,7 +42,7 @@ public class VoteService implements IVoteService {
 
     public void addVote(VoteDto voteDto) {
         validate(voteDto);
-        SavedVoteDTO savedVoteDTO = new SavedVoteDTO(voteDto);
+        SavedVoteDTO savedVoteDTO = new SavedVoteDTO(null, voteDto);
         try {
             boolean isLockAcquired = lock.tryLock(1, TimeUnit.SECONDS);
             if (isLockAcquired) {
@@ -55,7 +55,7 @@ public class VoteService implements IVoteService {
         }
     }
 
-    private void validate(VoteDto voteDto){
+    private void validate(VoteDto voteDto) {
         List<String> errors = new ArrayList<>();
         int votesForGenreListSize = voteDto.getVoicesForGenres().size();
         Long voiceForPerformer = voteDto.getVoiceForPerformer();
@@ -77,19 +77,19 @@ public class VoteService implements IVoteService {
 
         Set<Long> voicesForGenresSet = new HashSet<>(voicesForGenres);
 
-        if(voicesForGenres.size() != voicesForGenresSet.size()){
+        if (voicesForGenres.size() != voicesForGenresSet.size()) {
             errors.add(GENRES_DUPLICATED);
         }
 
-        if(!this.performerService.exist(voiceForPerformer)){
+        if (!this.performerService.exist(voiceForPerformer)) {
             errors.add(PERFORMER_DO_NOT_EXIST);
         }
 
         for (Long genre : voicesForGenres) {
-            if(genre == null){
+            if (genre == null) {
                 errors.add(GENRE_IS_EMPTY);
             }
-            if(!this.genreService.exist(genre)){
+            if (!this.genreService.exist(genre)) {
                 errors.add(GENRE_DO_NOT_EXIST);
             }
         }

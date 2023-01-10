@@ -1,23 +1,23 @@
 package by.itacademy.jd2.votetask.dao.factories;
 
-import by.itacademy.jd2.votetask.dao.PerformersDao;
 import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
+import by.itacademy.jd2.votetask.dao.sql.PerformersDaoSql;
 import by.itacademy.jd2.votetask.dto.PerformerDTO;
 
 public class PerformersDaoSingleton {
-    private volatile static PerformersDao instance;
+    private volatile static IPerformersDao<PerformerDTO> INSTANCE;
 
     private PerformersDaoSingleton() {
     }
 
     public static IPerformersDao<PerformerDTO> getInstance() {
-        if(instance == null){
+        if(INSTANCE == null){
             synchronized (PerformersDaoSingleton.class){
-                if(instance == null){
-                    instance = new PerformersDao();
+                if(INSTANCE == null){
+                    INSTANCE = new PerformersDaoSql();
                 }
             }
         }
-        return instance;
+        return INSTANCE;
     }
 }

@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.dao;
+package by.itacademy.jd2.votetask.dao.memory;
 
 import by.itacademy.jd2.votetask.dao.api.IVoteDao;
 import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
@@ -23,6 +23,5 @@ public class VoteDao implements IVoteDao<SavedVoteDTO> {
     public void delete(SavedVoteDTO savedVoteDTO) {
         savedVoteDTOS.remove(savedVoteDTO);
     }
-
 
 }

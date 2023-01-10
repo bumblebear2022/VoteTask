@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.dao;
+package by.itacademy.jd2.votetask.dao.memory;
 
 import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
 import by.itacademy.jd2.votetask.dto.PerformerDTO;
