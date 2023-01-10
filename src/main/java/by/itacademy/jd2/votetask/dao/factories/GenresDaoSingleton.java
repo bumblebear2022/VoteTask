@@ -1,11 +1,11 @@
 package by.itacademy.jd2.votetask.dao.factories;
 
-import by.itacademy.jd2.votetask.dao.GenresDao;
 import by.itacademy.jd2.votetask.dao.api.IGenresDao;
+import by.itacademy.jd2.votetask.dao.sql.GenresDaoSql;
 import by.itacademy.jd2.votetask.dto.GenreDTO;
 
 public class GenresDaoSingleton {
-    private volatile static GenresDao instance;
+    private volatile static IGenresDao<GenreDTO> instance;
 
     private GenresDaoSingleton() {
     }
@@ -14,7 +14,7 @@ public class GenresDaoSingleton {
         if(instance == null){
             synchronized (GenresDaoSingleton.class){
                 if(instance == null){
-                    instance = new GenresDao();
+                    instance = new GenresDaoSql();
                 }
             }
         }

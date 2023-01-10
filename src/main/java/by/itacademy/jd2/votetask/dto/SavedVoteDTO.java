@@ -5,17 +5,23 @@ import java.util.Objects;
 
 public class SavedVoteDTO {
 
+    private Long id;
     private LocalDateTime createDateTime;
     private final VoteDto vote;
 
 
-    public SavedVoteDTO(VoteDto vote) {
-        this.createDateTime = LocalDateTime.now();
+    public SavedVoteDTO(Long id, VoteDto vote) {
+        this.id = id;
+        this.createDateTime = createDateTime;
         this.vote = vote;
     }
 
     public LocalDateTime getCreateDateTime() {
         return createDateTime;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public VoteDto getVote() {
@@ -27,18 +33,19 @@ public class SavedVoteDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SavedVoteDTO that = (SavedVoteDTO) o;
-        return Objects.equals(createDateTime, that.createDateTime) && Objects.equals(vote, that.vote);
+        return Objects.equals(id, that.id) && Objects.equals(createDateTime, that.createDateTime) && Objects.equals(vote, that.vote);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(createDateTime, vote);
+        return Objects.hash(id, createDateTime, vote);
     }
 
     @Override
     public String toString() {
         return "SavedVoteDTO{" +
-                "createDateTime=" + createDateTime +
+                "id=" + id +
+                ", createDateTime=" + createDateTime +
                 ", vote=" + vote +
                 '}';
     }
