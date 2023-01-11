@@ -20,7 +20,8 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
     private static final String CREATE_QUERY_CROSS_GENRE = "INSERT INTO  data.vote_performer (id_vote,id_performer) VALUES (?,?);";
     private static final String READ_ALL_QUERY = "SELECT id,name from data.genres";
     private static final String DELETE_QUERY = "DELETE from data.genres where id=?;";
-    private static final String EXIST_QUERY = "SELECT EXISTS (SELECT * FROM data.genres WHERE id = ?);";
+
+
 
     @Override
     public void create(SavedVoteDTO savedVoteDTO) {
@@ -78,6 +79,21 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
                 entityList.add(performerDTO);
             }
             return entityList;
+        } catch (SQLException e) {
+            throw new DataAccessException("SQLException readAll method :" + e);
+        }
+    }
+
+    @Override
+    public void update() {
+        try (Connection connection = DataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_QUERY);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            List<SavedVoteDTO> entityList = new ArrayList<>();
+            while (resultSet.next()) {
+                SavedVoteDTO performerDTO = buildEntity(resultSet);
+                entityList.add(performerDTO);
+            }
         } catch (SQLException e) {
             throw new DataAccessException("SQLException readAll method :" + e);
         }

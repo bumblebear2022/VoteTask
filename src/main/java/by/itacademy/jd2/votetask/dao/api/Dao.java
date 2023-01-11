@@ -8,6 +8,8 @@ public interface Dao<T> {
 
     List<T> readAll();
 
+    void update();
+
     void delete(T t);
 
 }
