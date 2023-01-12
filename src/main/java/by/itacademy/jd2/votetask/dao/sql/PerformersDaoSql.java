@@ -18,6 +18,8 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
     private static final String DELETE_QUERY = "DELETE from data.genres where id=?;";
     private static final String EXIST_QUERY = "SELECT EXISTS (SELECT * FROM data.genres WHERE id = ?);";
 
+    private static final String UPDATE_QUERY = "UPDATE data.votes SET date_time = ?,about = ? WHERE id=?;";
+
     @Override
     public void create(PerformerDTO performerDTO) {
         try (Connection connection = DataSource.getConnection();
@@ -55,6 +57,11 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
         } catch (SQLException e) {
             throw new DataAccessException("SQLException deleteById method :" + e);
         }
+    }
+
+    @Override
+    public void update() {
+
     }
 
     @Override
