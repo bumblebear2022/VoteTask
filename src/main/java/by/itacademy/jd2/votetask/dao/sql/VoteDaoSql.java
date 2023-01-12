@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,8 +20,8 @@ import java.util.Map;
 
 public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
     private static final String CREATE_QUERY = "INSERT INTO  data.votes (date_time,about) VALUES (?,?);";
-    private static final String CREATE_QUERY_CROSS_PERFORMER = "INSERT INTO  data.vote_genre (id_vote,id_genre) VALUES (?,?);";
-    private static final String CREATE_QUERY_CROSS_GENRE = "INSERT INTO  data.vote_performer (id_vote,id_performer) VALUES (?,?);";
+    private static final String CREATE_QUERY_CROSS_PERFORMER = "INSERT INTO  data.vote_performer (id_vote,id_performer) VALUES (?,?);";
+    private static final String CREATE_QUERY_CROSS_GENRE = "INSERT INTO  data.vote_genre (id_vote,id_genre) VALUES (?,?);";
     private static final String READ_ALL_QUERY = "SELECT id,date_time,about from data.votes";
     private static final String READ_ALL_CROSS_PERFORMER = "SELECT id_vote, id_performer from data.vote_performer";
     private static final String READ_ALL_CROSS_GENRE = "SELECT id_vote, id_genre from data.vote_genre";
@@ -34,7 +35,8 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
 
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setObject(1, savedVoteDTO.getCreateDateTime());
+            Timestamp timestamp = Timestamp.valueOf(savedVoteDTO.getCreateDateTime());
+            preparedStatement.setTimestamp(1,timestamp);
             preparedStatement.setString(2, savedVoteDTO.getVote().getAbout());
             preparedStatement.executeUpdate();
 
@@ -89,9 +91,9 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
             Map<Long, SavedVoteDTO> entityList = new HashMap<>();
             while (resultSet.next()) {
                 Long voteId = resultSet.getLong("id");
-                LocalDateTime dt = (LocalDateTime) resultSet.getObject("date_time");
+                LocalDateTime dt = resultSet.getTimestamp("date_time").toLocalDateTime();
                 String about = resultSet.getString("about");
-                VoteDto voteDto = new VoteDto(null, null, about);
+                VoteDto voteDto = new VoteDto(null, new ArrayList<>(), about);
                 SavedVoteDTO savedVoteDTO = new SavedVoteDTO(voteId, dt, voteDto);
                 entityList.put(voteId, savedVoteDTO);
             }

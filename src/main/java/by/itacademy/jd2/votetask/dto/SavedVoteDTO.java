@@ -12,7 +12,7 @@ public class SavedVoteDTO {
 
     public SavedVoteDTO(Long id, VoteDto vote) {
         this.id = id;
-        this.createDateTime = createDateTime;
+        this.createDateTime = LocalDateTime.now();
         this.vote = vote;
     }
 
