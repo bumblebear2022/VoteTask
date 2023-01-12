@@ -35,6 +35,4 @@ public class GenreServlet extends HttpServlet {
         String htmlResult = HEADER + str + FOOTER;
         writer.write(htmlResult);
     }
-
-
 }
