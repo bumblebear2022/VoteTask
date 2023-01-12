@@ -1,9 +1,6 @@
 package by.itacademy.jd2.votetask.dao.sql;
 
 import by.itacademy.jd2.votetask.dao.api.IVoteDao;
-import by.itacademy.jd2.votetask.dto.CrossGenreDto;
-import by.itacademy.jd2.votetask.dto.CrossPerformerDto;
-import by.itacademy.jd2.votetask.dto.MainVoteDto;
 import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.exceptions.DataAccessException;
@@ -16,9 +13,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
     private static final String CREATE_QUERY = "INSERT INTO  data.votes (date_time,about) VALUES (?,?);";
@@ -79,81 +76,61 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
 
     @Override
     public List<SavedVoteDTO> readAll() {
-        List<MainVoteDto> baseVotes = readVotes();
-        List<CrossPerformerDto> votesForPerformers = readVoteCrossPerformer();
-        List<CrossGenreDto> votesForGenres = readVoteCrossGenre();
-
-        Map<Long, List<Long>> collectPerformers = votesForPerformers.stream()
-                .collect(Collectors.groupingBy(CrossPerformerDto::getVoteId,
-                        Collectors.mapping(CrossPerformerDto::getPerformerId, Collectors.toList())));
-
-        Map<Long, List<Long>> collectGenres = votesForGenres.stream()
-                .collect(Collectors.groupingBy(CrossGenreDto::getVoteId,
-                        Collectors.mapping(CrossGenreDto::getGenreId, Collectors.toList())));
-
-        List<SavedVoteDTO> savedVoteDTOS = new ArrayList<>();
-
-        for(MainVoteDto vote : baseVotes){
-            Long id = vote.getId();
-            LocalDateTime createDateTime = vote.getCreateDateTime();
-            Long voteForPerformer = collectPerformers.get(id).get(0);
-            List<Long> votesForGenresList = collectGenres.get(id);
-
-            VoteDto voteDto = new VoteDto(voteForPerformer, votesForGenresList, vote.getAbout());
-            new SavedVoteDTO(id,createDateTime,voteDto);
-        }
-
-        return savedVoteDTOS;
+        Map<Long, SavedVoteDTO> baseVotes = readVotes();
+        Map<Long, SavedVoteDTO> votesWithPerformers = addVoteCrossPerformer(baseVotes);
+        Map<Long, SavedVoteDTO> votesWithGenres = addVoteCrossGenre(votesWithPerformers);
+        return new ArrayList<>(votesWithGenres.values());
     }
 
-    private List<MainVoteDto> readVotes() {
+    private Map<Long, SavedVoteDTO> readVotes() {
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_QUERY);
              ResultSet resultSet = preparedStatement.executeQuery()) {
-            List<MainVoteDto> entityMap = new ArrayList<>();
+            Map<Long, SavedVoteDTO> entityList = new HashMap<>();
             while (resultSet.next()) {
                 Long voteId = resultSet.getLong("id");
                 LocalDateTime dt = (LocalDateTime) resultSet.getObject("date_time");
                 String about = resultSet.getString("about");
-
-                MainVoteDto mainVoteDto = new MainVoteDto(voteId,dt,about);
-                entityMap.add(mainVoteDto);
+                VoteDto voteDto = new VoteDto(null, null, about);
+                SavedVoteDTO savedVoteDTO = new SavedVoteDTO(voteId, dt, voteDto);
+                entityList.put(voteId, savedVoteDTO);
             }
-            return entityMap;
+            return entityList;
         } catch (SQLException e) {
             throw new DataAccessException("SQLException readAll method :" + e);
         }
     }
 
-
-
-    private List<CrossPerformerDto> readVoteCrossPerformer() {
+    private Map<Long, SavedVoteDTO>  addVoteCrossPerformer(Map<Long, SavedVoteDTO>  savedVoteDTOS) {
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_CROSS_PERFORMER);
              ResultSet resultSet = preparedStatement.executeQuery()) {
-            List<CrossPerformerDto> entityList = new ArrayList<>();
             while (resultSet.next()) {
                 Long voteId = resultSet.getLong("id_vote");
                 Long performerId = resultSet.getLong("id_performer");
-                entityList.add(new CrossPerformerDto(voteId, performerId));
+                SavedVoteDTO savedVoteDTO = savedVoteDTOS.get(voteId);
+                VoteDto vote = savedVoteDTO.getVote();
+                vote.setVoiceForPerformer(performerId);
             }
-            return entityList;
+            return savedVoteDTOS;
         } catch (SQLException e) {
             throw new DataAccessException("SQLException readAll method :" + e);
         }
     }
 
-    private List<CrossGenreDto> readVoteCrossGenre() {
+    private Map<Long, SavedVoteDTO>  addVoteCrossGenre(Map<Long, SavedVoteDTO>  savedVoteDTOS) {
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_CROSS_GENRE);
              ResultSet resultSet = preparedStatement.executeQuery()) {
-            List<CrossGenreDto> entityList = new ArrayList<>();
             while (resultSet.next()) {
                 Long voteId = resultSet.getLong("id_vote");
                 Long genreId = resultSet.getLong("id_genre");
-                entityList.add(new CrossGenreDto(voteId, genreId));
+                SavedVoteDTO savedVoteDTO = savedVoteDTOS.get(voteId);
+                VoteDto vote = savedVoteDTO.getVote();
+                List<Long> voicesForGenres = vote.getVoicesForGenres();
+                voicesForGenres.add(genreId);
             }
-            return entityList;
+            return savedVoteDTOS;
         } catch (SQLException e) {
             throw new DataAccessException("SQLException readAll method :" + e);
         }
