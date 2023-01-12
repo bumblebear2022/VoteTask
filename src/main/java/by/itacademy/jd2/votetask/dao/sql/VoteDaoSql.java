@@ -95,11 +95,12 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
 
         for(MainVoteDto vote : baseVotes){
             Long id = vote.getId();
+            LocalDateTime createDateTime = vote.getCreateDateTime();
             Long voteForPerformer = collectPerformers.get(id).get(0);
             List<Long> votesForGenresList = collectGenres.get(id);
 
             VoteDto voteDto = new VoteDto(voteForPerformer, votesForGenresList, vote.getAbout());
-            new SavedVoteDTO(id,voteDto);
+            new SavedVoteDTO(id,createDateTime,voteDto);
         }
 
         return savedVoteDTOS;
@@ -114,7 +115,9 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
                 Long voteId = resultSet.getLong("id");
                 LocalDateTime dt = (LocalDateTime) resultSet.getObject("date_time");
                 String about = resultSet.getString("about");
-                entityMap.add(new MainVoteDto(voteId, dt, about));
+
+                MainVoteDto mainVoteDto = new MainVoteDto(voteId,dt,about);
+                entityMap.add(mainVoteDto);
             }
             return entityMap;
         } catch (SQLException e) {

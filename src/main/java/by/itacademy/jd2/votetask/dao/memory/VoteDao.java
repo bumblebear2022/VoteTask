@@ -20,11 +20,6 @@ public class VoteDao implements IVoteDao<SavedVoteDTO> {
     }
 
     @Override
-    public void update() {
-
-    }
-
-    @Override
     public void delete(SavedVoteDTO savedVoteDTO) {
         savedVoteDTOS.remove(savedVoteDTO);
     }
