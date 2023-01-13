@@ -26,6 +26,21 @@ public class GenreService implements IGenreService {
         return genresDao.exist(id);
     }
 
+    @Override
+    public void create(GenreDTO genreDTO) {
+
+    }
+
+    @Override
+    public void update(GenreDTO genreDTO) {
+
+    }
+
+    @Override
+    public boolean delete(GenreDTO genreDTO) {
+        return false;
+    }
+
     public List<GenreDTO> getGenres() {
         return genresDao.readAll();
     }

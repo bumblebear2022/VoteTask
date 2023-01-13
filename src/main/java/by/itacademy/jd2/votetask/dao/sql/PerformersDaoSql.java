@@ -48,19 +48,20 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
     }
 
     @Override
-    public void delete(PerformerDTO performerDTO) {
+    public boolean delete(PerformerDTO performerDTO) {
         Long id = performerDTO.getId();
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
             preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
+//            preparedStatement.executeUpdate();
+            return preparedStatement.execute();
         } catch (SQLException e) {
             throw new DataAccessException("SQLException deleteById method :" + e);
         }
     }
 
     @Override
-    public void update() {
+    public void update(PerformerDTO performerDTO) {
 
     }
 
