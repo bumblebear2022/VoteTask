@@ -32,14 +32,12 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
 
     @Override
     public void create(SavedVoteDTO savedVoteDTO) {
-
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             Timestamp timestamp = Timestamp.valueOf(savedVoteDTO.getCreateDateTime());
             preparedStatement.setTimestamp(1,timestamp);
             preparedStatement.setString(2, savedVoteDTO.getVote().getAbout());
             preparedStatement.executeUpdate();
-
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 resultSet.next();
                 Long id = resultSet.getLong(1);
@@ -88,16 +86,16 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_QUERY);
              ResultSet resultSet = preparedStatement.executeQuery()) {
-            Map<Long, SavedVoteDTO> entityList = new HashMap<>();
+            Map<Long, SavedVoteDTO> savedVoteDTOMap = new HashMap<>();
             while (resultSet.next()) {
                 Long voteId = resultSet.getLong("id");
                 LocalDateTime dt = resultSet.getTimestamp("date_time").toLocalDateTime();
                 String about = resultSet.getString("about");
                 VoteDto voteDto = new VoteDto(null, new ArrayList<>(), about);
                 SavedVoteDTO savedVoteDTO = new SavedVoteDTO(voteId, dt, voteDto);
-                entityList.put(voteId, savedVoteDTO);
+                savedVoteDTOMap.put(voteId, savedVoteDTO);
             }
-            return entityList;
+            return savedVoteDTOMap;
         } catch (SQLException e) {
             throw new DataAccessException("SQLException readAll method :" + e);
         }
