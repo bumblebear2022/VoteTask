@@ -1,6 +1,6 @@
 package by.itacademy.jd2.votetask.service.factories;
 
-import by.itacademy.jd2.votetask.dao.factories.VoteDaoSingleton;
+import by.itacademy.jd2.votetask.dao.factories.VoteDaoSqlSingleton;
 import by.itacademy.jd2.votetask.service.VoteService;
 
 public class VoteServiceSingleton {
@@ -14,7 +14,7 @@ public class VoteServiceSingleton {
             synchronized (VoteServiceSingleton.class){
                 if(instance == null){
                     instance = new VoteService(
-                            VoteDaoSingleton.getInstance(),
+                            VoteDaoSqlSingleton.getInstance(),
                             PerformerServiceSingleton.getInstance(),
                             GenreServiceSingleton.getInstance());
                 }

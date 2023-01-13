@@ -26,4 +26,8 @@ public class PerformerService implements IPerformerService {
         }
         return performersDao.exist(id);
     }
+
+    public List<PerformerDTO> getPerformers() {
+        return performersDao.readAll();
+    }
 }

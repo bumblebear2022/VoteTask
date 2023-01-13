@@ -1,18 +1,16 @@
 package by.itacademy.jd2.votetask.service;
 
-import by.itacademy.jd2.votetask.dao.api.IGenresDao;
-import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
-import by.itacademy.jd2.votetask.dao.api.IVoteDao;
-import by.itacademy.jd2.votetask.dao.factories.GenresDaoSingleton;
-import by.itacademy.jd2.votetask.dao.factories.PerformersDaoSingleton;
-import by.itacademy.jd2.votetask.dao.factories.VoteDaoSingleton;
 import by.itacademy.jd2.votetask.dto.GenreDTO;
 import by.itacademy.jd2.votetask.dto.PerformerDTO;
 import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.dto.VoteResultDto;
+import by.itacademy.jd2.votetask.service.api.IGenreService;
+import by.itacademy.jd2.votetask.service.api.IPerformerService;
 import by.itacademy.jd2.votetask.service.api.IStatisticsService;
+import by.itacademy.jd2.votetask.service.api.IVoteService;
 import by.itacademy.jd2.votetask.util.SavedVoteComparatorByTime;
+import by.itacademy.jd2.votetask.util.ServiceProvider;
 import by.itacademy.jd2.votetask.util.SortMapUtil;
 
 import java.util.Collection;
@@ -23,12 +21,19 @@ import java.util.stream.Collectors;
 
 public class StatisticsService implements IStatisticsService {
 
-    private final IVoteDao<SavedVoteDTO> voteDao = VoteDaoSingleton.getInstance();
-    private final IPerformersDao<PerformerDTO> performersDao = PerformersDaoSingleton.getInstance();
-    private final IGenresDao<GenreDTO> genresDao = GenresDaoSingleton.getInstance();
+    private final IVoteService voteService;
+
+    private final IPerformerService performerService;
+
+    private final IGenreService genreService;
+    public StatisticsService() {
+        voteService = ServiceProvider.getInstance().getVoteService();
+        performerService = ServiceProvider.getInstance().getPerformerService();
+        genreService = ServiceProvider.getInstance().getGenreService();
+    }
 
     public VoteResultDto getVoteResult() {
-        List<SavedVoteDTO> voteDtoList = voteDao.readAll();
+        List<SavedVoteDTO> voteDtoList = voteService.getVotes();
         Map<String, Long> sortedPerformerVotes = getSortedPerformerVotes(voteDtoList);
         Map<String, Long> sortedGenreVotes = getSortedGenreVotes(voteDtoList);
         List<SavedVoteDTO> sortedVoteInfos = getSortedVoteInfos(voteDtoList);
@@ -37,7 +42,7 @@ public class StatisticsService implements IStatisticsService {
 
 
     private Map<String, Long> getSortedPerformerVotes(List<SavedVoteDTO> voteDtoList) {
-        List<PerformerDTO> performerDTOS = performersDao.readAll();
+        List<PerformerDTO> performerDTOS = performerService.getPerformers();
         Map<Long, String> performerNamesMap = performerDTOS.stream()
                 .collect(Collectors.toMap(PerformerDTO::getId, PerformerDTO::getNickName));
 
@@ -53,7 +58,7 @@ public class StatisticsService implements IStatisticsService {
     }
 
     private Map<String, Long> getSortedGenreVotes(List<SavedVoteDTO> voteDtoList) {
-        List<GenreDTO> genreDTOS = genresDao.readAll();
+        List<GenreDTO> genreDTOS = genreService.getGenres();
         Map<Long, String> genresTitleMap = genreDTOS.stream()
                 .collect(Collectors.toMap(GenreDTO::getId, GenreDTO::getTitle));
 

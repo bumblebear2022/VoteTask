@@ -8,4 +8,6 @@ public interface IGenreService {
 
     List<GenreDTO> getContent();
     boolean exist(Long id);
+
+    List<GenreDTO> getGenres();
 }

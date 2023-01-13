@@ -7,4 +7,6 @@ import java.util.List;
 public interface IPerformerService {
     List<PerformerDTO> getContent();
     boolean exist(Long id);
+
+    List<PerformerDTO> getPerformers();
 }

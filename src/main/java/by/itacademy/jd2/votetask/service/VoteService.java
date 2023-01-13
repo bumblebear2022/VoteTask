@@ -98,6 +98,11 @@ public class VoteService implements IVoteService {
         }
     }
 
+    @Override
+    public List<SavedVoteDTO> getVotes() {
+        return voteDao.readAll();
+    }
+
 }
 
 
