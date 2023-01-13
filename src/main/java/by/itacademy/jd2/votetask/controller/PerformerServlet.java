@@ -2,7 +2,7 @@ package by.itacademy.jd2.votetask.controller;
 
 import by.itacademy.jd2.votetask.dto.PerformerDTO;
 import by.itacademy.jd2.votetask.service.api.IPerformerService;
-import by.itacademy.jd2.votetask.service.factories.PerformerServiceSingleton;
+import by.itacademy.jd2.votetask.util.ServiceProvider;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +24,7 @@ public class PerformerServlet extends HttpServlet {
     private final String UPDATE = "update";
     private final String DELETE = "delete";
 
-    private final IPerformerService performerService = PerformerServiceSingleton.getInstance();
+    private final IPerformerService performerService = ServiceProvider.getInstance().getPerformerService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

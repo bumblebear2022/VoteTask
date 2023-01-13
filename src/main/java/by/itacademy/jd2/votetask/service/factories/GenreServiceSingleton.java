@@ -1,6 +1,6 @@
 package by.itacademy.jd2.votetask.service.factories;
 
-import by.itacademy.jd2.votetask.dao.factories.GenresDaoSingleton;
+import by.itacademy.jd2.votetask.dao.factories.GenresDaoSqlSingleton;
 import by.itacademy.jd2.votetask.service.GenreService;
 
 public class GenreServiceSingleton {
@@ -13,7 +13,7 @@ public class GenreServiceSingleton {
         if(instance == null){
             synchronized (GenreServiceSingleton.class){
                 if(instance == null){
-                    instance = new GenreService(GenresDaoSingleton.getInstance());
+                    instance = new GenreService(GenresDaoSqlSingleton.getInstance());
                 }
             }
         }

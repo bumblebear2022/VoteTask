@@ -25,4 +25,8 @@ public class GenreService implements IGenreService {
         }
         return genresDao.exist(id);
     }
+
+    public List<GenreDTO> getGenres() {
+        return genresDao.readAll();
+    }
 }

@@ -14,4 +14,6 @@ public interface IPerformerService {
     void delete(PerformerDTO performerDTO);
 
     boolean exist(Long id);
+
+    List<PerformerDTO> getPerformers();
 }

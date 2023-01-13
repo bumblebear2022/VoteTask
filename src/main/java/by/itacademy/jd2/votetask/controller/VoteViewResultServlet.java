@@ -2,8 +2,8 @@ package by.itacademy.jd2.votetask.controller;
 
 import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
 import by.itacademy.jd2.votetask.dto.VoteResultDto;
-import by.itacademy.jd2.votetask.service.StatisticsService;
-import by.itacademy.jd2.votetask.service.factories.StatisticsServiceSingleton;
+import by.itacademy.jd2.votetask.service.api.IStatisticsService;
+import by.itacademy.jd2.votetask.util.ServiceProvider;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,7 +23,7 @@ public class VoteViewResultServlet extends HttpServlet {
     private static final String BR = "<br>";
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.LLL HH:mm:ss");
-    private final StatisticsService statisticsService = StatisticsServiceSingleton.getInstance();
+    private final IStatisticsService statisticsService = ServiceProvider.getInstance().getStatisticsService();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
