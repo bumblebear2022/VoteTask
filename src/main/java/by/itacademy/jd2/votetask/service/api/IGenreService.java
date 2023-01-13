@@ -10,4 +10,10 @@ public interface IGenreService {
     boolean exist(Long id);
 
     List<GenreDTO> getGenres();
+
+    void create(GenreDTO genreDTO);
+
+    void update(GenreDTO genreDTO);
+
+    boolean delete(GenreDTO genreDTO);
 }

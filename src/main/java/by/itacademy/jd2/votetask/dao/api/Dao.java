@@ -8,6 +8,6 @@ public interface Dao<T> {
 
     List<T> readAll();
 
-    void delete(T t);
+    boolean delete(T t);
 
 }

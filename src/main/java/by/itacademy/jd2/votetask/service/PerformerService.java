@@ -27,13 +27,14 @@ public class PerformerService implements IPerformerService {
 
     @Override
     public void update(PerformerDTO performerDTO){
-        performersDao.update();
+        performersDao.update(performerDTO);
     }
 
 
     @Override
-    public void delete(PerformerDTO performerDTO) {
+    public boolean delete(PerformerDTO performerDTO) {
         performersDao.delete(performerDTO);
+        return false;
     }
 
     public boolean exist(Long id) {

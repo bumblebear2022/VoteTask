@@ -49,19 +49,20 @@ public class GenresDaoSql implements IGenresDao<GenreDTO> {
     }
 
     @Override
-    public void delete(GenreDTO genreDTO) {
+    public boolean delete(GenreDTO genreDTO) {
         Long id = genreDTO.getId();
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
             preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
+//            preparedStatement.executeUpdate();
+          return   preparedStatement.execute();
         } catch (SQLException e) {
             throw new DataAccessException("SQLException deleteById method :" + e);
         }
     }
 
     @Override
-    public void update() {
+    public void update(GenreDTO genreDTO) {
 
     }
 
