@@ -20,7 +20,6 @@ public class PerformerServlet extends HttpServlet {
     private static final String BR = "<br>";
     private static final String HEADER = "<p><b>Choose one performer:</b></p>";
     private static final String FOOTER = "<p><b>Thanks for your vote!</b></p>";
-
     private final String CREATE = "create";
     private final String UPDATE = "update";
     private final String DELETE = "delete";
@@ -53,7 +52,7 @@ public class PerformerServlet extends HttpServlet {
                 break;
             }
             case UPDATE: {
-                Long performerId =Long.valueOf(parameterMap.get(DELETE)[0]);
+                Long performerId =Long.valueOf(parameterMap.get(UPDATE)[0]);
                 String performerName = parameterMap.get("name")[0];
                 performerService.update(new PerformerDTO(performerId,performerName));
                 break;
@@ -67,15 +66,20 @@ public class PerformerServlet extends HttpServlet {
     }
 
     private PostAction extractPostAction(Map<String, String[]> parameterMap) {
-        boolean create = !parameterMap.get(CREATE)[0].isBlank();
-        if (create) {
-            return PostAction.CREATE;
-        }
-        boolean update = !parameterMap.get(UPDATE)[0].isBlank();
+
+        String[] createArray = parameterMap.get(CREATE);
+        boolean create = createArray != null && !createArray[0].isBlank();
+            if (create) {
+                return PostAction.CREATE;
+            }
+
+        String[] updateArray = parameterMap.get(UPDATE);
+        boolean update = updateArray != null && !updateArray[0].isBlank();
         if (update) {
             return PostAction.UPDATE;
         }
-        boolean delete = !parameterMap.get(DELETE)[0].isBlank();
+        String[] deleteArray = parameterMap.get(DELETE);
+        boolean delete = deleteArray != null && !deleteArray[0].isBlank();
         if (delete) {
             return PostAction.DELETE;
         }
