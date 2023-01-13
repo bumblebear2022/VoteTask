@@ -20,8 +20,24 @@ public class PerformerService implements IPerformerService {
         return performersDao.readAll();
     }
 
+    @Override
+    public void create(PerformerDTO performerDTO) {
+        performersDao.create(performerDTO);
+    }
+
+    @Override
+    public void update(PerformerDTO performerDTO){
+        performersDao.update();
+    }
+
+
+    @Override
+    public void delete(PerformerDTO performerDTO) {
+        performersDao.delete(performerDTO);
+    }
+
     public boolean exist(Long id) {
-        if(id == null){
+        if (id == null) {
             throw new IllegalArgumentException("Performer nickname can't be empty");
         }
         return performersDao.exist(id);

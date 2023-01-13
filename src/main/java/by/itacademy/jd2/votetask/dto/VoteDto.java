@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class VoteDto {
-    private final Long voiceForPerformer;
-    private final List<Long> voicesForGenres;
-    private final String about;
+    private Long voiceForPerformer;
+    private List<Long> voicesForGenres;
+    private String about;
 
     public VoteDto(Long voiceForPerformer, List<Long> voicesForGenres, String about) {
         this.voiceForPerformer = voiceForPerformer;
@@ -24,6 +24,18 @@ public class VoteDto {
 
     public String getAbout() {
         return about;
+    }
+
+    public void setVoiceForPerformer(Long voiceForPerformer) {
+        this.voiceForPerformer = voiceForPerformer;
+    }
+
+    public void setVoicesForGenres(List<Long> voicesForGenres) {
+        this.voicesForGenres = voicesForGenres;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
     }
 
     @Override

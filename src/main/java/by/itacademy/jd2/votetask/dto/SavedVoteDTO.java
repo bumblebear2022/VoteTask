@@ -12,6 +12,12 @@ public class SavedVoteDTO {
 
     public SavedVoteDTO(Long id, VoteDto vote) {
         this.id = id;
+        this.createDateTime = LocalDateTime.now();
+        this.vote = vote;
+    }
+
+    public SavedVoteDTO(Long id, LocalDateTime createDateTime, VoteDto vote) {
+        this.id = id;
         this.createDateTime = createDateTime;
         this.vote = vote;
     }

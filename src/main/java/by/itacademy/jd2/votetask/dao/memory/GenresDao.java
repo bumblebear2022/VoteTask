@@ -29,6 +29,11 @@ public class GenresDao implements IGenresDao<GenreDTO> {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public void delete(GenreDTO genreDTO) {
         GENRES.remove(genreDTO);
     }

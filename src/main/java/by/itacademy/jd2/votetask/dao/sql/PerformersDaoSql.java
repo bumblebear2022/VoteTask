@@ -13,10 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
-    private static final String CREATE_QUERY = "INSERT INTO  data.genres (name) VALUES (?);";
-    private static final String READ_ALL_QUERY = "SELECT id,name from data.genres";
-    private static final String DELETE_QUERY = "DELETE from data.genres where id=?;";
-    private static final String EXIST_QUERY = "SELECT EXISTS (SELECT * FROM data.genres WHERE id = ?);";
+    private static final String CREATE_QUERY = "INSERT INTO  data.performers (name) VALUES (?);";
+    private static final String READ_ALL_QUERY = "SELECT id,name from data.performers";
+    private static final String DELETE_QUERY = "DELETE from data.performers where id=?;";
+    private static final String EXIST_QUERY = "SELECT EXISTS (SELECT * FROM data.performers WHERE id = ?);";
+
+    private static final String UPDATE_QUERY = "UPDATE data.votes SET date_time = ?,about = ? WHERE id=?;";
 
     @Override
     public void create(PerformerDTO performerDTO) {
@@ -46,8 +48,8 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
     }
 
     @Override
-    public void delete(PerformerDTO genreDTO) {
-        Long id = genreDTO.getId();
+    public void delete(PerformerDTO performerDTO) {
+        Long id = performerDTO.getId();
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
             preparedStatement.setLong(1, id);
@@ -55,6 +57,11 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
         } catch (SQLException e) {
             throw new DataAccessException("SQLException deleteById method :" + e);
         }
+    }
+
+    @Override
+    public void update() {
+
     }
 
     @Override
