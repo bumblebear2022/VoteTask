@@ -3,7 +3,7 @@ package by.itacademy.jd2.votetask.controller;
 import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
 import by.itacademy.jd2.votetask.dto.VoteResultDto;
 import by.itacademy.jd2.votetask.service.api.IStatisticsService;
-import by.itacademy.jd2.votetask.util.ServiceProvider;
+import by.itacademy.jd2.votetask.provider.ServiceProvider;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

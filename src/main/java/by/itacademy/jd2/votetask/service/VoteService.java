@@ -103,6 +103,15 @@ public class VoteService implements IVoteService {
         return voteDao.readAll();
     }
 
+    @Override
+    public boolean checkVotesForGenre(Long id) {
+        return voteDao.checkVotesForGenre(id);
+    }
+
+    @Override
+    public boolean checkVotesForPerformer(Long id) {
+        return voteDao.checkVotesForPerformer(id);
+    }
 }
 
 

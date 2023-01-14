@@ -11,7 +11,7 @@ public interface IPerformerService {
 
     void update(PerformerDTO performerDTO);
 
-    boolean delete(PerformerDTO performerDTO);
+    boolean delete(Long id);
 
     boolean exist(Long id);
 

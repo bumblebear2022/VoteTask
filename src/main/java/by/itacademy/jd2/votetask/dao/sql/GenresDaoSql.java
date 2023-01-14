@@ -18,8 +18,7 @@ public class GenresDaoSql implements IGenresDao<GenreDTO> {
     private static final String READ_ALL_QUERY = "SELECT id,name from data.genres";
     private static final String DELETE_QUERY = "DELETE from data.genres where id=?;";
     private static final String EXIST_QUERY = "SELECT EXISTS (SELECT * FROM data.genres WHERE id = ?);";
-
-    private static final String UPDATE_QUERY = "UPDATE data.votes SET date_time = ?,about = ? WHERE id=?;";
+    private static final String UPDATE_QUERY = "UPDATE data.genres SET name = ? WHERE id=?;";
 
     @Override
     public void create(GenreDTO genreDTO) {
@@ -49,13 +48,11 @@ public class GenresDaoSql implements IGenresDao<GenreDTO> {
     }
 
     @Override
-    public boolean delete(GenreDTO genreDTO) {
-        Long id = genreDTO.getId();
+    public boolean delete(Long id) {
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
             preparedStatement.setLong(1, id);
-//            preparedStatement.executeUpdate();
-          return   preparedStatement.execute();
+          return preparedStatement.execute();
         } catch (SQLException e) {
             throw new DataAccessException("SQLException deleteById method :" + e);
         }
@@ -63,7 +60,16 @@ public class GenresDaoSql implements IGenresDao<GenreDTO> {
 
     @Override
     public void update(GenreDTO genreDTO) {
-
+        try (Connection connection = DataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
+            Long id = genreDTO.getId();
+            String title = genreDTO.getTitle();
+            preparedStatement.setString(1, title);
+            preparedStatement.setLong(2, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException("SQLException update method :" + e);
+        }
     }
 
     @Override

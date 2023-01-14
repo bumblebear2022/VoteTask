@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.util;
+package by.itacademy.jd2.votetask.provider;
 
 public class Switch {
 

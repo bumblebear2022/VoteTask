@@ -17,8 +17,7 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
     private static final String READ_ALL_QUERY = "SELECT id,name from data.performers";
     private static final String DELETE_QUERY = "DELETE from data.performers where id=?;";
     private static final String EXIST_QUERY = "SELECT EXISTS (SELECT * FROM data.performers WHERE id = ?);";
-
-    private static final String UPDATE_QUERY = "UPDATE data.votes SET date_time = ?,about = ? WHERE id=?;";
+    private static final String UPDATE_QUERY = "UPDATE data.performers SET name = ? WHERE id=?;";
 
     @Override
     public void create(PerformerDTO performerDTO) {
@@ -48,12 +47,10 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
     }
 
     @Override
-    public boolean delete(PerformerDTO performerDTO) {
-        Long id = performerDTO.getId();
+    public boolean delete(Long id) {
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
             preparedStatement.setLong(1, id);
-//            preparedStatement.executeUpdate();
             return preparedStatement.execute();
         } catch (SQLException e) {
             throw new DataAccessException("SQLException deleteById method :" + e);
@@ -62,7 +59,16 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
 
     @Override
     public void update(PerformerDTO performerDTO) {
-
+        try (Connection connection = DataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
+            Long id = performerDTO.getId();
+            String name = performerDTO.getNickName();
+            preparedStatement.setString(1, name);
+            preparedStatement.setLong(2, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException("SQLException update method :" + e);
+        }
     }
 
     @Override
