@@ -26,8 +26,9 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
     private static final String READ_ALL_CROSS_PERFORMER = "SELECT id_vote, id_performer from data.vote_performer";
     private static final String READ_ALL_CROSS_GENRE = "SELECT id_vote, id_genre from data.vote_genre";
     private static final String DELETE_QUERY = "DELETE from data.genres where id=?;";
+    private static final String CHECK_VOTES_FOR_GENRE = "SELECT EXISTS (SELECT * FROM data.vote_genre WHERE id_genre = ?);";
+    private static final String CHECK_VOTES_FOR_PERFORMER = "SELECT EXISTS (SELECT * FROM data.vote_performer WHERE id_performer = ?);";
 
-    private static final String EXIST_QUERY = "SELECT EXISTS (SELECT * FROM data.genres WHERE id = ?);";
 
 
     @Override
@@ -138,12 +139,37 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
 
 
     @Override
-    public void delete(SavedVoteDTO savedVoteDTO) {
-        Long id = savedVoteDTO.getId();
+    public boolean delete(Long id) {
         try (Connection connection = DataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
             preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
+           return preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new DataAccessException("SQLException deleteById method :" + e);
+        }
+    }
+
+    @Override
+    public boolean checkVotesForGenre(Long id) {
+        try (Connection connection = DataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CHECK_VOTES_FOR_GENRE)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getBoolean("exists");
+        } catch (SQLException e) {
+            throw new DataAccessException("SQLException deleteById method :" + e);
+        }
+    }
+
+    @Override
+    public boolean checkVotesForPerformer(Long id) {
+        try (Connection connection = DataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CHECK_VOTES_FOR_PERFORMER)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getBoolean("exists");
         } catch (SQLException e) {
             throw new DataAccessException("SQLException deleteById method :" + e);
         }

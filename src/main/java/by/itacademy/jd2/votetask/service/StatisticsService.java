@@ -10,7 +10,7 @@ import by.itacademy.jd2.votetask.service.api.IPerformerService;
 import by.itacademy.jd2.votetask.service.api.IStatisticsService;
 import by.itacademy.jd2.votetask.service.api.IVoteService;
 import by.itacademy.jd2.votetask.util.SavedVoteComparatorByTime;
-import by.itacademy.jd2.votetask.util.ServiceProvider;
+import by.itacademy.jd2.votetask.provider.ServiceProvider;
 import by.itacademy.jd2.votetask.util.SortMapUtil;
 
 import java.util.Collection;

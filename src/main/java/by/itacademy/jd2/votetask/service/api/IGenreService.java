@@ -15,5 +15,5 @@ public interface IGenreService {
 
     void update(GenreDTO genreDTO);
 
-    boolean delete(GenreDTO genreDTO);
+    boolean delete(Long id);
 }

@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.util;
+package by.itacademy.jd2.votetask.provider;
 
 import by.itacademy.jd2.votetask.dao.memory.GenresDao;
 import by.itacademy.jd2.votetask.dao.memory.PerformersDao;
@@ -24,6 +24,7 @@ public class ServiceProvider {
     private static volatile ServiceProvider instance;
 
     private ServiceProvider() {
+
         if ("DB".equals(Switch.getMode())) {
             performerService = new PerformerService(new PerformersDaoSql());
             genreService = new GenreService(new GenresDaoSql());

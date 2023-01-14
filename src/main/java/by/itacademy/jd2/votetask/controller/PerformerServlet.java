@@ -2,7 +2,7 @@ package by.itacademy.jd2.votetask.controller;
 
 import by.itacademy.jd2.votetask.dto.PerformerDTO;
 import by.itacademy.jd2.votetask.service.api.IPerformerService;
-import by.itacademy.jd2.votetask.util.ServiceProvider;
+import by.itacademy.jd2.votetask.provider.ServiceProvider;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,6 +43,9 @@ public class PerformerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
+        PrintWriter writer = resp.getWriter();
         Map<String, String[]> parameterMap = req.getParameterMap();
         PostAction postAction = extractPostAction(parameterMap);
         switch (postAction) {
@@ -59,7 +62,12 @@ public class PerformerServlet extends HttpServlet {
             }
             case DELETE: {
                 Long performerId =Long.valueOf(parameterMap.get(DELETE)[0]);
-                performerService.delete(new PerformerDTO(performerId,null));
+                boolean delete = performerService.delete(performerId);
+                if(delete){
+                    writer.write("Performer deleted successfully");
+                }else {
+                    writer.write("This performer has already been voted for");
+                }
                 break;
             }
         }
