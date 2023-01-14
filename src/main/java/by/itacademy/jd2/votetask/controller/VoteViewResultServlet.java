@@ -26,7 +26,7 @@ public class VoteViewResultServlet extends HttpServlet {
     private final IStatisticsService statisticsService = ServiceProvider.getInstance().getStatisticsService();
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
