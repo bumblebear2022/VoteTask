@@ -23,13 +23,13 @@ public class PerformersDao implements IPerformersDao<PerformerDTO> {
     }
 
     @Override
-    public void update() {
+    public void update(PerformerDTO performerDTO) {
 
     }
 
     @Override
-    public void delete(PerformerDTO performerDTO) {
-        PERFORMERS.remove(performerDTO);
+    public boolean delete(Long id) {
+        return false;
     }
 
     @Override

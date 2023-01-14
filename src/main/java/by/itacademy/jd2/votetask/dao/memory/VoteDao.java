@@ -20,8 +20,17 @@ public class VoteDao implements IVoteDao<SavedVoteDTO> {
     }
 
     @Override
-    public void delete(SavedVoteDTO savedVoteDTO) {
-        savedVoteDTOS.remove(savedVoteDTO);
+    public boolean delete(Long id) {
+       return false;
     }
 
+    @Override
+    public boolean checkVotesForGenre(Long id) {
+        return false;
+    }
+
+    @Override
+    public boolean checkVotesForPerformer(Long id) {
+        return false;
+    }
 }

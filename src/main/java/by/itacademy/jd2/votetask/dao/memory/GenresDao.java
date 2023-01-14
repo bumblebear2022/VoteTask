@@ -29,13 +29,13 @@ public class GenresDao implements IGenresDao<GenreDTO> {
     }
 
     @Override
-    public void update() {
+    public void update(GenreDTO genreDTO) {
 
     }
 
     @Override
-    public void delete(GenreDTO genreDTO) {
-        GENRES.remove(genreDTO);
+    public boolean delete(Long id) {
+      return false;
     }
 
     @Override
