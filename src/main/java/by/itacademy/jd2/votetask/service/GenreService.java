@@ -3,15 +3,12 @@ package by.itacademy.jd2.votetask.service;
 import by.itacademy.jd2.votetask.dao.api.IGenresDao;
 import by.itacademy.jd2.votetask.dto.GenreDTO;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
-import by.itacademy.jd2.votetask.service.api.IVoteService;
-import by.itacademy.jd2.votetask.provider.ServiceProvider;
 
 import java.util.List;
 
 public class GenreService implements IGenreService {
     private final IGenresDao<GenreDTO> genresDao;
 
-    private final IVoteService voteService = ServiceProvider.getInstance().getVoteService();
 
     public GenreService(IGenresDao<GenreDTO> genresDao) {
         this.genresDao = genresDao;
@@ -42,10 +39,6 @@ public class GenreService implements IGenreService {
 
     @Override
     public boolean delete(Long id) {
-        boolean alreadyVoted = voteService.checkVotesForGenre(id);
-        if (alreadyVoted) {
-            return false;
-        }
         return genresDao.delete(id);
     }
 

@@ -23,14 +23,4 @@ public class VoteDao implements IVoteDao<SavedVoteDTO> {
     public boolean delete(Long id) {
        return false;
     }
-
-    @Override
-    public boolean checkVotesForGenre(Long id) {
-        return false;
-    }
-
-    @Override
-    public boolean checkVotesForPerformer(Long id) {
-        return false;
-    }
 }

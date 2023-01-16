@@ -2,7 +2,7 @@ package by.itacademy.jd2.votetask.controller;
 
 import by.itacademy.jd2.votetask.dto.GenreDTO;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
-import by.itacademy.jd2.votetask.provider.ServiceProvider;
+import by.itacademy.jd2.votetask.service.factories.GenreServiceSingleton;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +19,7 @@ public class GenreServlet extends HttpServlet {
     private static final String HEADER = "<p><b>Choose 3-5 genres:</b></p>";
     private static final String FOOTER = "<p><b>Also write few words in about section...</b></p>";
 
-    private final IGenreService genreService = ServiceProvider.getInstance().getGenreService();
+    private final IGenreService genreService = GenreServiceSingleton.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

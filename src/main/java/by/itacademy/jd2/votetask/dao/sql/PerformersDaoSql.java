@@ -3,8 +3,9 @@ package by.itacademy.jd2.votetask.dao.sql;
 import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
 import by.itacademy.jd2.votetask.dto.PerformerDTO;
 import by.itacademy.jd2.votetask.exceptions.DataAccessException;
-import by.itacademy.jd2.votetask.util.DataSource;
+import by.itacademy.jd2.votetask.util.DataSourceHolder;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,10 +19,11 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
     private static final String DELETE_QUERY = "DELETE from data.performers where id=?;";
     private static final String EXIST_QUERY = "SELECT EXISTS (SELECT * FROM data.performers WHERE id = ?);";
     private static final String UPDATE_QUERY = "UPDATE data.performers SET name = ? WHERE id=?;";
-
+    private static final String CHECK_VOTES_FOR_PERFORMER = "SELECT EXISTS (SELECT * FROM data.vote_performer WHERE id_performer = ?);";
+    private final DataSource dataSource = DataSourceHolder.getDataSource();
     @Override
     public void create(PerformerDTO performerDTO) {
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY)) {
             preparedStatement.setString(1, performerDTO.getNickName());
             preparedStatement.executeUpdate();
@@ -32,7 +34,7 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
 
     @Override
     public List<PerformerDTO> readAll() {
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_QUERY);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             List<PerformerDTO> entityList = new ArrayList<>();
@@ -48,10 +50,15 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
 
     @Override
     public boolean delete(Long id) {
-        try (Connection connection = DataSource.getConnection();
+        boolean isVoted = checkVotesForPerformer(id);
+        if(isVoted){
+            return false;
+        }
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
             preparedStatement.setLong(1, id);
-            return preparedStatement.execute();
+            int affectedRows = preparedStatement.executeUpdate();
+            return affectedRows != 0;
         } catch (SQLException e) {
             throw new DataAccessException("SQLException deleteById method :" + e);
         }
@@ -59,7 +66,7 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
 
     @Override
     public void update(PerformerDTO performerDTO) {
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
             Long id = performerDTO.getId();
             String name = performerDTO.getNickName();
@@ -73,8 +80,21 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
 
     @Override
     public boolean exist(Long id) {
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(EXIST_QUERY)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getBoolean("exists");
+        } catch (SQLException e) {
+            throw new DataAccessException("SQLException deleteById method :" + e);
+        }
+    }
+
+
+    private boolean checkVotesForPerformer(Long id) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CHECK_VOTES_FOR_PERFORMER)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();

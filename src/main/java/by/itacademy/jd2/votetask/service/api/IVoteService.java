@@ -9,8 +9,4 @@ public interface IVoteService {
     void addVote(VoteDto voteDto);
 
     List<SavedVoteDTO> getVotes();
-
-    boolean checkVotesForGenre(Long id);
-
-    boolean checkVotesForPerformer(Long id);
 }

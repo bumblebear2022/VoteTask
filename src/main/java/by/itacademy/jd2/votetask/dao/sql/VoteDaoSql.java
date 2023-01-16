@@ -4,8 +4,9 @@ import by.itacademy.jd2.votetask.dao.api.IVoteDao;
 import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.exceptions.DataAccessException;
-import by.itacademy.jd2.votetask.util.DataSource;
+import by.itacademy.jd2.votetask.util.DataSourceHolder;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,14 +27,13 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
     private static final String READ_ALL_CROSS_PERFORMER = "SELECT id_vote, id_performer from data.vote_performer";
     private static final String READ_ALL_CROSS_GENRE = "SELECT id_vote, id_genre from data.vote_genre";
     private static final String DELETE_QUERY = "DELETE from data.genres where id=?;";
-    private static final String CHECK_VOTES_FOR_GENRE = "SELECT EXISTS (SELECT * FROM data.vote_genre WHERE id_genre = ?);";
-    private static final String CHECK_VOTES_FOR_PERFORMER = "SELECT EXISTS (SELECT * FROM data.vote_performer WHERE id_performer = ?);";
 
+    private final DataSource dataSource = DataSourceHolder.getDataSource();
 
 
     @Override
     public void create(SavedVoteDTO savedVoteDTO) {
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             Timestamp timestamp = Timestamp.valueOf(savedVoteDTO.getCreateDateTime());
             preparedStatement.setTimestamp(1,timestamp);
@@ -51,7 +51,7 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
     }
 
     private void insertIntoVotePerformerByVoteId(SavedVoteDTO savedVoteDTO, Long id) {
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY_CROSS_PERFORMER)) {
             preparedStatement.setLong(1, id);
             preparedStatement.setLong(2, savedVoteDTO.getVote().getVoiceForPerformer());
@@ -62,7 +62,7 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
     }
 
     private void insertIntoVoteGenresByVoteId(SavedVoteDTO savedVoteDTO, Long id) {
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY_CROSS_GENRE)) {
             List<Long> voicesForGenres = savedVoteDTO.getVote().getVoicesForGenres();
             for (Long genreId : voicesForGenres) {
@@ -84,7 +84,7 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
     }
 
     private Map<Long, SavedVoteDTO> readVotes() {
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_QUERY);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             Map<Long, SavedVoteDTO> savedVoteDTOMap = new HashMap<>();
@@ -103,7 +103,7 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
     }
 
     private Map<Long, SavedVoteDTO>  addVoteCrossPerformer(Map<Long, SavedVoteDTO>  savedVoteDTOS) {
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_CROSS_PERFORMER);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
@@ -120,7 +120,7 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
     }
 
     private Map<Long, SavedVoteDTO>  addVoteCrossGenre(Map<Long, SavedVoteDTO>  savedVoteDTOS) {
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_CROSS_GENRE);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
@@ -140,36 +140,11 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
 
     @Override
     public boolean delete(Long id) {
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
             preparedStatement.setLong(1, id);
-           return preparedStatement.execute();
-        } catch (SQLException e) {
-            throw new DataAccessException("SQLException deleteById method :" + e);
-        }
-    }
-
-    @Override
-    public boolean checkVotesForGenre(Long id) {
-        try (Connection connection = DataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CHECK_VOTES_FOR_GENRE)) {
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return resultSet.getBoolean("exists");
-        } catch (SQLException e) {
-            throw new DataAccessException("SQLException deleteById method :" + e);
-        }
-    }
-
-    @Override
-    public boolean checkVotesForPerformer(Long id) {
-        try (Connection connection = DataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CHECK_VOTES_FOR_PERFORMER)) {
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return resultSet.getBoolean("exists");
+            int affectedRows = preparedStatement.executeUpdate();
+            return affectedRows != 0;
         } catch (SQLException e) {
             throw new DataAccessException("SQLException deleteById method :" + e);
         }
