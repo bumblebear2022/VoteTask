@@ -32,10 +32,12 @@ public class VoteDao implements IVoteDao<SavedVoteDTO> {
        return false;
     }
 
+    @Override
     public boolean isVotedGenre(Long id) {
         return votedGenres.contains(id);
     }
 
+    @Override
     public boolean isVotedPerformer(Long id) {
         return votedPerformers.contains(id);
     }

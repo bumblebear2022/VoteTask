@@ -89,7 +89,7 @@ public class GenresDaoSql implements IGenresDao<GenreDTO> {
             resultSet.next();
             return resultSet.getBoolean("exists");
         } catch (SQLException e) {
-            throw new DataAccessException("SQLException deleteById method :" + e);
+            throw new DataAccessException("SQLException exist method :" + e);
         }
     }
 

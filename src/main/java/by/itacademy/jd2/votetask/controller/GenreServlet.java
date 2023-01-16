@@ -4,7 +4,6 @@ import by.itacademy.jd2.votetask.dto.GenreDTO;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
 import by.itacademy.jd2.votetask.service.factories.GenreServiceSingleton;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +40,7 @@ public class GenreServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
@@ -79,7 +78,6 @@ public class GenreServlet extends HttpServlet {
         if (create) {
             return PostAction.CREATE;
         }
-
         String[] updateArray = parameterMap.get(UPDATE);
         boolean update = updateArray != null && !updateArray[0].isBlank();
         if (update) {

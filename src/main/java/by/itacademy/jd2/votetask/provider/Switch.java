@@ -4,42 +4,45 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Switch {
+    private static final String PATH = Objects.requireNonNull(Switch.class.getClassLoader()
+            .getResource("properties.txt")).getPath();
+    public static final String STARTMODE = "startmode";
 
-    private static final String PATH = "VoteTaskGroup2\\properties.txt";
 
-    //to switch storage change return StorageOption
     public static StorageOption getMode() {
+
         BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(PATH));
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("Файл параметров приложения был удален");
+            throw new RuntimeException("File has been deleted" + e);
         }
-        String mode;
+
         try {
-            if ((mode = reader.readLine()) == null) {
+            String readLine = reader.readLine();
+            if (readLine == null) {
                 throw new IOException();
             }
-            if (mode.startsWith("StartMode=\"") && mode.endsWith("\"")) {
-                mode = mode.substring(10, mode.length() - 1).toUpperCase();
-            } else {
-                throw new IllegalArgumentException();
-            }
+            String[] split = readLine.split("=");
+            String startMode = split[0].toLowerCase();
+            String mode = startMode.equals(STARTMODE) ? split[1].toUpperCase() : "";
+
             switch (mode) {
-                case ("DB") :
+                case ("DB"):
                     return StorageOption.DATABASE;
-                case ("MEMORY")  :
+                case ("MEMORY"):
                     return StorageOption.MEMORY;
-                default :
+                default:
                     throw new IllegalArgumentException();
             }
 
         } catch (IOException e) {
-            throw new RuntimeException("Отсутствуют настройки запуска");
+            throw new RuntimeException("Setting is absent: " + e);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Неправильно заданы параметры запуска");
+            throw new RuntimeException("Invalid settings: " + e);
         }
     }
 }

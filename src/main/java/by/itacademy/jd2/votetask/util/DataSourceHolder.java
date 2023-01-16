@@ -10,6 +10,7 @@ import java.util.Properties;
 public class DataSourceHolder {
 
     public static DataSource getDataSource() {
+
         Properties properties = getProperties();
         BasicDataSource basicDataSource = new BasicDataSource();
         String username = properties.getProperty("dataSource.username");
@@ -42,4 +43,5 @@ public class DataSourceHolder {
             throw new RuntimeException(e);
         }
     }
+
 }
