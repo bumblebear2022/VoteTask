@@ -10,7 +10,6 @@ import by.itacademy.jd2.votetask.service.api.IPerformerService;
 import by.itacademy.jd2.votetask.service.api.IStatisticsService;
 import by.itacademy.jd2.votetask.service.api.IVoteService;
 import by.itacademy.jd2.votetask.util.SavedVoteComparatorByTime;
-import by.itacademy.jd2.votetask.provider.ServiceProvider;
 import by.itacademy.jd2.votetask.util.SortMapUtil;
 
 import java.util.Collection;
@@ -22,14 +21,13 @@ import java.util.stream.Collectors;
 public class StatisticsService implements IStatisticsService {
 
     private final IVoteService voteService;
-
     private final IPerformerService performerService;
-
     private final IGenreService genreService;
-    public StatisticsService() {
-        voteService = ServiceProvider.getInstance().getVoteService();
-        performerService = ServiceProvider.getInstance().getPerformerService();
-        genreService = ServiceProvider.getInstance().getGenreService();
+
+    public StatisticsService(IVoteService voteService, IPerformerService performerService, IGenreService genreService) {
+        this.voteService = voteService;
+        this.performerService = performerService;
+        this.genreService = genreService;
     }
 
     public VoteResultDto getVoteResult() {

@@ -1,11 +1,11 @@
 package by.itacademy.jd2.votetask.dao.factories;
 
 import by.itacademy.jd2.votetask.dao.api.IVoteDao;
-import by.itacademy.jd2.votetask.dao.sql.VoteDaoSql;
+import by.itacademy.jd2.votetask.dao.memory.VoteDao;
 import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
 
 public class VoteDaoSingleton {
-    private volatile static VoteDaoSql instance;
+    private volatile static IVoteDao<SavedVoteDTO> instance;
 
     private VoteDaoSingleton() {
     }
@@ -14,7 +14,7 @@ public class VoteDaoSingleton {
         if(instance == null){
             synchronized (by.itacademy.jd2.votetask.dao.factories.VoteDaoSqlSingleton.class){
                 if(instance == null){
-                    instance = new VoteDaoSql();
+                    instance = new VoteDao();
                 }
             }
         }

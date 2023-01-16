@@ -2,7 +2,8 @@ package by.itacademy.jd2.votetask.provider;
 
 public class Switch {
 
-    public static String getMode() {
-        return "DB";
+    //to switch storage change return StorageOption
+    public static StorageOption getMode() {
+        return StorageOption.DATABASE;
     }
 }

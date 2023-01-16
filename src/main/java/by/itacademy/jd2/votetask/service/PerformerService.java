@@ -3,8 +3,6 @@ package by.itacademy.jd2.votetask.service;
 import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
 import by.itacademy.jd2.votetask.dto.PerformerDTO;
 import by.itacademy.jd2.votetask.service.api.IPerformerService;
-import by.itacademy.jd2.votetask.service.api.IVoteService;
-import by.itacademy.jd2.votetask.provider.ServiceProvider;
 
 import java.util.List;
 
@@ -13,7 +11,6 @@ public class PerformerService implements IPerformerService {
 
     private final IPerformersDao<PerformerDTO> performersDao;
 
-    private final IVoteService voteService = ServiceProvider.getInstance().getVoteService();
 
     public PerformerService(IPerformersDao<PerformerDTO> performersDao) {
         this.performersDao = performersDao;
@@ -37,10 +34,6 @@ public class PerformerService implements IPerformerService {
 
     @Override
     public boolean delete(Long id) {
-        boolean alreadyVoted = voteService.checkVotesForPerformer(id);
-        if(alreadyVoted){
-            return false;
-        }
         return performersDao.delete(id);
     }
 
