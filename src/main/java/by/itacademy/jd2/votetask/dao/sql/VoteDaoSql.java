@@ -149,4 +149,13 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
             throw new DataAccessException("SQLException deleteById method :" + e);
         }
     }
+
+    @Override
+    public boolean isVotedGenre(Long id) {
+        return false;
+    }
+    @Override
+    public boolean isVotedPerformer(Long id) {
+        return false;
+    }
 }
