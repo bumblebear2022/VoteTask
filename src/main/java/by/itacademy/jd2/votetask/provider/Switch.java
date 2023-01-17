@@ -4,22 +4,20 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Objects;
 
 public class Switch {
-    private static final String PATH = Objects.requireNonNull(Switch.class.getClassLoader()
-            .getResource("properties.txt")).getPath();
-    public static final String STARTMODE = "startmode";
 
+    public static final String STARTMODE = "startmode";
+    private static final String PATH = "/opt/tomcat/webapps/VoteTask-2.3.R/properties.txt";
 
     public static StorageOption getMode() {
 
-        BufferedReader reader;
-        try {
-            reader = new BufferedReader(new FileReader(PATH));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("File has been deleted" + e);
-        }
+            BufferedReader reader;
+            try {
+                reader = new BufferedReader(new FileReader(PATH));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException("Файл параметров приложения был удален");
+            }
 
         try {
             String readLine = reader.readLine();
