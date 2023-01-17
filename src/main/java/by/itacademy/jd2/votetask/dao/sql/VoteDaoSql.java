@@ -92,7 +92,8 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
                 Long voteId = resultSet.getLong("id");
                 LocalDateTime dt = resultSet.getTimestamp("date_time").toLocalDateTime();
                 String about = resultSet.getString("about");
-                VoteDto voteDto = new VoteDto(null, new ArrayList<>(), about);
+                String email = resultSet.getString("email");
+                VoteDto voteDto = new VoteDto(null, new ArrayList<>(), about, email);
                 SavedVoteDTO savedVoteDTO = new SavedVoteDTO(voteId, dt, voteDto);
                 savedVoteDTOMap.put(voteId, savedVoteDTO);
             }

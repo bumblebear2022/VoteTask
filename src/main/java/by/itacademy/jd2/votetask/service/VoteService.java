@@ -5,6 +5,7 @@ import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.exceptions.InvalidVoteException;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
+import by.itacademy.jd2.votetask.service.api.IMailService;
 import by.itacademy.jd2.votetask.service.api.IPerformerService;
 import by.itacademy.jd2.votetask.service.api.IVoteService;
 
@@ -31,13 +32,15 @@ public class VoteService implements IVoteService {
     private final IVoteDao<SavedVoteDTO> voteDao;
     private final IPerformerService performerService;
     private final IGenreService genreService;
+    private final IMailService mailService;
     private final Lock lock = new ReentrantLock();
 
 
-    public VoteService(IVoteDao<SavedVoteDTO> voteDao, IPerformerService performerService, IGenreService genreService) {
+    public VoteService(IVoteDao<SavedVoteDTO> voteDao, IPerformerService performerService, IGenreService genreService, IMailService mailService) {
         this.voteDao = voteDao;
         this.performerService = performerService;
         this.genreService = genreService;
+        this.mailService = mailService;
     }
 
     public void addVote(VoteDto voteDto) {
@@ -47,6 +50,7 @@ public class VoteService implements IVoteService {
             boolean isLockAcquired = lock.tryLock(1, TimeUnit.SECONDS);
             if (isLockAcquired) {
                 voteDao.create(savedVoteDTO);
+                mailService.sendMail(savedVoteDTO);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
