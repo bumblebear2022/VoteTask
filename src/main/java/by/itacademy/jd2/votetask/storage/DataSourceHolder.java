@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.util;
+package by.itacademy.jd2.votetask.storage;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 

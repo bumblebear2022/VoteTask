@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.provider;
+package by.itacademy.jd2.votetask.storage;
 
 public enum StorageOption {
     DATABASE,

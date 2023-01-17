@@ -4,7 +4,6 @@ import by.itacademy.jd2.votetask.dto.PerformerDTO;
 import by.itacademy.jd2.votetask.service.api.IPerformerService;
 import by.itacademy.jd2.votetask.service.factories.PerformerServiceSingleton;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +41,7 @@ public class PerformerServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
@@ -71,6 +70,7 @@ public class PerformerServlet extends HttpServlet {
                 break;
             }
         }
+        resp.sendRedirect(req.getContextPath() + "/performers");
     }
 
     private PostAction extractPostAction(Map<String, String[]> parameterMap) {

@@ -69,6 +69,7 @@ public class GenreServlet extends HttpServlet {
                 break;
             }
         }
+        resp.sendRedirect(req.getContextPath() + "/genres");
     }
 
     private PostAction extractPostAction(Map<String, String[]> parameterMap) {

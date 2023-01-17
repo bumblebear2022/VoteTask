@@ -3,7 +3,7 @@ package by.itacademy.jd2.votetask.dao.sql;
 import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
 import by.itacademy.jd2.votetask.dto.PerformerDTO;
 import by.itacademy.jd2.votetask.exceptions.DataAccessException;
-import by.itacademy.jd2.votetask.util.DataSourceHolder;
+import by.itacademy.jd2.votetask.storage.DataSourceHolder;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

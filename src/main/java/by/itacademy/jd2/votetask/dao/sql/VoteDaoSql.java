@@ -4,7 +4,7 @@ import by.itacademy.jd2.votetask.dao.api.IVoteDao;
 import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.exceptions.DataAccessException;
-import by.itacademy.jd2.votetask.util.DataSourceHolder;
+import by.itacademy.jd2.votetask.storage.DataSourceHolder;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
