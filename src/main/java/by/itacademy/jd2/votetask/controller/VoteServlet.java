@@ -20,6 +20,7 @@ public class VoteServlet extends HttpServlet {
     private static final String PERFORMER_LOWER_CASE = "performer";
     private static final String GENRE_LOWER_CASE = "genre";
     private static final String ABOUT_LOWER_CASE = "about";
+    private static final String EMAIL_LOWER_CASE = "email";
     public static final String TAB = ",  ";
     private final IVoteService voteService = VoteServiceSingleton.getInstance();
 
@@ -51,13 +52,18 @@ public class VoteServlet extends HttpServlet {
         String[] genres = parameterMap.get(GENRE_LOWER_CASE);
         List<Long> genresIdList = (genres == null) ? null : getListFromArray(genres);
 
+        String[] emailBuffer = parameterMap.get(EMAIL_LOWER_CASE);
+        String email = (emailBuffer == null) ? null : emailBuffer[0];
+        if(emailBuffer == null || emailBuffer.length > 1) {
+            throw new IllegalArgumentException("Have to be one email address");
+        }
 
             String[] abouts = parameterMap.get(ABOUT_LOWER_CASE);
             String about = (abouts == null) ? null : abouts[0];
         if(about == null || abouts.length > 1) {
             throw new IllegalArgumentException("Have to be only one about info");
         }
-        return new VoteDto(performerId,genresIdList,about);
+        return new VoteDto(performerId,genresIdList,about, email);
     }
     private List<Long> getListFromArray(String[] array) {
         List<String> arrayList = Arrays.asList(array);

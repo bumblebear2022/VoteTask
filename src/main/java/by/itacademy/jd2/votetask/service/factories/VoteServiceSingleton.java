@@ -2,6 +2,7 @@ package by.itacademy.jd2.votetask.service.factories;
 
 import by.itacademy.jd2.votetask.dao.factories.VoteDaoSingleton;
 import by.itacademy.jd2.votetask.service.VoteService;
+import by.itacademy.jd2.votetask.service.api.IMailService;
 
 public class VoteServiceSingleton {
     private volatile static VoteService instance;
@@ -16,7 +17,8 @@ public class VoteServiceSingleton {
                     instance = new VoteService(
                             VoteDaoSingleton.getInstance(),
                             PerformerServiceSingleton.getInstance(),
-                            GenreServiceSingleton.getInstance());
+                            GenreServiceSingleton.getInstance(),
+                            MailServiceSingleton.getInstance());
                 }
             }
         }
