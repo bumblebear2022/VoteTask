@@ -52,7 +52,7 @@ public class GenresDaoSql implements IGenresDao<GenreDTO> {
 
     @Override
     public boolean delete(Long id) {
-        boolean isVoted = checkVotesForGenre(id);
+        boolean isVoted = isVotedForGenre(id);
         if(isVoted){
             return false;
         }
@@ -94,7 +94,7 @@ public class GenresDaoSql implements IGenresDao<GenreDTO> {
     }
 
 
-    private boolean checkVotesForGenre(Long id) {
+    private boolean isVotedForGenre(Long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CHECK_VOTES_FOR_GENRE)) {
             preparedStatement.setLong(1, id);

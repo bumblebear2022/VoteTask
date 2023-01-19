@@ -50,7 +50,7 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
 
     @Override
     public boolean delete(Long id) {
-        boolean isVoted = checkVotesForPerformer(id);
+        boolean isVoted = isVotedForPerformer(id);
         if(isVoted){
             return false;
         }
@@ -92,7 +92,7 @@ public class PerformersDaoSql implements IPerformersDao<PerformerDTO> {
     }
 
 
-    private boolean checkVotesForPerformer(Long id) {
+    private boolean isVotedForPerformer(Long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CHECK_VOTES_FOR_PERFORMER)) {
             preparedStatement.setLong(1, id);

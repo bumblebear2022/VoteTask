@@ -20,13 +20,15 @@ import java.util.List;
 import java.util.Map;
 
 public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
-    private static final String CREATE_QUERY = "INSERT INTO  data.votes (date_time,about) VALUES (?,?);";
+    private static final String CREATE_QUERY = "INSERT INTO  data.votes (date_time,about,email) VALUES (?,?,?);";
     private static final String CREATE_QUERY_CROSS_PERFORMER = "INSERT INTO  data.vote_performer (id_vote,id_performer) VALUES (?,?);";
     private static final String CREATE_QUERY_CROSS_GENRE = "INSERT INTO  data.vote_genre (id_vote,id_genre) VALUES (?,?);";
-    private static final String READ_ALL_QUERY = "SELECT id,date_time,about from data.votes";
+    private static final String READ_ALL_QUERY = "SELECT id,date_time,about,email from data.votes";
     private static final String READ_ALL_CROSS_PERFORMER = "SELECT id_vote, id_performer from data.vote_performer";
     private static final String READ_ALL_CROSS_GENRE = "SELECT id_vote, id_genre from data.vote_genre";
     private static final String DELETE_QUERY = "DELETE from data.genres where id=?;";
+    private static final String CHECK_VOTES_FOR_GENRE = "SELECT EXISTS (SELECT * FROM data.vote_genre WHERE id_genre = ?);";
+    private static final String CHECK_VOTES_FOR_PERFORMER = "SELECT EXISTS (SELECT * FROM data.vote_performer WHERE id_performer = ?);";
 
     private final DataSource dataSource = DataSourceHolder.getDataSource();
 
@@ -38,6 +40,7 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
             Timestamp timestamp = Timestamp.valueOf(savedVoteDTO.getCreateDateTime());
             preparedStatement.setTimestamp(1,timestamp);
             preparedStatement.setString(2, savedVoteDTO.getVote().getAbout());
+            preparedStatement.setString(3, savedVoteDTO.getVote().getEmail());
             preparedStatement.executeUpdate();
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 resultSet.next();
@@ -153,10 +156,26 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
 
     @Override
     public boolean isVotedGenre(Long id) {
-        return false;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CHECK_VOTES_FOR_GENRE)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getBoolean("exists");
+        } catch (SQLException e) {
+            throw new DataAccessException("SQLException deleteById method :" + e);
+        }
     }
     @Override
     public boolean isVotedPerformer(Long id) {
-        return false;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CHECK_VOTES_FOR_PERFORMER)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getBoolean("exists");
+        } catch (SQLException e) {
+            throw new DataAccessException("SQLException deleteById method :" + e);
+        }
     }
 }
