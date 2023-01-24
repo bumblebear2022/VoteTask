@@ -1,7 +1,9 @@
 package by.itacademy.jd2.votetask.dao.api;
 
-public interface IPerformersDao<T> extends Dao<T> {
+import by.itacademy.jd2.votetask.dto.PerformerDTO;
+
+public interface IPerformersDao extends Dao<PerformerDTO> {
     boolean exist(Long id);
 
-    void update(T t);
+    void update(PerformerDTO performerDTO);
 }

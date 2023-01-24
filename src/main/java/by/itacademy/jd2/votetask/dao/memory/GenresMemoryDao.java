@@ -1,22 +1,21 @@
 package by.itacademy.jd2.votetask.dao.memory;
 
 import by.itacademy.jd2.votetask.dao.api.IGenresDao;
-import by.itacademy.jd2.votetask.dao.factories.VoteDaoSingleton;
+import by.itacademy.jd2.votetask.dao.database.factories.VoteDatabaseDaoSingleton;
 import by.itacademy.jd2.votetask.dto.GenreDTO;
-import by.itacademy.jd2.votetask.dto.PerformerDTO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GenresDao implements IGenresDao<GenreDTO> {
+public class GenresMemoryDao implements IGenresDao {
 
     private final Map<Long, GenreDTO> genres= new HashMap<>();
 
     private long idCounter = 10L;
 
-    public GenresDao() {
+    public GenresMemoryDao() {
         genres.put(1L, new GenreDTO(1L,"Genre 1"));
         genres.put(2L, new GenreDTO(2L,"Genre 2"));
         genres.put(3L, new GenreDTO(3L,"Genre 3"));
@@ -47,7 +46,7 @@ public class GenresDao implements IGenresDao<GenreDTO> {
 
     @Override
     public boolean delete(Long id) {
-        if (VoteDaoSingleton.getInstance().isVotedGenre(id)) {
+        if (VoteDatabaseDaoSingleton.getInstance().isVotedGenre(id)) {
             return false;
         } else {
             genres.remove(id);

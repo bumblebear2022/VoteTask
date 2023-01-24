@@ -9,10 +9,10 @@ import java.util.List;
 public class PerformerService implements IPerformerService {
 
 
-    private final IPerformersDao<PerformerDTO> performersDao;
+    private final IPerformersDao performersDao;
 
 
-    public PerformerService(IPerformersDao<PerformerDTO> performersDao) {
+    public PerformerService(IPerformersDao performersDao) {
         this.performersDao = performersDao;
     }
 

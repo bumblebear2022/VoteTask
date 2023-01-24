@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.storage;
+package by.itacademy.jd2.votetask.dao.provider;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

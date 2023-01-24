@@ -1,11 +1,10 @@
-package by.itacademy.jd2.votetask.dao.sql;
+package by.itacademy.jd2.votetask.dao.database;
 
 import by.itacademy.jd2.votetask.dao.api.IGenresDao;
 import by.itacademy.jd2.votetask.dto.GenreDTO;
 import by.itacademy.jd2.votetask.exceptions.DataAccessException;
-import by.itacademy.jd2.votetask.storage.DataSourceHolder;
+import by.itacademy.jd2.votetask.dao.database.datasource.IDataSourceHolder;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenresDaoSql implements IGenresDao<GenreDTO> {
+public class GenresDatabaseDao implements IGenresDao {
 
     private static final String CREATE_QUERY = "INSERT INTO  data.genres (name) VALUES (?);";
     private static final String READ_ALL_QUERY = "SELECT id,name from data.genres";
@@ -21,7 +20,14 @@ public class GenresDaoSql implements IGenresDao<GenreDTO> {
     private static final String EXIST_QUERY = "SELECT EXISTS (SELECT * FROM data.genres WHERE id = ?);";
     private static final String UPDATE_QUERY = "UPDATE data.genres SET name = ? WHERE id=?;";
     private static final String CHECK_VOTES_FOR_GENRE = "SELECT EXISTS (SELECT * FROM data.vote_genre WHERE id_genre = ?);";
-    private final DataSource dataSource = DataSourceHolder.getDataSource();
+
+    private final IDataSourceHolder dataSource;
+
+    public GenresDatabaseDao(IDataSourceHolder dataSource) {
+        this.dataSource = dataSource;
+    }
+
+
 
     @Override
     public void create(GenreDTO genreDTO) {

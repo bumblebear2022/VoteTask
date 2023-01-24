@@ -1,12 +1,11 @@
-package by.itacademy.jd2.votetask.dao.sql;
+package by.itacademy.jd2.votetask.dao.database;
 
 import by.itacademy.jd2.votetask.dao.api.IVoteDao;
 import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.exceptions.DataAccessException;
-import by.itacademy.jd2.votetask.storage.DataSourceHolder;
+import by.itacademy.jd2.votetask.dao.database.datasource.IDataSourceHolder;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
+public class VoteDatabaseDao implements IVoteDao{
     private static final String CREATE_QUERY = "INSERT INTO  data.votes (date_time,about,email) VALUES (?,?,?);";
     private static final String CREATE_QUERY_CROSS_PERFORMER = "INSERT INTO  data.vote_performer (id_vote,id_performer) VALUES (?,?);";
     private static final String CREATE_QUERY_CROSS_GENRE = "INSERT INTO  data.vote_genre (id_vote,id_genre) VALUES (?,?);";
@@ -30,8 +29,11 @@ public class VoteDaoSql implements IVoteDao<SavedVoteDTO> {
     private static final String CHECK_VOTES_FOR_GENRE = "SELECT EXISTS (SELECT * FROM data.vote_genre WHERE id_genre = ?);";
     private static final String CHECK_VOTES_FOR_PERFORMER = "SELECT EXISTS (SELECT * FROM data.vote_performer WHERE id_performer = ?);";
 
-    private final DataSource dataSource = DataSourceHolder.getDataSource();
+    private final IDataSourceHolder dataSource;
 
+    public VoteDatabaseDao(IDataSourceHolder dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public void create(SavedVoteDTO savedVoteDTO) {
