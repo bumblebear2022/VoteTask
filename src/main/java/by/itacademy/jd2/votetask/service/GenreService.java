@@ -7,10 +7,10 @@ import by.itacademy.jd2.votetask.service.api.IGenreService;
 import java.util.List;
 
 public class GenreService implements IGenreService {
-    private final IGenresDao<GenreDTO> genresDao;
+    private final IGenresDao genresDao;
 
 
-    public GenreService(IGenresDao<GenreDTO> genresDao) {
+    public GenreService(IGenresDao genresDao) {
         this.genresDao = genresDao;
     }
 

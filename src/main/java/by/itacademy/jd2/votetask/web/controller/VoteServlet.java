@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.controller;
+package by.itacademy.jd2.votetask.web.controller;
 
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.exceptions.InvalidVoteException;

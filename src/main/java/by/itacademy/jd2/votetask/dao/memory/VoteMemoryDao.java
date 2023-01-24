@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class VoteDao implements IVoteDao<SavedVoteDTO> {
+public class VoteMemoryDao implements IVoteDao {
 
     private final List<SavedVoteDTO> savedVoteDTOS = new ArrayList<>();
 

@@ -29,14 +29,14 @@ public class VoteService implements IVoteService {
     private final int MIN_GENRE_CHOICES = 3;
     private final int MAX_GENRE_CHOICES = 5;
 
-    private final IVoteDao<SavedVoteDTO> voteDao;
+    private final IVoteDao voteDao;
     private final IPerformerService performerService;
     private final IGenreService genreService;
     private final IMailService mailService;
     private final Lock lock = new ReentrantLock();
 
 
-    public VoteService(IVoteDao<SavedVoteDTO> voteDao, IPerformerService performerService, IGenreService genreService, IMailService mailService) {
+    public VoteService(IVoteDao voteDao, IPerformerService performerService, IGenreService genreService, IMailService mailService) {
         this.voteDao = voteDao;
         this.performerService = performerService;
         this.genreService = genreService;
