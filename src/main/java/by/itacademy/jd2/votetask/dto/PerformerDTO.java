@@ -1,11 +1,23 @@
 package by.itacademy.jd2.votetask.dto;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
-
+@Entity
+@Table( name = "data.performers" )
 public class PerformerDTO {
+    @Id
+    @GeneratedValue(generator="increment")
+    @GenericGenerator(name="increment", strategy = "increment")
+    private  Long id;
+    private  String nickName;
 
-    private final Long id;
-    private final String nickName;
+    public PerformerDTO() {
+    }
 
     public PerformerDTO(Long id, String nickName) {
         this.id = id;

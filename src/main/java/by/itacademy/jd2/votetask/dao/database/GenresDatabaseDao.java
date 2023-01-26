@@ -1,10 +1,14 @@
 package by.itacademy.jd2.votetask.dao.database;
 
 import by.itacademy.jd2.votetask.dao.api.IGenresDao;
+import by.itacademy.jd2.votetask.dao.database.datasource.IDataSourceHolder;
+import by.itacademy.jd2.votetask.dao.database.hibernate.EntityManagerHolder;
 import by.itacademy.jd2.votetask.dto.GenreDTO;
 import by.itacademy.jd2.votetask.exceptions.DataAccessException;
-import by.itacademy.jd2.votetask.dao.database.datasource.IDataSourceHolder;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,34 +18,25 @@ import java.util.List;
 
 public class GenresDatabaseDao implements IGenresDao {
 
-    private static final String CREATE_QUERY = "INSERT INTO  data.genres (name) VALUES (?);";
-    private static final String READ_ALL_QUERY = "SELECT id,name from data.genres";
-    private static final String DELETE_QUERY = "DELETE from data.genres where id=?;";
-    private static final String EXIST_QUERY = "SELECT EXISTS (SELECT * FROM data.genres WHERE id = ?);";
-    private static final String UPDATE_QUERY = "UPDATE data.genres SET name = ? WHERE id=?;";
-    private static final String CHECK_VOTES_FOR_GENRE = "SELECT EXISTS (SELECT * FROM data.vote_genre WHERE id_genre = ?);";
-
-    private final IDataSourceHolder dataSource;
-
-    public GenresDatabaseDao(IDataSourceHolder dataSource) {
-        this.dataSource = dataSource;
-    }
-
-
+   private final EntityManager entityManager = EntityManagerHolder.getInstance();
 
     @Override
     public void create(GenreDTO genreDTO) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY)) {
-            preparedStatement.setString(1, genreDTO.getTitle());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DataAccessException("SQLException create method :" + e);
-        }
+        String title = genreDTO.getTitle();
+        entityManager.getTransaction().begin();
+        entityManager.persist(new GenreDTO(title));
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
     public List<GenreDTO> readAll() {
+
+        entityManager.getTransaction().begin();
+        entityManager.getEntityGraphs(Class<GenreDTO>);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_QUERY);
              ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -62,18 +57,22 @@ public class GenresDatabaseDao implements IGenresDao {
         if(isVoted){
             return false;
         }
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
-            preparedStatement.setLong(1, id);
-            int affectedRows = preparedStatement.executeUpdate();
-            return affectedRows != 0;
-        } catch (SQLException e) {
-            throw new DataAccessException("SQLException deleteById method :" + e);
-        }
+        GenreDTO genreDTO = entityManager.find(GenreDTO.class, id);
+        entityManager.remove(genreDTO);
+        entityManager.flush();
+        entityManager.clear();
+        return true;
     }
 
     @Override
     public void update(GenreDTO genreDTO) {
+
+
+        entityManager.
+
+        person.setName("Mary");
+        session.update(person);
+
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
             Long id = genreDTO.getId();
@@ -88,15 +87,7 @@ public class GenresDatabaseDao implements IGenresDao {
 
     @Override
     public boolean exist(Long id) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(EXIST_QUERY)) {
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return resultSet.getBoolean("exists");
-        } catch (SQLException e) {
-            throw new DataAccessException("SQLException exist method :" + e);
-        }
+        entityManager.contains(new GenreDTO());
     }
 
 
@@ -110,12 +101,5 @@ public class GenresDatabaseDao implements IGenresDao {
         } catch (SQLException e) {
             throw new DataAccessException("SQLException deleteById method :" + e);
         }
-    }
-
-
-    protected GenreDTO buildGenreDto(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getLong("id");
-        String name = resultSet.getString("name");
-        return new GenreDTO(id, name);
     }
 }
