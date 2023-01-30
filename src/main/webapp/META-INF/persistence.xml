@@ -5,6 +5,8 @@
     <persistence-unit name="votedb">
         <class>org.example.entity.Event</class>
 
+
+
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5433/voting" />

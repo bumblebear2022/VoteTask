@@ -1,24 +1,18 @@
 package by.itacademy.jd2.votetask.dao.database;
 
 import by.itacademy.jd2.votetask.dao.api.IGenresDao;
-import by.itacademy.jd2.votetask.dao.database.datasource.IDataSourceHolder;
 import by.itacademy.jd2.votetask.dao.database.hibernate.EntityManagerHolder;
 import by.itacademy.jd2.votetask.dto.GenreDTO;
-import by.itacademy.jd2.votetask.exceptions.DataAccessException;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class GenresDatabaseDao implements IGenresDao {
 
-   private final EntityManager entityManager = EntityManagerHolder.getInstance();
+    private final EntityManager entityManager = EntityManagerHolder.getInstance();
 
     @Override
     public void create(GenreDTO genreDTO) {
@@ -33,28 +27,21 @@ public class GenresDatabaseDao implements IGenresDao {
     public List<GenreDTO> readAll() {
 
         entityManager.getTransaction().begin();
-        entityManager.getEntityGraphs(Class<GenreDTO>);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<GenreDTO> query = criteriaBuilder.createQuery(GenreDTO.class);
+        Root<GenreDTO> root = query.from(GenreDTO.class);
+        CriteriaQuery<GenreDTO> select = query.select(root);
+        List<GenreDTO> resultList = entityManager.createQuery(select).getResultList();
         entityManager.getTransaction().commit();
         entityManager.close();
 
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_QUERY);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-            List<GenreDTO> entityList = new ArrayList<>();
-            while (resultSet.next()) {
-                GenreDTO genreDTO = buildGenreDto(resultSet);
-                entityList.add(genreDTO);
-            }
-            return entityList;
-        } catch (SQLException e) {
-            throw new DataAccessException("SQLException readAll method :" + e);
-        }
+        return resultList;
     }
 
     @Override
     public boolean delete(Long id) {
         boolean isVoted = isVotedForGenre(id);
-        if(isVoted){
+        if (isVoted) {
             return false;
         }
         GenreDTO genreDTO = entityManager.find(GenreDTO.class, id);
@@ -66,40 +53,19 @@ public class GenresDatabaseDao implements IGenresDao {
 
     @Override
     public void update(GenreDTO genreDTO) {
-
-
-        entityManager.
-
-        person.setName("Mary");
-        session.update(person);
-
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
-            Long id = genreDTO.getId();
-            String title = genreDTO.getTitle();
-            preparedStatement.setString(1, title);
-            preparedStatement.setLong(2, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DataAccessException("SQLException update method :" + e);
-        }
+        entityManager.getTransaction().begin();
+        entityManager.merge(genreDTO);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
     public boolean exist(Long id) {
-        entityManager.contains(new GenreDTO());
+        return entityManager.contains(id);
     }
 
 
     private boolean isVotedForGenre(Long id) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CHECK_VOTES_FOR_GENRE)) {
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return resultSet.getBoolean("exists");
-        } catch (SQLException e) {
-            throw new DataAccessException("SQLException deleteById method :" + e);
-        }
+        return true;
     }
 }
