@@ -1,7 +1,7 @@
 package by.itacademy.jd2.votetask.service;
 
 import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
-import by.itacademy.jd2.votetask.dto.PerformerDTO;
+import by.itacademy.jd2.votetask.dto.Performer;
 import by.itacademy.jd2.votetask.service.api.IPerformerService;
 
 import java.util.List;
@@ -17,18 +17,18 @@ public class PerformerService implements IPerformerService {
     }
 
     @Override
-    public List<PerformerDTO> getContent() {
+    public List<Performer> getContent() {
         return performersDao.readAll();
     }
 
     @Override
-    public void create(PerformerDTO performerDTO) {
-        performersDao.create(performerDTO);
+    public void create(Performer performer) {
+        performersDao.create(performer);
     }
 
     @Override
-    public void update(PerformerDTO performerDTO){
-        performersDao.update(performerDTO);
+    public void update(Performer performer){
+        performersDao.update(performer);
     }
 
 
@@ -44,7 +44,7 @@ public class PerformerService implements IPerformerService {
         return performersDao.exist(id);
     }
 
-    public List<PerformerDTO> getPerformers() {
+    public List<Performer> getPerformers() {
         return performersDao.readAll();
     }
 }

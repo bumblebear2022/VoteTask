@@ -9,17 +9,17 @@ import javax.persistence.Table;
 import java.util.Objects;
 @Entity
 @Table( name = "data.performers" )
-public class PerformerDTO {
+public class Performer {
     @Id
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
     private  Long id;
     private  String nickName;
 
-    public PerformerDTO() {
+    public Performer() {
     }
 
-    public PerformerDTO(Long id, String nickName) {
+    public Performer(Long id, String nickName) {
         this.id = id;
         this.nickName = nickName;
     }
@@ -36,7 +36,7 @@ public class PerformerDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PerformerDTO that = (PerformerDTO) o;
+        Performer that = (Performer) o;
         return Objects.equals(nickName, that.nickName);
     }
 

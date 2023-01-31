@@ -1,9 +1,9 @@
 package by.itacademy.jd2.votetask.dao.api;
 
-import by.itacademy.jd2.votetask.dto.GenreDTO;
+import by.itacademy.jd2.votetask.dto.Genre;
 
-public interface IGenresDao extends Dao<GenreDTO> {
+public interface IGenresDao extends Dao<Genre> {
     boolean exist(Long id);
 
-    void update(GenreDTO genreDTO);
+    void update(Genre genre);
 }

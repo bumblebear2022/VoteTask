@@ -1,7 +1,7 @@
 package by.itacademy.jd2.votetask.service;
 
-import by.itacademy.jd2.votetask.dto.GenreDTO;
-import by.itacademy.jd2.votetask.dto.PerformerDTO;
+import by.itacademy.jd2.votetask.dto.Genre;
+import by.itacademy.jd2.votetask.dto.Performer;
 import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.dto.VoteResultDto;
@@ -40,9 +40,9 @@ public class StatisticsService implements IStatisticsService {
 
 
     private Map<String, Long> getSortedPerformerVotes(List<SavedVoteDTO> voteDtoList) {
-        List<PerformerDTO> performerDTOS = performerService.getPerformers();
-        Map<Long, String> performerNamesMap = performerDTOS.stream()
-                .collect(Collectors.toMap(PerformerDTO::getId, PerformerDTO::getNickName));
+        List<Performer> performers = performerService.getPerformers();
+        Map<Long, String> performerNamesMap = performers.stream()
+                .collect(Collectors.toMap(Performer::getId, Performer::getNickName));
 
         Map<Long, Long> idVotesForPerformers = voteDtoList.stream()
                 .map(SavedVoteDTO::getVote)
@@ -56,9 +56,9 @@ public class StatisticsService implements IStatisticsService {
     }
 
     private Map<String, Long> getSortedGenreVotes(List<SavedVoteDTO> voteDtoList) {
-        List<GenreDTO> genreDTOS = genreService.getGenres();
-        Map<Long, String> genresTitleMap = genreDTOS.stream()
-                .collect(Collectors.toMap(GenreDTO::getId, GenreDTO::getTitle));
+        List<Genre> genres = genreService.getGenres();
+        Map<Long, String> genresTitleMap = genres.stream()
+                .collect(Collectors.toMap(Genre::getId, Genre::getTitle));
 
         Map<Long, Long> idVotesForGenres = voteDtoList.stream()
                 .map(SavedVoteDTO::getVote)

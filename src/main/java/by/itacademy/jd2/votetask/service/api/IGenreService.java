@@ -1,19 +1,19 @@
 package by.itacademy.jd2.votetask.service.api;
 
-import by.itacademy.jd2.votetask.dto.GenreDTO;
+import by.itacademy.jd2.votetask.dto.Genre;
 
 import java.util.List;
 
 public interface IGenreService {
 
-    List<GenreDTO> getContent();
+    List<Genre> getContent();
     boolean exist(Long id);
 
-    List<GenreDTO> getGenres();
+    List<Genre> getGenres();
 
-    void create(GenreDTO genreDTO);
+    void create(Genre genre);
 
-    void update(GenreDTO genreDTO);
+    void update(Genre genre);
 
     boolean delete(Long id);
 }

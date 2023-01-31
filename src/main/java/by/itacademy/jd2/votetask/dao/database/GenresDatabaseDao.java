@@ -1,8 +1,7 @@
 package by.itacademy.jd2.votetask.dao.database;
 
 import by.itacademy.jd2.votetask.dao.api.IGenresDao;
-import by.itacademy.jd2.votetask.dao.database.hibernate.EntityManagerHolder;
-import by.itacademy.jd2.votetask.dto.GenreDTO;
+import by.itacademy.jd2.votetask.dto.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -12,29 +11,41 @@ import java.util.List;
 
 public class GenresDatabaseDao implements IGenresDao {
 
-    private final EntityManager entityManager = EntityManagerHolder.getInstance();
+    private final EntityManager entityManager;
 
-    @Override
-    public void create(GenreDTO genreDTO) {
-        String title = genreDTO.getTitle();
-        entityManager.getTransaction().begin();
-        entityManager.persist(new GenreDTO(title));
-        entityManager.getTransaction().commit();
-        entityManager.close();
+    public GenresDatabaseDao(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     @Override
-    public List<GenreDTO> readAll() {
+    public void create(Genre genre) {
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.persist(genre);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
+        }
+    }
 
-        entityManager.getTransaction().begin();
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<GenreDTO> query = criteriaBuilder.createQuery(GenreDTO.class);
-        Root<GenreDTO> root = query.from(GenreDTO.class);
-        CriteriaQuery<GenreDTO> select = query.select(root);
-        List<GenreDTO> resultList = entityManager.createQuery(select).getResultList();
-        entityManager.getTransaction().commit();
-        entityManager.close();
-
+    @Override
+    public List<Genre> readAll() {
+        List<Genre> resultList = null;
+        try {
+            entityManager.getTransaction().begin();
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Genre> query = criteriaBuilder.createQuery(Genre.class);
+            Root<Genre> root = query.from(Genre.class);
+            CriteriaQuery<Genre> select = query.select(root);
+            resultList = entityManager.createQuery(select).getResultList();
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
+        }
         return resultList;
     }
 
@@ -44,28 +55,48 @@ public class GenresDatabaseDao implements IGenresDao {
         if (isVoted) {
             return false;
         }
-        GenreDTO genreDTO = entityManager.find(GenreDTO.class, id);
-        entityManager.remove(genreDTO);
-        entityManager.flush();
-        entityManager.clear();
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.remove(id);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
+        }
         return true;
     }
 
     @Override
-    public void update(GenreDTO genreDTO) {
-        entityManager.getTransaction().begin();
-        entityManager.merge(genreDTO);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+    public void update(Genre genre) {
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.merge(genre);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override
     public boolean exist(Long id) {
-        return entityManager.contains(id);
+        boolean contains = false;
+        try {
+            entityManager.getTransaction().begin();
+            contains = entityManager.contains(id);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
+        }
+        return contains;
     }
 
 
     private boolean isVotedForGenre(Long id) {
-        return true;
+        return false;
     }
 }

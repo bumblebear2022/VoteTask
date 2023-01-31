@@ -2,7 +2,7 @@ package by.itacademy.jd2.votetask.dao.memory;
 
 import by.itacademy.jd2.votetask.dao.api.IGenresDao;
 import by.itacademy.jd2.votetask.dao.database.factories.VoteDatabaseDaoSingleton;
-import by.itacademy.jd2.votetask.dto.GenreDTO;
+import by.itacademy.jd2.votetask.dto.Genre;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,37 +11,37 @@ import java.util.Map;
 
 public class GenresMemoryDao implements IGenresDao {
 
-    private final Map<Long, GenreDTO> genres= new HashMap<>();
+    private final Map<Long, Genre> genres= new HashMap<>();
 
     private long idCounter = 10L;
 
     public GenresMemoryDao() {
-        genres.put(1L, new GenreDTO(1L,"Genre 1"));
-        genres.put(2L, new GenreDTO(2L,"Genre 2"));
-        genres.put(3L, new GenreDTO(3L,"Genre 3"));
-        genres.put(4L, new GenreDTO(4L,"Genre 4"));
-        genres.put(5L, new GenreDTO(5L,"Genre 5"));
-        genres.put(6L, new GenreDTO(6L,"Genre 6"));
-        genres.put(7L, new GenreDTO(7L,"Genre 7"));
-        genres.put(8L, new GenreDTO(8L,"Genre 8"));
-        genres.put(9L, new GenreDTO(9L,"Genre 9"));
-        genres.put(10L, new GenreDTO(10L,"Genre 10"));
+        genres.put(1L, new Genre(1L,"Genre 1"));
+        genres.put(2L, new Genre(2L,"Genre 2"));
+        genres.put(3L, new Genre(3L,"Genre 3"));
+        genres.put(4L, new Genre(4L,"Genre 4"));
+        genres.put(5L, new Genre(5L,"Genre 5"));
+        genres.put(6L, new Genre(6L,"Genre 6"));
+        genres.put(7L, new Genre(7L,"Genre 7"));
+        genres.put(8L, new Genre(8L,"Genre 8"));
+        genres.put(9L, new Genre(9L,"Genre 9"));
+        genres.put(10L, new Genre(10L,"Genre 10"));
     }
 
     @Override
-    public void create(GenreDTO genreDTO) {
-        GenreDTO bufferedDTO = new GenreDTO(createId(), genreDTO.getTitle());
+    public void create(Genre genre) {
+        Genre bufferedDTO = new Genre(createId(), genre.getTitle());
         genres.put(bufferedDTO.getId(), bufferedDTO);
     }
 
     @Override
-    public List<GenreDTO> readAll() {
+    public List<Genre> readAll() {
         return new ArrayList<>(genres.values());
     }
 
     @Override
-    public void update(GenreDTO genreDTO) {
-        genres.put(genreDTO.getId(), genreDTO);
+    public void update(Genre genre) {
+        genres.put(genre.getId(), genre);
     }
 
     @Override

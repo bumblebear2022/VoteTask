@@ -1,6 +1,6 @@
 package by.itacademy.jd2.votetask.web.controller;
 
-import by.itacademy.jd2.votetask.dto.PerformerDTO;
+import by.itacademy.jd2.votetask.dto.Performer;
 import by.itacademy.jd2.votetask.service.api.IPerformerService;
 import by.itacademy.jd2.votetask.service.factories.PerformerServiceSingleton;
 
@@ -30,10 +30,10 @@ public class PerformerServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
-        List<PerformerDTO> performerDTOList = performerService.getContent();
+        List<Performer> performerList = performerService.getContent();
         StringBuilder str = new StringBuilder();
-        for (PerformerDTO performerDTO : performerDTOList) {
-            str.append(performerDTO.getId()).append(" - ").append(performerDTO.getNickName()).append(BR);
+        for (Performer performer : performerList) {
+            str.append(performer.getId()).append(" - ").append(performer.getNickName()).append(BR);
         }
         String htmlResult = HEADER + str + FOOTER;
 
@@ -50,13 +50,13 @@ public class PerformerServlet extends HttpServlet {
         switch (postAction) {
             case CREATE: {
                 String performerName = parameterMap.get(CREATE)[0];
-                performerService.create(new PerformerDTO(null,performerName));
+                performerService.create(new Performer(null,performerName));
                 break;
             }
             case UPDATE: {
                 Long performerId =Long.valueOf(parameterMap.get(UPDATE)[0]);
                 String performerName = parameterMap.get("name")[0];
-                performerService.update(new PerformerDTO(performerId,performerName));
+                performerService.update(new Performer(performerId,performerName));
                 break;
             }
             case DELETE: {

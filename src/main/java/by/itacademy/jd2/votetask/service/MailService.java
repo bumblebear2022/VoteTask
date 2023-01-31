@@ -1,7 +1,7 @@
 package by.itacademy.jd2.votetask.service;
 
-import by.itacademy.jd2.votetask.dto.GenreDTO;
-import by.itacademy.jd2.votetask.dto.PerformerDTO;
+import by.itacademy.jd2.votetask.dto.Genre;
+import by.itacademy.jd2.votetask.dto.Performer;
 import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
@@ -70,10 +70,10 @@ public class MailService implements IMailService {
 
         VoteDto vote = savedVoteDTO.getVote();
         Long voiceForPerformer = vote.getVoiceForPerformer();
-        List<PerformerDTO> performerDTOList = performerService.getContent();
-        String performer = performerDTOList.stream()
+        List<Performer> performerList = performerService.getContent();
+        String performer = performerList.stream()
                 .filter(performerDTO -> performerDTO.getId().equals(voiceForPerformer))
-                .map(PerformerDTO::getNickName)
+                .map(Performer::getNickName)
                 .findAny().orElse("");
 
 
@@ -94,14 +94,14 @@ public class MailService implements IMailService {
     }
 
     private String getVotedGenres(VoteDto vote) {
-        List<GenreDTO> genresList = genreService.getContent();
-        Map<Long, GenreDTO> genresMap = genresList.stream()
-                .collect(Collectors.toMap(GenreDTO::getId, genre -> genre));
+        List<Genre> genresList = genreService.getContent();
+        Map<Long, Genre> genresMap = genresList.stream()
+                .collect(Collectors.toMap(Genre::getId, genre -> genre));
 
         List<Long> voicesForGenres = vote.getVoicesForGenres();
         List<String> votedGenresList = voicesForGenres.stream()
                 .map(genresMap::get)
-                .map(GenreDTO::getTitle)
+                .map(Genre::getTitle)
                 .collect(Collectors.toList());
 
         return String.join(", ", votedGenresList);

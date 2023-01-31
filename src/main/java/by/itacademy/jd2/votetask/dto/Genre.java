@@ -9,21 +9,21 @@ import javax.persistence.Table;
 import java.util.Objects;
 @Entity
 @Table( name = "data.genres" )
-public class GenreDTO {
+public class Genre {
     @Id
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
     private Long id;
     private String title;
 
-    public GenreDTO() {
+    public Genre() {
     }
 
-    public GenreDTO(String title) {
+    public Genre(String title) {
         this.title = title;
     }
 
-    public GenreDTO(Long id, String title) {
+    public Genre(Long id, String title) {
         this.id = id;
         this.title = title;
     }
@@ -40,8 +40,8 @@ public class GenreDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GenreDTO genreDTO = (GenreDTO) o;
-        return Objects.equals(title, genreDTO.title);
+        Genre genre = (Genre) o;
+        return Objects.equals(title, genre.title);
     }
 
     @Override

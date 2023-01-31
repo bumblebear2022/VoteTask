@@ -1,7 +1,7 @@
 package by.itacademy.jd2.votetask.service;
 
 import by.itacademy.jd2.votetask.dao.api.IGenresDao;
-import by.itacademy.jd2.votetask.dto.GenreDTO;
+import by.itacademy.jd2.votetask.dto.Genre;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class GenreService implements IGenreService {
     }
 
     @Override
-    public List<GenreDTO> getContent() {
+    public List<Genre> getContent() {
         return genresDao.readAll();
     }
 
@@ -28,13 +28,13 @@ public class GenreService implements IGenreService {
     }
 
     @Override
-    public void create(GenreDTO genreDTO) {
-        genresDao.create(genreDTO);
+    public void create(Genre genre) {
+        genresDao.create(genre);
     }
 
     @Override
-    public void update(GenreDTO genreDTO) {
-       genresDao.update(genreDTO);
+    public void update(Genre genre) {
+       genresDao.update(genre);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class GenreService implements IGenreService {
         return genresDao.delete(id);
     }
 
-    public List<GenreDTO> getGenres() {
+    public List<Genre> getGenres() {
         return genresDao.readAll();
     }
 }
