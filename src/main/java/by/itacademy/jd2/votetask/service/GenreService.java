@@ -1,7 +1,8 @@
 package by.itacademy.jd2.votetask.service;
 
 import by.itacademy.jd2.votetask.dao.api.IGenresDao;
-import by.itacademy.jd2.votetask.dto.Genre;
+import by.itacademy.jd2.votetask.domain.Genre;
+import by.itacademy.jd2.votetask.dto.GenreDto;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
 
 import java.util.List;
@@ -28,18 +29,27 @@ public class GenreService implements IGenreService {
     }
 
     @Override
-    public void create(Genre genre) {
+    public void create(GenreDto genreDto) {
+        Genre genre = mapDtoToEntity(genreDto);
         genresDao.create(genre);
     }
 
+    private Genre mapDtoToEntity(GenreDto genreDto) {
+        Long id = genreDto.getId();
+        String title = genreDto.getTitle();
+        return new Genre(id, title);
+    }
+
     @Override
-    public void update(Genre genre) {
-       genresDao.update(genre);
+    public void update(GenreDto genreDto) {
+        Genre genre = mapDtoToEntity(genreDto);
+        genresDao.update(genre);
     }
 
     @Override
     public boolean delete(Long id) {
-        return genresDao.delete(id);
+     Genre genre = new Genre(id);
+        return genresDao.delete(genre);
     }
 
     public List<Genre> getGenres() {

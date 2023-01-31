@@ -1,7 +1,8 @@
 package by.itacademy.jd2.votetask.service;
 
 import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
-import by.itacademy.jd2.votetask.dto.Performer;
+import by.itacademy.jd2.votetask.domain.Performer;
+import by.itacademy.jd2.votetask.dto.PerformerDto;
 import by.itacademy.jd2.votetask.service.api.IPerformerService;
 
 import java.util.List;
@@ -22,19 +23,28 @@ public class PerformerService implements IPerformerService {
     }
 
     @Override
-    public void create(Performer performer) {
+    public void create(PerformerDto performerDto) {
+        Performer performer = mapDtoToEntity(performerDto);
         performersDao.create(performer);
     }
 
+    private Performer mapDtoToEntity(PerformerDto performerDto) {
+        Long id = performerDto.getId();
+        String nickName = performerDto.getNickName();
+        return new Performer(id, nickName);
+    }
+
     @Override
-    public void update(Performer performer){
+    public void update(PerformerDto performerDto){
+        Performer performer = mapDtoToEntity(performerDto);
         performersDao.update(performer);
     }
 
 
     @Override
     public boolean delete(Long id) {
-        return performersDao.delete(id);
+        Performer performer = new Performer(id);
+        return performersDao.delete(performer);
     }
 
     public boolean exist(Long id) {
@@ -47,4 +57,5 @@ public class PerformerService implements IPerformerService {
     public List<Performer> getPerformers() {
         return performersDao.readAll();
     }
+
 }

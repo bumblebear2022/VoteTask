@@ -1,7 +1,7 @@
 package by.itacademy.jd2.votetask.dao.database;
 
 import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
-import by.itacademy.jd2.votetask.dto.Performer;
+import by.itacademy.jd2.votetask.domain.Performer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -49,14 +49,14 @@ public class PerformersDatabaseDao implements IPerformersDao {
     }
 
     @Override
-    public boolean delete(Long id) {
-        boolean isVoted = isVotedForPerformer(id);
+    public boolean delete(Performer performer) {
+        boolean isVoted = isVotedForPerformer(performer.getId());
         if (isVoted) {
             return false;
         }
         try {
             entityManager.getTransaction().begin();
-            entityManager.remove(id);
+            entityManager.remove(performer);
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -98,4 +98,5 @@ public class PerformersDatabaseDao implements IPerformersDao {
     private boolean isVotedForPerformer(Long id) {
         return false;
     }
+
 }

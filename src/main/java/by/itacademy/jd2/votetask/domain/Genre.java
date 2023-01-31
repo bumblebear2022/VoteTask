@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.dto;
+package by.itacademy.jd2.votetask.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Objects;
 @Entity
-@Table( name = "data.genres" )
+@Table(name = "data.genres")
 public class Genre {
     @Id
     @GeneratedValue(generator="increment")
@@ -17,6 +17,10 @@ public class Genre {
     private String title;
 
     public Genre() {
+    }
+
+    public Genre(Long id) {
+        this.id = id;
     }
 
     public Genre(String title) {

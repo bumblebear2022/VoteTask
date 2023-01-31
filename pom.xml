@@ -6,7 +6,7 @@
 
   <groupId>by.itAcademy</groupId>
   <artifactId>VoteTask</artifactId>
-  <version>2.6.0</version>
+  <version>2.6.H</version>
   <packaging>war</packaging>
 
   <name>VoteTask Maven Webapp</name>

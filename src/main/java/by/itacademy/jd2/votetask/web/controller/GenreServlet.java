@@ -1,6 +1,7 @@
 package by.itacademy.jd2.votetask.web.controller;
 
-import by.itacademy.jd2.votetask.dto.Genre;
+import by.itacademy.jd2.votetask.domain.Genre;
+import by.itacademy.jd2.votetask.dto.GenreDto;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
 import by.itacademy.jd2.votetask.service.factories.GenreServiceSingleton;
 
@@ -49,13 +50,13 @@ public class GenreServlet extends HttpServlet {
         switch (postAction) {
             case CREATE: {
                 String genreName = parameterMap.get(CREATE)[0];
-                genreService.create(new Genre(null, genreName));
+                genreService.create(new GenreDto(null, genreName));
                 break;
             }
             case UPDATE: {
                 Long genreId =Long.valueOf(parameterMap.get(UPDATE)[0]);
                 String genreName = parameterMap.get("name")[0];
-                genreService.update(new Genre(genreId, genreName));
+                genreService.update(new GenreDto(genreId, genreName));
                 break;
             }
             case DELETE: {

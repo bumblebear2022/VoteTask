@@ -2,7 +2,7 @@ package by.itacademy.jd2.votetask.dao.memory;
 
 import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
 import by.itacademy.jd2.votetask.dao.database.factories.VoteDatabaseDaoSingleton;
-import by.itacademy.jd2.votetask.dto.Performer;
+import by.itacademy.jd2.votetask.domain.Performer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,11 +38,11 @@ public class PerformersMemoryDao implements IPerformersDao {
     }
 
     @Override
-    public boolean delete(Long id) {
-        if (VoteDatabaseDaoSingleton.getInstance().isVotedPerformer(id)) {
+    public boolean delete(Performer performer) {
+        if (VoteDatabaseDaoSingleton.getInstance().isVotedPerformer(performer.getId())) {
             return false;
         } else {
-            performers.remove(id);
+            performers.remove(performer.getId());
             return true;
         }
     }

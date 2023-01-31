@@ -3,15 +3,15 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0">
     <persistence-unit name="votedb">
-        <class>org.example.entity.Event</class>
-
-
+        <class>by.itacademy.jd2.votetask.domain.Genre</class>
+        <class>by.itacademy.jd2.votetask.domain.Performer</class>
+        <class>by.itacademy.jd2.votetask.domain.SavedVote</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5433/voting" />
-            <property name="javax.persistence.jdbc.user" value="postgres" />
-            <property name="javax.persistence.jdbc.password" value="postgres" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://10.110.0.4:5432/votedb" />
+            <property name="javax.persistence.jdbc.user" value="vote_user" />
+            <property name="javax.persistence.jdbc.password" value="qwerty123" />
 
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.hbm2ddl.auto" value="none" />

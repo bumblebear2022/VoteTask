@@ -1,7 +1,7 @@
 package by.itacademy.jd2.votetask.service;
 
 import by.itacademy.jd2.votetask.dao.api.IVoteDao;
-import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
+import by.itacademy.jd2.votetask.domain.SavedVote;
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.exceptions.InvalidVoteException;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
@@ -45,18 +45,26 @@ public class VoteService implements IVoteService {
 
     public void addVote(VoteDto voteDto) {
         validate(voteDto);
-        SavedVoteDTO savedVoteDTO = new SavedVoteDTO(null, voteDto);
+        SavedVote savedVote = mapDtoToEntity(voteDto);
         try {
             boolean isLockAcquired = lock.tryLock(1, TimeUnit.SECONDS);
             if (isLockAcquired) {
-                voteDao.create(savedVoteDTO);
-                mailService.sendMail(savedVoteDTO);
+                voteDao.create(savedVote);
+                mailService.sendMail(savedVote);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
             lock.unlock();
         }
+    }
+
+    private SavedVote mapDtoToEntity(VoteDto voteDto) {
+        List<Long> voicesForGenres = voteDto.getVoicesForGenres();
+        Long voiceForPerformer = voteDto.getVoiceForPerformer();
+        String about = voteDto.getAbout();
+        String email = voteDto.getEmail();
+        return new SavedVote(null,voiceForPerformer,voicesForGenres,about,email);
     }
 
     private void validate(VoteDto voteDto) {
@@ -103,7 +111,7 @@ public class VoteService implements IVoteService {
     }
 
     @Override
-    public List<SavedVoteDTO> getVotes() {
+    public List<SavedVote> getVotes() {
         return voteDao.readAll();
     }
 

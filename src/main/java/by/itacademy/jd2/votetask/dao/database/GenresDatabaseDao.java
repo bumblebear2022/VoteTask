@@ -1,7 +1,7 @@
 package by.itacademy.jd2.votetask.dao.database;
 
 import by.itacademy.jd2.votetask.dao.api.IGenresDao;
-import by.itacademy.jd2.votetask.dto.Genre;
+import by.itacademy.jd2.votetask.domain.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -30,6 +30,7 @@ public class GenresDatabaseDao implements IGenresDao {
         }
     }
 
+
     @Override
     public List<Genre> readAll() {
         List<Genre> resultList = null;
@@ -50,14 +51,14 @@ public class GenresDatabaseDao implements IGenresDao {
     }
 
     @Override
-    public boolean delete(Long id) {
-        boolean isVoted = isVotedForGenre(id);
+    public boolean delete(Genre genre) {
+        boolean isVoted = isVotedForGenre(genre.getId());
         if (isVoted) {
             return false;
         }
         try {
             entityManager.getTransaction().begin();
-            entityManager.remove(id);
+            entityManager.remove(genre);
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);

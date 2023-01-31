@@ -2,7 +2,7 @@ package by.itacademy.jd2.votetask.dao.memory;
 
 import by.itacademy.jd2.votetask.dao.api.IGenresDao;
 import by.itacademy.jd2.votetask.dao.database.factories.VoteDatabaseDaoSingleton;
-import by.itacademy.jd2.votetask.dto.Genre;
+import by.itacademy.jd2.votetask.domain.Genre;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,11 +45,11 @@ public class GenresMemoryDao implements IGenresDao {
     }
 
     @Override
-    public boolean delete(Long id) {
-        if (VoteDatabaseDaoSingleton.getInstance().isVotedGenre(id)) {
+    public boolean delete(Genre genre) {
+        if (VoteDatabaseDaoSingleton.getInstance().isVotedGenre(genre.getId())) {
             return false;
         } else {
-            genres.remove(id);
+            genres.remove(genre.getId());
             return true;
         }
     }

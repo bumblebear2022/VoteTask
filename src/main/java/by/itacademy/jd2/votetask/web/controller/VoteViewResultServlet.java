@@ -1,6 +1,6 @@
 package by.itacademy.jd2.votetask.web.controller;
 
-import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
+import by.itacademy.jd2.votetask.domain.SavedVote;
 import by.itacademy.jd2.votetask.dto.VoteResultDto;
 import by.itacademy.jd2.votetask.service.api.IStatisticsService;
 import by.itacademy.jd2.votetask.service.factories.StatisticsServiceSingleton;
@@ -44,10 +44,10 @@ public class VoteViewResultServlet extends HttpServlet {
             writer.write("<p>" + genre.getKey() + "  " + genre.getValue() + "</p>");
         }
 
-        List<SavedVoteDTO> sortedVoteInfos = voteResult.getSortedVoteInfos();
+        List<SavedVote> sortedVoteInfos = voteResult.getSortedVoteInfos();
         writer.write(BR + HEADER_ABOUT_RESULT);
-        for (SavedVoteDTO savedVote : sortedVoteInfos) {
-            writer.write("<p>" + savedVote.getCreateDateTime().format(FORMATTER) + "  " + savedVote.getVote().getAbout() + "</p>");
+        for (SavedVote savedVote : sortedVoteInfos) {
+            writer.write("<p>" + savedVote.getCreateDateTime().format(FORMATTER) + "  " + savedVote.getAbout() + "</p>");
         }
     }
 }

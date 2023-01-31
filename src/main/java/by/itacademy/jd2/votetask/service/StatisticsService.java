@@ -1,9 +1,8 @@
 package by.itacademy.jd2.votetask.service;
 
-import by.itacademy.jd2.votetask.dto.Genre;
-import by.itacademy.jd2.votetask.dto.Performer;
-import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
-import by.itacademy.jd2.votetask.dto.VoteDto;
+import by.itacademy.jd2.votetask.domain.Genre;
+import by.itacademy.jd2.votetask.domain.Performer;
+import by.itacademy.jd2.votetask.domain.SavedVote;
 import by.itacademy.jd2.votetask.dto.VoteResultDto;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
 import by.itacademy.jd2.votetask.service.api.IPerformerService;
@@ -31,22 +30,21 @@ public class StatisticsService implements IStatisticsService {
     }
 
     public VoteResultDto getVoteResult() {
-        List<SavedVoteDTO> voteDtoList = voteService.getVotes();
+        List<SavedVote> voteDtoList = voteService.getVotes();
         Map<String, Long> sortedPerformerVotes = getSortedPerformerVotes(voteDtoList);
         Map<String, Long> sortedGenreVotes = getSortedGenreVotes(voteDtoList);
-        List<SavedVoteDTO> sortedVoteInfos = getSortedVoteInfos(voteDtoList);
+        List<SavedVote> sortedVoteInfos = getSortedVoteInfos(voteDtoList);
         return new VoteResultDto(sortedPerformerVotes, sortedGenreVotes, sortedVoteInfos);
     }
 
 
-    private Map<String, Long> getSortedPerformerVotes(List<SavedVoteDTO> voteDtoList) {
+    private Map<String, Long> getSortedPerformerVotes(List<SavedVote> voteDtoList) {
         List<Performer> performers = performerService.getPerformers();
         Map<Long, String> performerNamesMap = performers.stream()
                 .collect(Collectors.toMap(Performer::getId, Performer::getNickName));
 
         Map<Long, Long> idVotesForPerformers = voteDtoList.stream()
-                .map(SavedVoteDTO::getVote)
-                .map(VoteDto::getVoiceForPerformer)
+                .map(SavedVote::getVoiceForPerformer)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         Map<String, Long> nameVotesForPerformers = idVotesForPerformers.entrySet().stream()
@@ -55,14 +53,13 @@ public class StatisticsService implements IStatisticsService {
         return SortMapUtil.sortByValue(nameVotesForPerformers);
     }
 
-    private Map<String, Long> getSortedGenreVotes(List<SavedVoteDTO> voteDtoList) {
+    private Map<String, Long> getSortedGenreVotes(List<SavedVote> voteDtoList) {
         List<Genre> genres = genreService.getGenres();
         Map<Long, String> genresTitleMap = genres.stream()
                 .collect(Collectors.toMap(Genre::getId, Genre::getTitle));
 
         Map<Long, Long> idVotesForGenres = voteDtoList.stream()
-                .map(SavedVoteDTO::getVote)
-                .map(VoteDto::getVoicesForGenres)
+                .map(SavedVote::getVoicesForGenres)
                 .flatMap(Collection::stream)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
@@ -72,7 +69,7 @@ public class StatisticsService implements IStatisticsService {
         return SortMapUtil.sortByValue(nameVotesForPerformers);
     }
 
-    private List<SavedVoteDTO> getSortedVoteInfos(List<SavedVoteDTO> voteDtoList) {
+    private List<SavedVote> getSortedVoteInfos(List<SavedVote> voteDtoList) {
         voteDtoList.sort(new SavedVoteComparatorByTime());
         return voteDtoList;
     }

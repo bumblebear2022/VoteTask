@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.dto;
+package by.itacademy.jd2.votetask.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -17,6 +17,10 @@ public class Performer {
     private  String nickName;
 
     public Performer() {
+    }
+
+    public Performer(Long id) {
+        this.id = id;
     }
 
     public Performer(Long id, String nickName) {

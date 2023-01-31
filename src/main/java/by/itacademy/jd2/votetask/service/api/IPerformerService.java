@@ -1,15 +1,16 @@
 package by.itacademy.jd2.votetask.service.api;
 
-import by.itacademy.jd2.votetask.dto.Performer;
+import by.itacademy.jd2.votetask.domain.Performer;
+import by.itacademy.jd2.votetask.dto.PerformerDto;
 
 import java.util.List;
 
 public interface IPerformerService {
     List<Performer> getContent();
 
-    void create(Performer performer);
+    void create(PerformerDto performerDto);
 
-    void update(Performer performer);
+    void update(PerformerDto performerDto);
 
     boolean delete(Long id);
 
