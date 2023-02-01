@@ -45,6 +45,7 @@ public class StatisticsService implements IStatisticsService {
 
         Map<Long, Long> idVotesForPerformers = voteDtoList.stream()
                 .map(SavedVote::getVoiceForPerformer)
+                .map(Performer::getId)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         Map<String, Long> nameVotesForPerformers = idVotesForPerformers.entrySet().stream()
@@ -61,6 +62,7 @@ public class StatisticsService implements IStatisticsService {
         Map<Long, Long> idVotesForGenres = voteDtoList.stream()
                 .map(SavedVote::getVoicesForGenres)
                 .flatMap(Collection::stream)
+                .map(Genre::getId)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         Map<String, Long> nameVotesForPerformers = idVotesForGenres.entrySet().stream()

@@ -68,7 +68,7 @@ public class MailService implements IMailService {
         String voteTime = createDateTime.format(format);
 
 
-        Long voiceForPerformer = savedVote.getVoiceForPerformer();
+        Long voiceForPerformer = savedVote.getVoiceForPerformer().getId();
         List<Performer> performerList = performerService.getContent();
         String performer = performerList.stream()
                 .filter(performerDTO -> performerDTO.getId().equals(voiceForPerformer))
@@ -97,9 +97,9 @@ public class MailService implements IMailService {
         Map<Long, Genre> genresMap = genresList.stream()
                 .collect(Collectors.toMap(Genre::getId, genre -> genre));
 
-        List<Long> voicesForGenres = vote.getVoicesForGenres();
+        List<Genre> voicesForGenres = vote.getVoicesForGenres();
         List<String> votedGenresList = voicesForGenres.stream()
-                .map(genresMap::get)
+                .map(x-> genresMap.get(x.getId()))
                 .map(Genre::getTitle)
                 .collect(Collectors.toList());
 

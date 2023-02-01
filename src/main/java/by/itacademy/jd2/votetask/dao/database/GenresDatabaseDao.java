@@ -4,6 +4,7 @@ import by.itacademy.jd2.votetask.dao.api.IGenresDao;
 import by.itacademy.jd2.votetask.domain.Genre;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -11,14 +12,15 @@ import java.util.List;
 
 public class GenresDatabaseDao implements IGenresDao {
 
-    private final EntityManager entityManager;
+    private final EntityManagerFactory factory;
 
-    public GenresDatabaseDao(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public GenresDatabaseDao(EntityManagerFactory factory) {
+        this.factory = factory;
     }
 
     @Override
     public void create(Genre genre) {
+        EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
             entityManager.persist(genre);
@@ -33,6 +35,7 @@ public class GenresDatabaseDao implements IGenresDao {
 
     @Override
     public List<Genre> readAll() {
+        EntityManager entityManager = factory.createEntityManager();
         List<Genre> resultList = null;
         try {
             entityManager.getTransaction().begin();
@@ -52,6 +55,7 @@ public class GenresDatabaseDao implements IGenresDao {
 
     @Override
     public boolean delete(Genre genre) {
+        EntityManager entityManager = factory.createEntityManager();
         boolean isVoted = isVotedForGenre(genre.getId());
         if (isVoted) {
             return false;
@@ -70,6 +74,7 @@ public class GenresDatabaseDao implements IGenresDao {
 
     @Override
     public void update(Genre genre) {
+        EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
             entityManager.merge(genre);
@@ -83,17 +88,17 @@ public class GenresDatabaseDao implements IGenresDao {
 
     @Override
     public boolean exist(Long id) {
-        boolean contains = false;
+        EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            contains = entityManager.contains(id);
+            Genre genre = entityManager.find(Genre.class, id);
             entityManager.getTransaction().commit();
+            return genre != null;
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
             entityManager.close();
         }
-        return contains;
     }
 
 

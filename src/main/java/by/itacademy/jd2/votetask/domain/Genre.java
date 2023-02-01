@@ -2,23 +2,23 @@ package by.itacademy.jd2.votetask.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Objects;
 @Entity
-@Table(name = "data.genres")
+@Table(name = "genres")
 public class Genre {
     @Id
-    @GeneratedValue(generator="increment")
+    @GeneratedValue(generator="increment" )
     @GenericGenerator(name="increment", strategy = "increment")
     private Long id;
+    @Column(name = "name")
     private String title;
-
     public Genre() {
     }
-
     public Genre(Long id) {
         this.id = id;
     }

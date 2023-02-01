@@ -3,26 +3,27 @@ package by.itacademy.jd2.votetask.dao.database;
 import by.itacademy.jd2.votetask.dao.api.IVoteDao;
 import by.itacademy.jd2.votetask.domain.SavedVote;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class VoteDatabaseDao implements IVoteDao {
-    private final EntityManager entityManager;
+    private final EntityManagerFactory factory;
 
-    public VoteDatabaseDao(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public VoteDatabaseDao(EntityManagerFactory factory) {
+        this.factory = factory;
     }
 
     @Override
     public void create(SavedVote savedVote) {
+        EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
             entityManager.persist(savedVote);
-            entityManager.flush();
-            Long id = savedVote.getId();
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -31,9 +32,9 @@ public class VoteDatabaseDao implements IVoteDao {
         }
     }
 
-
     @Override
     public List<SavedVote> readAll() {
+        EntityManager entityManager = factory.createEntityManager();
         List<SavedVote> resultList = null;
         try {
             entityManager.getTransaction().begin();
@@ -41,7 +42,12 @@ public class VoteDatabaseDao implements IVoteDao {
             CriteriaQuery<SavedVote> query = criteriaBuilder.createQuery(SavedVote.class);
             Root<SavedVote> root = query.from(SavedVote.class);
             CriteriaQuery<SavedVote> select = query.select(root);
-            resultList = entityManager.createQuery(select).getResultList();
+            EntityGraph<SavedVote> entityGraph = entityManager.createEntityGraph(SavedVote.class);
+            entityGraph.addAttributeNodes("voiceForPerformer","voicesForGenres");
+            resultList = entityManager
+                    .createQuery(select)
+                    .setHint("javax.persistence.fetchgraph",entityGraph)
+                    .getResultList();
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -54,6 +60,7 @@ public class VoteDatabaseDao implements IVoteDao {
 
     @Override
     public boolean delete(SavedVote savedVote) {
+        EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
             entityManager.remove(savedVote);

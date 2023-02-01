@@ -19,8 +19,8 @@ public class VoteMemoryDao implements IVoteDao {
     @Override
     public void create(SavedVote savedVote) {
         savedVotes.add(savedVote);
-        votedGenres.addAll(savedVote.getVoicesForGenres());
-        votedPerformers.add(savedVote.getVoiceForPerformer());
+//        votedGenres.addAll(savedVote.getVoicesForGenres());
+//        votedPerformers.add(savedVote.getVoiceForPerformer());
     }
     @Override
     public List<SavedVote> readAll() {

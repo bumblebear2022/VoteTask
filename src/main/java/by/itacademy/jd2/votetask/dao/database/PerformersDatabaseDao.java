@@ -4,20 +4,22 @@ import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
 import by.itacademy.jd2.votetask.domain.Performer;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class PerformersDatabaseDao implements IPerformersDao {
-    private final EntityManager entityManager;
+    private final EntityManagerFactory factory;
 
-    public PerformersDatabaseDao(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public PerformersDatabaseDao(EntityManagerFactory factory) {
+        this.factory = factory;
     }
 
     @Override
     public void create(Performer performer) {
+        EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
             entityManager.persist(performer);
@@ -31,6 +33,7 @@ public class PerformersDatabaseDao implements IPerformersDao {
 
     @Override
     public List<Performer> readAll() {
+        EntityManager entityManager = factory.createEntityManager();
         List<Performer> resultList = null;
         try {
             entityManager.getTransaction().begin();
@@ -50,6 +53,7 @@ public class PerformersDatabaseDao implements IPerformersDao {
 
     @Override
     public boolean delete(Performer performer) {
+        EntityManager entityManager = factory.createEntityManager();
         boolean isVoted = isVotedForPerformer(performer.getId());
         if (isVoted) {
             return false;
@@ -68,6 +72,7 @@ public class PerformersDatabaseDao implements IPerformersDao {
 
     @Override
     public void update(Performer performer) {
+        EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
             entityManager.merge(performer);
@@ -81,17 +86,17 @@ public class PerformersDatabaseDao implements IPerformersDao {
 
     @Override
     public boolean exist(Long id) {
-        boolean contains = false;
+        EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            contains = entityManager.contains(id);
+            Performer performer = entityManager.find(Performer.class, id);
             entityManager.getTransaction().commit();
+            return performer != null;
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
             entityManager.close();
         }
-        return contains;
     }
 
 

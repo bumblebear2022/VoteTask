@@ -1,6 +1,8 @@
 package by.itacademy.jd2.votetask.service;
 
 import by.itacademy.jd2.votetask.dao.api.IVoteDao;
+import by.itacademy.jd2.votetask.domain.Genre;
+import by.itacademy.jd2.votetask.domain.Performer;
 import by.itacademy.jd2.votetask.domain.SavedVote;
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.exceptions.InvalidVoteException;
@@ -16,6 +18,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 public class VoteService implements IVoteService {
     public static final String GENRES_DUPLICATED = "Genres duplicated";
@@ -61,10 +64,15 @@ public class VoteService implements IVoteService {
 
     private SavedVote mapDtoToEntity(VoteDto voteDto) {
         List<Long> voicesForGenres = voteDto.getVoicesForGenres();
+        List<Genre> voicesForGenreEntities = voicesForGenres.stream()
+                .map(Genre::new)
+                .collect(Collectors.toList());
+
         Long voiceForPerformer = voteDto.getVoiceForPerformer();
+
         String about = voteDto.getAbout();
         String email = voteDto.getEmail();
-        return new SavedVote(null,voiceForPerformer,voicesForGenres,about,email);
+        return new SavedVote(null,new Performer(voiceForPerformer),voicesForGenreEntities,about,email);
     }
 
     private void validate(VoteDto voteDto) {

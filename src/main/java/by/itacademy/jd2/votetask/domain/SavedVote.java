@@ -2,33 +2,43 @@ package by.itacademy.jd2.votetask.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Entity
-@Table( name = "data.votes" )
+@Table(name = "votes")
 public class SavedVote {
     @Id
-    @GeneratedValue(generator="increment")
-    @GenericGenerator(name="increment", strategy = "increment")
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     private Long id;
+    @Column(name = "date_time")
     private LocalDateTime createDateTime;
-    @OneToMany
-    private Long voiceForPerformer;
-    @ManyToMany
-    private List<Long> voicesForGenres;
+    @Column(name = "about")
     private String about;
+    @Column(name = "email")
     private String email;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinTable(name = "vote_performer", joinColumns = @JoinColumn(name = "id_vote"), inverseJoinColumns = @JoinColumn(name = "id_performer"))
+    private Performer voiceForPerformer;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "vote_genre", joinColumns = @JoinColumn(name = "id_vote"), inverseJoinColumns = @JoinColumn(name = "id_genre"))
+    private List<Genre> voicesForGenres;
 
     public SavedVote() {
     }
 
-    public SavedVote(Long id, Long voiceForPerformer, List<Long> voicesForGenres, String about, String email) {
+    public SavedVote(Long id, Performer voiceForPerformer, List<Genre> voicesForGenres, String about, String email) {
         this.id = id;
         this.createDateTime = LocalDateTime.now();
         this.voiceForPerformer = voiceForPerformer;
@@ -53,19 +63,19 @@ public class SavedVote {
         this.createDateTime = createDateTime;
     }
 
-    public Long getVoiceForPerformer() {
+    public Performer getVoiceForPerformer() {
         return voiceForPerformer;
     }
 
-    public void setVoiceForPerformer(Long voiceForPerformer) {
+    public void setVoiceForPerformer(Performer voiceForPerformer) {
         this.voiceForPerformer = voiceForPerformer;
     }
 
-    public List<Long> getVoicesForGenres() {
+    public List<Genre> getVoicesForGenres() {
         return voicesForGenres;
     }
 
-    public void setVoicesForGenres(List<Long> voicesForGenres) {
+    public void setVoicesForGenres(List<Genre> voicesForGenres) {
         this.voicesForGenres = voicesForGenres;
     }
 
@@ -84,5 +94,4 @@ public class SavedVote {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }

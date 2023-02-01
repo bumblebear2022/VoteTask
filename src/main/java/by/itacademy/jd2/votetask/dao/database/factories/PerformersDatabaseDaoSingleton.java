@@ -2,7 +2,7 @@ package by.itacademy.jd2.votetask.dao.database.factories;
 
 import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
 import by.itacademy.jd2.votetask.dao.database.PerformersDatabaseDao;
-import by.itacademy.jd2.votetask.dao.database.hibernate.EntityManagerHolder;
+import by.itacademy.jd2.votetask.dao.database.hibernate.EntityManagerFactoryHolder;
 
 public class PerformersDatabaseDaoSingleton {
     private volatile static IPerformersDao INSTANCE;
@@ -14,7 +14,7 @@ public class PerformersDatabaseDaoSingleton {
         if(INSTANCE == null){
             synchronized (PerformersDatabaseDaoSingleton.class){
                 if(INSTANCE == null){
-                            INSTANCE = new PerformersDatabaseDao(EntityManagerHolder.getInstance());
+                            INSTANCE = new PerformersDatabaseDao(EntityManagerFactoryHolder.getInstance());
                 }
             }
         }
