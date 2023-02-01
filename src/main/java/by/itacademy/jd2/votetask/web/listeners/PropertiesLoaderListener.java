@@ -17,8 +17,7 @@ public class PropertiesLoaderListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
 //        File configDirectory = new File(System.getenv("/opt/tomcat/conf"));
-//        File propertiesSrc = new File("/opt/tomcat/conf" + "/application.properties");
-        File propertiesSrc = new File("C:/Program Files/Apache Software Foundation/Tomcat 8.5/apache-tomcat-8.5.84/webapps/VoteTask/WEB-INF/classes/application.properties");
+        File propertiesSrc = new File("/opt/tomcat/conf" + "/application.properties");
         EntityManagerFactoryHolder.getInstance();
         try {
             Properties properties = new Properties();

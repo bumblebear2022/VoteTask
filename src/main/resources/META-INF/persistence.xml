@@ -8,16 +8,10 @@
         <class>by.itacademy.jd2.votetask.domain.SavedVote</class>
 
         <properties>
-<!--            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>-->
-<!--            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://10.110.0.4:5432/votedb"/>-->
-<!--            <property name="javax.persistence.jdbc.user" value="vote_user"/>-->
-<!--            <property name="javax.persistence.jdbc.password" value="qwerty123"/>-->
-
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5777/voteDB"/>
-            <property name="javax.persistence.jdbc.user" value="postgres"/>
-            <property name="javax.persistence.jdbc.password" value="Aries1994"/>
-
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://10.110.0.4:5432/votedb"/>
+            <property name="javax.persistence.jdbc.user" value="vote_user"/>
+            <property name="javax.persistence.jdbc.password" value="qwerty123"/>
 
             <property name="hibernate.default_schema" value="data"/>
 
