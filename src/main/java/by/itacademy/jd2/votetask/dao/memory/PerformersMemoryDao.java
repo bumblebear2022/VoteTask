@@ -2,7 +2,7 @@ package by.itacademy.jd2.votetask.dao.memory;
 
 import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
 import by.itacademy.jd2.votetask.dao.database.factories.VoteDatabaseDaoSingleton;
-import by.itacademy.jd2.votetask.dto.PerformerDTO;
+import by.itacademy.jd2.votetask.domain.Performer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,39 +10,39 @@ import java.util.List;
 import java.util.Map;
 
 public class PerformersMemoryDao implements IPerformersDao {
-    private final Map<Long, PerformerDTO> performers = new HashMap<>();
+    private final Map<Long, Performer> performers = new HashMap<>();
 
     private long idCounter = 4L;
 
     public PerformersMemoryDao() {
-        performers.put(1L, new PerformerDTO(1L, "Performer 1"));
-        performers.put(2L, new PerformerDTO(2L, "Performer 2"));
-        performers.put(3L, new PerformerDTO(3L, "Performer 3"));
-        performers.put(4L, new PerformerDTO(4L, "Performer 4"));
+        performers.put(1L, new Performer(1L, "Performer 1"));
+        performers.put(2L, new Performer(2L, "Performer 2"));
+        performers.put(3L, new Performer(3L, "Performer 3"));
+        performers.put(4L, new Performer(4L, "Performer 4"));
     }
 
     @Override
-    public void create(PerformerDTO performerDTO) {
-        PerformerDTO bufferedDTO = new PerformerDTO(createId(), performerDTO.getNickName());
+    public void create(Performer performer) {
+        Performer bufferedDTO = new Performer(createId(), performer.getNickName());
         performers.put(bufferedDTO.getId(), bufferedDTO);
     }
 
     @Override
-    public List<PerformerDTO> readAll() {
+    public List<Performer> readAll() {
         return new ArrayList<>(performers.values());
     }
 
     @Override
-    public void update(PerformerDTO performerDTO) {
-        performers.put(performerDTO.getId(), performerDTO);
+    public void update(Performer performer) {
+        performers.put(performer.getId(), performer);
     }
 
     @Override
-    public boolean delete(Long id) {
-        if (VoteDatabaseDaoSingleton.getInstance().isVotedPerformer(id)) {
+    public boolean delete(Performer performer) {
+        if (VoteDatabaseDaoSingleton.getInstance().isVotedPerformer(performer.getId())) {
             return false;
         } else {
-            performers.remove(id);
+            performers.remove(performer.getId());
             return true;
         }
     }

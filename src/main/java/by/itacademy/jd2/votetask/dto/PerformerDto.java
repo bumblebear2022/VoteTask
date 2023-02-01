@@ -2,12 +2,11 @@ package by.itacademy.jd2.votetask.dto;
 
 import java.util.Objects;
 
-public class PerformerDTO {
+public class PerformerDto {
+    private  Long id;
+    private  String nickName;
 
-    private final Long id;
-    private final String nickName;
-
-    public PerformerDTO(Long id, String nickName) {
+    public PerformerDto(Long id, String nickName) {
         this.id = id;
         this.nickName = nickName;
     }
@@ -24,19 +23,20 @@ public class PerformerDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PerformerDTO that = (PerformerDTO) o;
-        return Objects.equals(nickName, that.nickName);
+        PerformerDto that = (PerformerDto) o;
+        return Objects.equals(id, that.id) && Objects.equals(nickName, that.nickName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nickName);
+        return Objects.hash(id, nickName);
     }
 
     @Override
     public String toString() {
-        return "PerformerDTO{" +
-                "nickName='" + nickName + '\'' +
+        return "PerformerDto{" +
+                "id=" + id +
+                ", nickName='" + nickName + '\'' +
                 '}';
     }
 }

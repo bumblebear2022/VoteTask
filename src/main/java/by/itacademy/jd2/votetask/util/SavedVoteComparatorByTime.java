@@ -1,11 +1,11 @@
 package by.itacademy.jd2.votetask.util;
 
-import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
+import by.itacademy.jd2.votetask.domain.SavedVote;
 
 import java.util.Comparator;
 
-public class SavedVoteComparatorByTime implements Comparator<SavedVoteDTO> {
-    public int compare(SavedVoteDTO o1, SavedVoteDTO o2) {
+public class SavedVoteComparatorByTime implements Comparator<SavedVote> {
+    public int compare(SavedVote o1, SavedVote o2) {
         return o2.getCreateDateTime().compareTo(o1.getCreateDateTime());
     }
 }

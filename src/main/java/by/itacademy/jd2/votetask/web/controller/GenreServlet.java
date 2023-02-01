@@ -1,6 +1,7 @@
 package by.itacademy.jd2.votetask.web.controller;
 
-import by.itacademy.jd2.votetask.dto.GenreDTO;
+import by.itacademy.jd2.votetask.domain.Genre;
+import by.itacademy.jd2.votetask.dto.GenreDto;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
 import by.itacademy.jd2.votetask.service.factories.GenreServiceSingleton;
 
@@ -30,10 +31,10 @@ public class GenreServlet extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         PrintWriter writer = resp.getWriter();
 
-        List<GenreDTO> genreDtoList = genreService.getContent();
+        List<Genre> genreList = genreService.getContent();
         StringBuilder str = new StringBuilder();
-        for(GenreDTO genreDTO:genreDtoList){
-            str.append(genreDTO.getId()).append(" - ").append(genreDTO.getTitle()).append(BR);
+        for(Genre genre : genreList){
+            str.append(genre.getId()).append(" - ").append(genre.getTitle()).append(BR);
         }
         String htmlResult = HEADER + str + FOOTER;
         writer.write(htmlResult);
@@ -49,13 +50,13 @@ public class GenreServlet extends HttpServlet {
         switch (postAction) {
             case CREATE: {
                 String genreName = parameterMap.get(CREATE)[0];
-                genreService.create(new GenreDTO(null, genreName));
+                genreService.create(new GenreDto(null, genreName));
                 break;
             }
             case UPDATE: {
                 Long genreId =Long.valueOf(parameterMap.get(UPDATE)[0]);
                 String genreName = parameterMap.get("name")[0];
-                genreService.update(new GenreDTO(genreId, genreName));
+                genreService.update(new GenreDto(genreId, genreName));
                 break;
             }
             case DELETE: {

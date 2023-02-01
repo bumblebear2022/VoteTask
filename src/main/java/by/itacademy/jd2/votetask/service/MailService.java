@@ -1,9 +1,8 @@
 package by.itacademy.jd2.votetask.service;
 
-import by.itacademy.jd2.votetask.dto.GenreDTO;
-import by.itacademy.jd2.votetask.dto.PerformerDTO;
-import by.itacademy.jd2.votetask.dto.SavedVoteDTO;
-import by.itacademy.jd2.votetask.dto.VoteDto;
+import by.itacademy.jd2.votetask.domain.Genre;
+import by.itacademy.jd2.votetask.domain.Performer;
+import by.itacademy.jd2.votetask.domain.SavedVote;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
 import by.itacademy.jd2.votetask.service.api.IMailService;
 import by.itacademy.jd2.votetask.service.api.IPerformerService;
@@ -37,7 +36,7 @@ public class MailService implements IMailService {
     private final IGenreService genreService = GenreServiceSingleton.getInstance();
 
     @Override
-    public void sendMail(SavedVoteDTO savedVoteDTO) {
+    public void sendMail(SavedVote savedVote) {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", SMTP_SERVER);
         properties.put("mail.smtp.port", SMTP_PORT);
@@ -55,7 +54,7 @@ public class MailService implements IMailService {
 
             message.setSubject(SUBJECT);
 
-            String text = parseTextFromVote(savedVoteDTO);
+            String text = parseTextFromVote(savedVote);
             message.setText(text);
 
             Transport.send(message);
@@ -64,22 +63,22 @@ public class MailService implements IMailService {
         }
     }
 
-    private String parseTextFromVote(SavedVoteDTO savedVoteDTO) {
-        LocalDateTime createDateTime = savedVoteDTO.getCreateDateTime();
+    private String parseTextFromVote(SavedVote savedVote) {
+        LocalDateTime createDateTime = savedVote.getCreateDateTime();
         String voteTime = createDateTime.format(format);
 
-        VoteDto vote = savedVoteDTO.getVote();
-        Long voiceForPerformer = vote.getVoiceForPerformer();
-        List<PerformerDTO> performerDTOList = performerService.getContent();
-        String performer = performerDTOList.stream()
+
+        Long voiceForPerformer = savedVote.getVoiceForPerformer().getId();
+        List<Performer> performerList = performerService.getContent();
+        String performer = performerList.stream()
                 .filter(performerDTO -> performerDTO.getId().equals(voiceForPerformer))
-                .map(PerformerDTO::getNickName)
+                .map(Performer::getNickName)
                 .findAny().orElse("");
 
 
-        String joinedGenres = getVotedGenres(vote);
+        String joinedGenres = getVotedGenres(savedVote);
 
-        String about = vote.getAbout();
+        String about = savedVote.getAbout();
 
         StringBuffer emailText = new StringBuffer("Hi!\nToday in ");
         emailText.append(voteTime);
@@ -93,15 +92,15 @@ public class MailService implements IMailService {
         return emailText.toString();
     }
 
-    private String getVotedGenres(VoteDto vote) {
-        List<GenreDTO> genresList = genreService.getContent();
-        Map<Long, GenreDTO> genresMap = genresList.stream()
-                .collect(Collectors.toMap(GenreDTO::getId, genre -> genre));
+    private String getVotedGenres(SavedVote vote) {
+        List<Genre> genresList = genreService.getContent();
+        Map<Long, Genre> genresMap = genresList.stream()
+                .collect(Collectors.toMap(Genre::getId, genre -> genre));
 
-        List<Long> voicesForGenres = vote.getVoicesForGenres();
+        List<Genre> voicesForGenres = vote.getVoicesForGenres();
         List<String> votedGenresList = voicesForGenres.stream()
-                .map(genresMap::get)
-                .map(GenreDTO::getTitle)
+                .map(x-> genresMap.get(x.getId()))
+                .map(Genre::getTitle)
                 .collect(Collectors.toList());
 
         return String.join(", ", votedGenresList);

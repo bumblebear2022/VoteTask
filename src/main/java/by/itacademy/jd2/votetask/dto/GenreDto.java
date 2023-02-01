@@ -2,12 +2,11 @@ package by.itacademy.jd2.votetask.dto;
 
 import java.util.Objects;
 
-public class GenreDTO {
-
+public class GenreDto {
     private final Long id;
     private final String title;
 
-    public GenreDTO(Long id, String title) {
+    public GenreDto(Long id, String title) {
         this.id = id;
         this.title = title;
     }
@@ -24,19 +23,20 @@ public class GenreDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GenreDTO genreDTO = (GenreDTO) o;
-        return Objects.equals(title, genreDTO.title);
+        GenreDto genreDto = (GenreDto) o;
+        return Objects.equals(id, genreDto.id) && Objects.equals(title, genreDto.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title);
+        return Objects.hash(id, title);
     }
 
     @Override
     public String toString() {
-        return "GenreDTO{" +
-                "title='" + title + '\'' +
+        return "GenreDto{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 '}';
     }
 }

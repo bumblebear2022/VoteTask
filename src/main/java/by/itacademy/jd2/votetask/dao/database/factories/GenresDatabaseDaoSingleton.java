@@ -2,7 +2,7 @@ package by.itacademy.jd2.votetask.dao.database.factories;
 
 import by.itacademy.jd2.votetask.dao.api.IGenresDao;
 import by.itacademy.jd2.votetask.dao.database.GenresDatabaseDao;
-import by.itacademy.jd2.votetask.dao.database.datasource.DataSourceSingleton;
+import by.itacademy.jd2.votetask.dao.database.hibernate.EntityManagerFactoryHolder;
 
 public class GenresDatabaseDaoSingleton {
     private volatile static IGenresDao INSTANCE;
@@ -14,7 +14,7 @@ public class GenresDatabaseDaoSingleton {
         if(INSTANCE == null){
             synchronized (GenresDatabaseDaoSingleton.class){
                 if(INSTANCE == null){
-                            INSTANCE = new GenresDatabaseDao(DataSourceSingleton.getInstance());
+                            INSTANCE = new GenresDatabaseDao(EntityManagerFactoryHolder.getInstance());
                     }
                 }
             }
