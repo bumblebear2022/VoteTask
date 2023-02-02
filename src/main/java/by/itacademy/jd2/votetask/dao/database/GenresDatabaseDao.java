@@ -5,18 +5,20 @@ import by.itacademy.jd2.votetask.domain.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class GenresDatabaseDao implements IGenresDao {
-
+    private static final String CHECK_VOTES_FOR_GENRE = "SELECT EXISTS (SELECT * FROM data.vote_genre WHERE id_genre = ?);";
     private final EntityManagerFactory factory;
 
     public GenresDatabaseDao(EntityManagerFactory factory) {
         this.factory = factory;
     }
+
 
     @Override
     public void create(Genre genre) {
@@ -101,8 +103,19 @@ public class GenresDatabaseDao implements IGenresDao {
         }
     }
 
-
     private boolean isVotedForGenre(Long id) {
-        return false;
+        EntityManager entityManager = factory.createEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            Query query = entityManager.createNativeQuery(CHECK_VOTES_FOR_GENRE);
+            query.setParameter(1, id);
+            boolean isVoted =(boolean) query.getSingleResult();
+            entityManager.getTransaction().commit();
+            return isVoted;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
+        }
     }
 }

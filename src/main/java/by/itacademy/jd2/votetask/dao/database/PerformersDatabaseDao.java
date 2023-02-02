@@ -5,6 +5,7 @@ import by.itacademy.jd2.votetask.domain.Performer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -16,6 +17,7 @@ public class PerformersDatabaseDao implements IPerformersDao {
     public PerformersDatabaseDao(EntityManagerFactory factory) {
         this.factory = factory;
     }
+    private static final String CHECK_VOTES_FOR_PERFORMER = "SELECT EXISTS (SELECT * FROM data.vote_performer WHERE id_performer = ?);";
 
     @Override
     public void create(Performer performer) {
@@ -99,9 +101,19 @@ public class PerformersDatabaseDao implements IPerformersDao {
         }
     }
 
-
     private boolean isVotedForPerformer(Long id) {
-        return false;
+        EntityManager entityManager = factory.createEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            Query query = entityManager.createNativeQuery(CHECK_VOTES_FOR_PERFORMER);
+            query.setParameter(1, id);
+            boolean isVoted =(boolean) query.getSingleResult();
+            entityManager.getTransaction().commit();
+            return isVoted;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
+        }
     }
-
 }
