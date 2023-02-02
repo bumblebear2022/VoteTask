@@ -3,6 +3,7 @@
 Lappo Statkevich Truskouski
   ```
 ### Project Link: [current version](http://128.199.46.151/VoteTask-2.5.0/)
+### Project Link: [beta hibernate version](http://128.199.46.151/VoteTask-2.6.H/)
 
 
 
