@@ -54,15 +54,16 @@ public class PerformersDatabaseDao implements IPerformersDao {
     }
 
     @Override
-    public boolean delete(Performer performer) {
+    public boolean delete(Long id) {
         EntityManager entityManager = factory.createEntityManager();
-        boolean isVoted = isVotedForPerformer(performer.getId());
+        boolean isVoted = isVotedForPerformer(id);
         if (isVoted) {
             return false;
         }
         try {
             entityManager.getTransaction().begin();
-            entityManager.remove(performer);
+            Performer performerToRemove = entityManager.find(Performer.class, id);
+            entityManager.remove(performerToRemove);
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);

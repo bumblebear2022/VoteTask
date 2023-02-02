@@ -23,13 +23,14 @@ CREATE TABLE data.votes
     id bigserial,
     date_time timestamp without time zone NOT NULL,
     about text NOT NULL,
+    email text,
     PRIMARY KEY (id)
 );
 
 ALTER TABLE IF EXISTS data.votes
     OWNER to vote_user;
 
-CREATE TABLE IF NOT EXISTS data.vote_genre
+CREATE TABLE data.vote_genre
 (
     id_vote bigint NOT NULL,
     id_genre bigint NOT NULL,
@@ -41,12 +42,12 @@ CREATE TABLE IF NOT EXISTS data.vote_genre
         REFERENCES data.votes (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-)
+);
 
 ALTER TABLE IF EXISTS data.vote_genre
     OWNER to vote_user;
 
-CREATE TABLE IF NOT EXISTS data.vote_performer
+CREATE TABLE data.vote_performer
 (
     id_vote bigint NOT NULL,
     id_performer bigint NOT NULL,
@@ -58,7 +59,7 @@ CREATE TABLE IF NOT EXISTS data.vote_performer
         REFERENCES data.votes (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-)
+);
 
 ALTER TABLE IF EXISTS data.vote_performer
     OWNER to vote_user;

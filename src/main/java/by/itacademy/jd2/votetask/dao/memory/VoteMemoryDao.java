@@ -28,7 +28,7 @@ public class VoteMemoryDao implements IVoteDao {
     }
 
     @Override
-    public boolean delete(SavedVote savedVote) {
+    public boolean delete(Long id) {
        return false;
     }
 

@@ -48,8 +48,7 @@ public class GenreService implements IGenreService {
 
     @Override
     public boolean delete(Long id) {
-     Genre genre = new Genre(id);
-        return genresDao.delete(genre);
+        return genresDao.delete(id);
     }
 
     public List<Genre> getGenres() {

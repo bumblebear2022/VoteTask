@@ -59,11 +59,12 @@ public class VoteDatabaseDao implements IVoteDao {
 
 
     @Override
-    public boolean delete(SavedVote savedVote) {
+    public boolean delete(Long id) {
         EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            entityManager.remove(savedVote);
+            SavedVote voteToRemove = entityManager.find(SavedVote.class, id);
+            entityManager.remove(voteToRemove);
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -45,11 +45,11 @@ public class GenresMemoryDao implements IGenresDao {
     }
 
     @Override
-    public boolean delete(Genre genre) {
-        if (VoteDatabaseDaoSingleton.getInstance().isVotedGenre(genre.getId())) {
+    public boolean delete(Long id) {
+        if (VoteDatabaseDaoSingleton.getInstance().isVotedGenre(id)) {
             return false;
         } else {
-            genres.remove(genre.getId());
+            genres.remove(id);
             return true;
         }
     }

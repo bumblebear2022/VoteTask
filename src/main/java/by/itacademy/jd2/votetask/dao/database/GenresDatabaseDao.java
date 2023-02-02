@@ -56,22 +56,23 @@ public class GenresDatabaseDao implements IGenresDao {
     }
 
     @Override
-    public boolean delete(Genre genre) {
+    public boolean delete(Long id) {
         EntityManager entityManager = factory.createEntityManager();
-        boolean isVoted = isVotedForGenre(genre.getId());
+        boolean isVoted = isVotedForGenre(id);
         if (isVoted) {
             return false;
         }
         try {
             entityManager.getTransaction().begin();
-            entityManager.remove(genre);
+            Genre genreToRemove = entityManager.find(Genre.class, id);
+            entityManager.remove(genreToRemove);
             entityManager.getTransaction().commit();
+            return true;
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
             entityManager.close();
         }
-        return true;
     }
 
     @Override

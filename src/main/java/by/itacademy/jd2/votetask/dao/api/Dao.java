@@ -8,5 +8,5 @@ public interface Dao<T> {
 
     List<T> readAll();
 
-    boolean delete(T t);
+    boolean delete(Long id);
 }

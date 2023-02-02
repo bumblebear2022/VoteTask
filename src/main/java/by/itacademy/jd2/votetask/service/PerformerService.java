@@ -43,8 +43,7 @@ public class PerformerService implements IPerformerService {
 
     @Override
     public boolean delete(Long id) {
-        Performer performer = new Performer(id);
-        return performersDao.delete(performer);
+        return performersDao.delete(id);
     }
 
     public boolean exist(Long id) {

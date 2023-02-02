@@ -38,11 +38,11 @@ public class PerformersMemoryDao implements IPerformersDao {
     }
 
     @Override
-    public boolean delete(Performer performer) {
-        if (VoteDatabaseDaoSingleton.getInstance().isVotedPerformer(performer.getId())) {
+    public boolean delete(Long id) {
+        if (VoteDatabaseDaoSingleton.getInstance().isVotedPerformer(id)) {
             return false;
         } else {
-            performers.remove(performer.getId());
+            performers.remove(id);
             return true;
         }
     }
