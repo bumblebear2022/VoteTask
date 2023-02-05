@@ -16,8 +16,7 @@ public class VoteServiceSingleton {
                     instance = new VoteService(
                             SwitchDaoProvider.getInstance().voteDao(),
                             PerformerServiceSingleton.getInstance(),
-                            GenreServiceSingleton.getInstance(),
-                            MailServiceSingleton.getInstance());
+                            GenreServiceSingleton.getInstance());
                 }
             }
         }

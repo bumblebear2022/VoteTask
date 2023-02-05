@@ -14,7 +14,7 @@ public class EntityManagerFactoryHolder {
             synchronized (PerformerServiceSingleton.class) {
                 if (INSTANCE == null) {
 
-                    INSTANCE = Persistence.createEntityManagerFactory("votedb");
+                    INSTANCE = Persistence.createEntityManagerFactory("voting");
                 }
             }
         }

@@ -28,6 +28,10 @@ public class SavedVote {
     private String about;
     @Column(name = "email")
     private String email;
+    @Column(name = "isSent")
+    private boolean isSent;
+    @Column(name = "sendingAttempts")
+    private Long sendingAttempts;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "vote_performer", joinColumns = @JoinColumn(name = "id_vote"), inverseJoinColumns = @JoinColumn(name = "id_performer"))
     private Performer voiceForPerformer;
@@ -45,6 +49,8 @@ public class SavedVote {
         this.voicesForGenres = voicesForGenres;
         this.about = about;
         this.email = email;
+        this.isSent = false;
+        this.sendingAttempts = 0L;
     }
 
     public Long getId() {
@@ -93,5 +99,21 @@ public class SavedVote {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean getIsSent() {
+        return isSent;
+    }
+
+    public void setIsSent(boolean sent) {
+        isSent = sent;
+    }
+
+    public void setSendingAttempts(Long sendingAttempts) {
+        this.sendingAttempts = sendingAttempts;
+    }
+
+    public Long getSendingAttempts() {
+        return sendingAttempts;
     }
 }

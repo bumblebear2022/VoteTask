@@ -41,4 +41,14 @@ public class VoteMemoryDao implements IVoteDao {
     public boolean isVotedPerformer(Long id) {
         return votedPerformers.contains(id);
     }
+
+    @Override
+    public List<SavedVote> readUnsentVotes() {
+        return null;
+    }
+
+    @Override
+    public void updateSendingInfo(Long id, boolean isOk) {
+
+    }
 }

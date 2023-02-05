@@ -6,7 +6,7 @@ CREATE TABLE data.genres
 );
 
 ALTER TABLE IF EXISTS data.genres
-    OWNER to vote_user;
+    OWNER to postgres;
 
 CREATE TABLE data.performers
 (
@@ -16,7 +16,7 @@ CREATE TABLE data.performers
 );
 
 ALTER TABLE IF EXISTS data.performers
-    OWNER to vote_user;
+    OWNER to postgres;
 
 CREATE TABLE data.votes
 (
@@ -24,11 +24,13 @@ CREATE TABLE data.votes
     date_time timestamp without time zone NOT NULL,
     about text NOT NULL,
     email text,
+    isSent boolean,
+    sendingAttempts bigint,
     PRIMARY KEY (id)
 );
 
 ALTER TABLE IF EXISTS data.votes
-    OWNER to vote_user;
+    OWNER to postgres;
 
 CREATE TABLE data.vote_genre
 (
@@ -45,7 +47,7 @@ CREATE TABLE data.vote_genre
 );
 
 ALTER TABLE IF EXISTS data.vote_genre
-    OWNER to vote_user;
+    OWNER to postgres;
 
 CREATE TABLE data.vote_performer
 (
@@ -62,4 +64,4 @@ CREATE TABLE data.vote_performer
 );
 
 ALTER TABLE IF EXISTS data.vote_performer
-    OWNER to vote_user;
+    OWNER to postgres;
