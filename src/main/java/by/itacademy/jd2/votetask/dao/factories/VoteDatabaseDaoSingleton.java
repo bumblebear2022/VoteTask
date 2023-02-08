@@ -1,8 +1,8 @@
-package by.itacademy.jd2.votetask.dao.database.factories;
+package by.itacademy.jd2.votetask.dao.factories;
 
 import by.itacademy.jd2.votetask.dao.api.IVoteDao;
-import by.itacademy.jd2.votetask.dao.database.VoteDatabaseDao;
-import by.itacademy.jd2.votetask.dao.database.hibernate.EntityManagerFactoryHolder;
+import by.itacademy.jd2.votetask.dao.VoteDatabaseDao;
+import by.itacademy.jd2.votetask.dao.hibernate.EntityManagerFactoryHolder;
 
 public class VoteDatabaseDaoSingleton {
     private volatile static IVoteDao INSTANCE;

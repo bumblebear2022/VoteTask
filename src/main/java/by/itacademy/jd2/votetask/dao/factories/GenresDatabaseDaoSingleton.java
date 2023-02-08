@@ -1,8 +1,8 @@
-package by.itacademy.jd2.votetask.dao.database.factories;
+package by.itacademy.jd2.votetask.dao.factories;
 
 import by.itacademy.jd2.votetask.dao.api.IGenresDao;
-import by.itacademy.jd2.votetask.dao.database.GenresDatabaseDao;
-import by.itacademy.jd2.votetask.dao.database.hibernate.EntityManagerFactoryHolder;
+import by.itacademy.jd2.votetask.dao.GenresDatabaseDao;
+import by.itacademy.jd2.votetask.dao.hibernate.EntityManagerFactoryHolder;
 
 public class GenresDatabaseDaoSingleton {
     private volatile static IGenresDao INSTANCE;

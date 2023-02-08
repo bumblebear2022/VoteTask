@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.dao.database.hibernate;
+package by.itacademy.jd2.votetask.dao.hibernate;
 
 import by.itacademy.jd2.votetask.service.factories.PerformerServiceSingleton;
 

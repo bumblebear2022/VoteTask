@@ -1,6 +1,6 @@
 package by.itacademy.jd2.votetask.service.factories;
 
-import by.itacademy.jd2.votetask.dao.provider.SwitchDaoProvider;
+import by.itacademy.jd2.votetask.dao.factories.PerformersDatabaseDaoSingleton;
 import by.itacademy.jd2.votetask.service.PerformerService;
 
 public class PerformerServiceSingleton {
@@ -13,7 +13,7 @@ public class PerformerServiceSingleton {
         if(instance == null){
             synchronized (PerformerServiceSingleton.class){
                 if (instance == null) {
-                    instance = new PerformerService(SwitchDaoProvider.getInstance().performerDao());
+                    instance = new PerformerService(PerformersDatabaseDaoSingleton.getInstance());
                 }
             }
         }

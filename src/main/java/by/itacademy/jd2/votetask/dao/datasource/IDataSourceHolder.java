@@ -1,4 +1,4 @@
-package by.itacademy.jd2.votetask.dao.database.datasource;
+package by.itacademy.jd2.votetask.dao.datasource;
 
 import java.sql.Connection;
 import java.sql.SQLException;

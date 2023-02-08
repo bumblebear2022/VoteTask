@@ -1,7 +1,7 @@
 package by.itacademy.jd2.votetask.web.listeners;
 
-import by.itacademy.jd2.votetask.dao.database.datasource.DataSourceSingleton;
-import by.itacademy.jd2.votetask.dao.database.hibernate.EntityManagerFactoryHolder;
+import by.itacademy.jd2.votetask.dao.datasource.DataSourceSingleton;
+import by.itacademy.jd2.votetask.dao.hibernate.EntityManagerFactoryHolder;
 import by.itacademy.jd2.votetask.service.factories.AutoMailServiceSingleton;
 
 import javax.servlet.ServletContextEvent;
@@ -24,6 +24,7 @@ public class PropertiesLoaderListener implements ServletContextListener {
 //        File configDirectory = new File(System.getenv("/opt/tomcat/conf"));
         File propertiesSrc = new File(Objects.requireNonNull(PropertiesLoaderListener.class.getClassLoader()
                 .getResource("application.properties")).getPath());
+
         EntityManagerFactoryHolder.getInstance();
         try {
             Properties properties = new Properties();
