@@ -19,12 +19,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.9.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>42.5.1</version>
@@ -36,24 +30,9 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jstl</artifactId>
-      <version>1.2</version>
-    </dependency>
-    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-dbcp2</artifactId>
       <version>2.9.0</version>
-    </dependency>
-    <dependency>
-      <groupId>jakarta.mail</groupId>
-      <artifactId>jakarta.mail-api</artifactId>
-      <version>2.1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.angus</groupId>
-      <artifactId>jakarta.mail</artifactId>
-      <version>1.0.0</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -70,9 +49,6 @@
       <artifactId>spring-orm</artifactId>
       <version>5.3.25</version>
     </dependency>
-
-
-
   </dependencies>
 
   <build>
