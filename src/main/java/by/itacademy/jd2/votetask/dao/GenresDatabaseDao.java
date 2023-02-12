@@ -38,7 +38,7 @@ public class GenresDatabaseDao implements IGenresDao {
     @Override
     public List<Genre> readAll() {
         EntityManager entityManager = factory.createEntityManager();
-        List<Genre> resultList = null;
+        List<Genre> resultList;
         try {
             entityManager.getTransaction().begin();
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

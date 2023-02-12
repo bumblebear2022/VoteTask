@@ -3,15 +3,15 @@ package by.itacademy.jd2.votetask.service;
 import by.itacademy.jd2.votetask.domain.Genre;
 import by.itacademy.jd2.votetask.domain.Performer;
 import by.itacademy.jd2.votetask.domain.SavedVote;
-import by.itacademy.jd2.votetask.service.api.*;
-import by.itacademy.jd2.votetask.service.factories.GenreServiceSingleton;
-import by.itacademy.jd2.votetask.service.factories.PerformerServiceSingleton;
-import by.itacademy.jd2.votetask.service.factories.VoteServiceSingleton;
+import by.itacademy.jd2.votetask.service.api.IAutoMailService;
+import by.itacademy.jd2.votetask.service.api.IGenreService;
+import by.itacademy.jd2.votetask.service.api.IPerformerService;
+import by.itacademy.jd2.votetask.service.api.IVoteService;
 import by.itacademy.jd2.votetask.util.MailDataSourceHolder;
-import jakarta.mail.*;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,10 +24,10 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class AutoMailService implements IMailService, IAutoMailService {
+public class AutoMailService implements IAutoMailService {
 
-    public static final String SMTP_SERVER = "smtp.mail.ru";
-    public static final String SMTP_PORT = "465";
+    public static final String SMTP_SERVER = "smtp.gmail.com";
+    public static final String SMTP_PORT = "587";
     public static final String SUBJECT = "Group 2 voting app";
 
     public final String MAIL_LOGIN;
@@ -35,21 +35,24 @@ public class AutoMailService implements IMailService, IAutoMailService {
     public final String MAIL_PASSWORD;
     private final DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    private final IPerformerService performerService = PerformerServiceSingleton.getInstance();
+    private final IPerformerService performerService;
 
-    private final IGenreService genreService = GenreServiceSingleton.getInstance();
+    private final IGenreService genreService;
 
-    private final IVoteService voteService = VoteServiceSingleton.getInstance();
+    private final IVoteService voteService;
 
     private final ScheduledThreadPoolExecutor threadPoolExecutor;
 
     private boolean stopAutoSending = false;
 
-    public AutoMailService() {
+    public AutoMailService(IPerformerService performerService, IGenreService genreService, IVoteService voteService) {
+        this.performerService = performerService;
+        this.genreService = genreService;
+        this.voteService = voteService;
         MAIL_LOGIN = MailDataSourceHolder.getMailData().get("username");
         MAIL_PASSWORD = MailDataSourceHolder.getMailData().get("password");
         threadPoolExecutor = new ScheduledThreadPoolExecutor(4);
-        //new Thread(this::startSendingMail).start();
+        new Thread(this::startSendingMail).start();
     }
 
     private void startSendingMail() {
@@ -98,9 +101,9 @@ public class AutoMailService implements IMailService, IAutoMailService {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", SMTP_SERVER);
         properties.put("mail.smtp.port", SMTP_PORT);
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.socketFactory.port", SMTP_PORT);
-        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.auth", true);
+        properties.put("mail.smtp.ssl.trust", SMTP_SERVER);
+        properties.put("mail.smtp.starttls.enable", "true");
 
         Session session = Session.getInstance(properties, getAuthenticator());
 
@@ -115,12 +118,11 @@ public class AutoMailService implements IMailService, IAutoMailService {
             String text = parseTextFromVote(savedVote);
             message.setText(text);
 
-            //Transport.send(message);
-            throw new MessagingException();
+            Transport.send(message);
         } catch (MessagingException e) {
             return false;
         }
-        //return true;
+        return true;
     }
 
     private String parseTextFromVote(SavedVote savedVote) {
@@ -139,7 +141,7 @@ public class AutoMailService implements IMailService, IAutoMailService {
 
         String about = savedVote.getAbout();
 
-        StringBuffer emailText = new StringBuffer("Hi!\nToday in ");
+        StringBuffer emailText = new StringBuffer("Hi!\nAt ");
         emailText.append(voteTime);
         emailText.append(" you voted for Performer: ");
         emailText.append(performer);

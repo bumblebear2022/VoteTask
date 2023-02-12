@@ -36,7 +36,7 @@ public class PerformersDatabaseDao implements IPerformersDao {
     @Override
     public List<Performer> readAll() {
         EntityManager entityManager = factory.createEntityManager();
-        List<Performer> resultList = null;
+        List<Performer> resultList;
         try {
             entityManager.getTransaction().begin();
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

@@ -2,8 +2,9 @@ package by.itacademy.jd2.votetask.web.controller;
 
 import by.itacademy.jd2.votetask.domain.Performer;
 import by.itacademy.jd2.votetask.dto.PerformerDto;
+import by.itacademy.jd2.votetask.service.PerformerService;
 import by.itacademy.jd2.votetask.service.api.IPerformerService;
-import by.itacademy.jd2.votetask.service.factories.PerformerServiceSingleton;
+import by.itacademy.jd2.votetask.util.ApplicationContextHolder;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +25,7 @@ public class PerformerServlet extends HttpServlet {
     private final String UPDATE = "update";
     private final String DELETE = "delete";
 
-    private final IPerformerService performerService = PerformerServiceSingleton.getInstance();
+    private final IPerformerService performerService = ApplicationContextHolder.getContext().getBean("PerformerServiceBean", PerformerService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

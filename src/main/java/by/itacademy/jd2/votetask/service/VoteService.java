@@ -1,6 +1,7 @@
 package by.itacademy.jd2.votetask.service;
 
 import by.itacademy.jd2.votetask.dao.api.IVoteDao;
+import by.itacademy.jd2.votetask.domain.Email;
 import by.itacademy.jd2.votetask.domain.Genre;
 import by.itacademy.jd2.votetask.domain.Performer;
 import by.itacademy.jd2.votetask.domain.SavedVote;
@@ -68,7 +69,7 @@ public class VoteService implements IVoteService {
 
         String about = voteDto.getAbout();
         String email = voteDto.getEmail();
-        return new SavedVote(null,new Performer(voiceForPerformer),voicesForGenreEntities,about,email);
+        return new SavedVote(null, new Performer(voiceForPerformer), voicesForGenreEntities, about, new Email(email));
     }
 
     private void validate(VoteDto voteDto) {

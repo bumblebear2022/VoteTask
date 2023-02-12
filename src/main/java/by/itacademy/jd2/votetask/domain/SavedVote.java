@@ -2,16 +2,7 @@ package by.itacademy.jd2.votetask.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,12 +17,6 @@ public class SavedVote {
     private LocalDateTime createDateTime;
     @Column(name = "about")
     private String about;
-    @Column(name = "email")
-    private String email;
-    @Column(name = "isSent")
-    private boolean isSent;
-    @Column(name = "sendingAttempts")
-    private Long sendingAttempts;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "vote_performer", joinColumns = @JoinColumn(name = "id_vote"), inverseJoinColumns = @JoinColumn(name = "id_performer"))
     private Performer voiceForPerformer;
@@ -39,18 +24,21 @@ public class SavedVote {
     @JoinTable(name = "vote_genre", joinColumns = @JoinColumn(name = "id_vote"), inverseJoinColumns = @JoinColumn(name = "id_genre"))
     private List<Genre> voicesForGenres;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JoinTable(name = "vote_email", joinColumns = @JoinColumn(name = "id_vote"), inverseJoinColumns = @JoinColumn(name = "id_email"))
+    private Email email;
+
+
     public SavedVote() {
     }
 
-    public SavedVote(Long id, Performer voiceForPerformer, List<Genre> voicesForGenres, String about, String email) {
+    public SavedVote(Long id, Performer voiceForPerformer, List<Genre> voicesForGenres, String about, Email email) {
         this.id = id;
         this.createDateTime = LocalDateTime.now();
         this.voiceForPerformer = voiceForPerformer;
         this.voicesForGenres = voicesForGenres;
         this.about = about;
         this.email = email;
-        this.isSent = false;
-        this.sendingAttempts = 0L;
     }
 
     public Long getId() {
@@ -94,26 +82,26 @@ public class SavedVote {
     }
 
     public String getEmail() {
-        return email;
+        return email.getEmail();
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email.setEmail(email);
     }
 
     public boolean getIsSent() {
-        return isSent;
+        return email.getIsSent();
     }
 
     public void setIsSent(boolean sent) {
-        isSent = sent;
+         email.setIsSent(sent);
     }
 
     public void setSendingAttempts(Long sendingAttempts) {
-        this.sendingAttempts = sendingAttempts;
+        email.setSendingAttempts(sendingAttempts);
     }
 
     public Long getSendingAttempts() {
-        return sendingAttempts;
+        return email.getSendingAttempts();
     }
 }
