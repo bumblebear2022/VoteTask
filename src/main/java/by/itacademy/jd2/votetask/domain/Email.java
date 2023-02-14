@@ -21,6 +21,9 @@ public class Email {
     @Column(name = "sendingAttempts")
     private Long sendingAttempts;
 
+    @Version
+    private Integer version;
+
     public Email() {
     }
 

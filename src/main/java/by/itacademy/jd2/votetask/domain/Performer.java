@@ -13,6 +13,10 @@ public class Performer {
     private  Long id;
     @Column(name = "name")
     private  String nickName;
+
+    @Version
+    private Integer version;
+
     public Performer() {
     }
     public Performer(Long id) {

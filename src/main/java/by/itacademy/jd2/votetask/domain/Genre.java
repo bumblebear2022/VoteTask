@@ -13,6 +13,9 @@ public class Genre {
     private Long id;
     @Column(name = "name")
     private String title;
+
+    @Version
+    private Integer version;
     public Genre() {
     }
     public Genre(Long id) {

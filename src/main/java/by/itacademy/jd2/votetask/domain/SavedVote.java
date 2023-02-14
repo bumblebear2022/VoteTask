@@ -28,6 +28,9 @@ public class SavedVote {
     @JoinTable(name = "vote_email", joinColumns = @JoinColumn(name = "id_vote"), inverseJoinColumns = @JoinColumn(name = "id_email"))
     private Email email;
 
+    @Version
+    private Integer version;
+
 
     public SavedVote() {
     }
