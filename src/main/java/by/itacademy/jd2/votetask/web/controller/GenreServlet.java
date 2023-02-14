@@ -2,8 +2,9 @@ package by.itacademy.jd2.votetask.web.controller;
 
 import by.itacademy.jd2.votetask.domain.Genre;
 import by.itacademy.jd2.votetask.dto.GenreDto;
+import by.itacademy.jd2.votetask.service.GenreService;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
-import by.itacademy.jd2.votetask.service.factories.GenreServiceSingleton;
+import by.itacademy.jd2.votetask.util.ApplicationContextHolder;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,7 +24,7 @@ public class GenreServlet extends HttpServlet {
     private final String CREATE = "create";
     private final String UPDATE = "update";
     private final String DELETE = "delete";
-    private final IGenreService genreService = GenreServiceSingleton.getInstance();
+    private final IGenreService genreService = ApplicationContextHolder.getContext().getBean("GenreServiceBean", GenreService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

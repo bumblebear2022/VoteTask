@@ -2,8 +2,9 @@ package by.itacademy.jd2.votetask.web.controller;
 
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.exceptions.InvalidVoteException;
+import by.itacademy.jd2.votetask.service.VoteService;
 import by.itacademy.jd2.votetask.service.api.IVoteService;
-import by.itacademy.jd2.votetask.service.factories.VoteServiceSingleton;
+import by.itacademy.jd2.votetask.util.ApplicationContextHolder;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +23,7 @@ public class VoteServlet extends HttpServlet {
     private static final String ABOUT_LOWER_CASE = "about";
     private static final String EMAIL_LOWER_CASE = "email";
     public static final String TAB = ",  ";
-    private final IVoteService voteService = VoteServiceSingleton.getInstance();
+    private final IVoteService voteService = ApplicationContextHolder.getContext().getBean("VoteServiceBean", VoteService.class);
 
 
     @Override

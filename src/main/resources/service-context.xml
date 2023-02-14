@@ -1,0 +1,32 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="AutoMailServiceBean" class="by.itacademy.jd2.votetask.service.AutoMailService">
+        <constructor-arg name="voteService" ref="VoteServiceBean" />
+        <constructor-arg name="performerService" ref="PerformerServiceBean" />
+        <constructor-arg name="genreService" ref="GenreServiceBean" />
+    </bean>
+
+    <bean id="GenreServiceBean" class="by.itacademy.jd2.votetask.service.GenreService">
+        <constructor-arg name="genresDao" ref="GenresDatabaseDaoBean" />
+    </bean>
+
+    <bean id="PerformerServiceBean" class="by.itacademy.jd2.votetask.service.PerformerService">
+        <constructor-arg name="performersDao" ref="PerformersDatabaseDaoBean" />
+    </bean>
+
+    <bean id="StatisticsServiceBean" class="by.itacademy.jd2.votetask.service.StatisticsService">
+        <constructor-arg name="voteService" ref="VoteServiceBean" />
+        <constructor-arg name="performerService" ref="PerformerServiceBean" />
+        <constructor-arg name="genreService" ref="GenreServiceBean" />
+    </bean>
+
+    <bean id="VoteServiceBean" class="by.itacademy.jd2.votetask.service.VoteService">
+        <constructor-arg name="voteDao" ref="VoteDatabaseDaoBean" />
+        <constructor-arg name="performerService" ref="PerformerServiceBean" />
+        <constructor-arg name="genreService" ref="GenreServiceBean" />
+    </bean>
+
+</beans>

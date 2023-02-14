@@ -6,7 +6,7 @@ CREATE TABLE data.genres
 );
 
 ALTER TABLE IF EXISTS data.genres
-    OWNER to vote_user;
+    OWNER to postgres;
 
 CREATE TABLE data.performers
 (
@@ -16,19 +16,30 @@ CREATE TABLE data.performers
 );
 
 ALTER TABLE IF EXISTS data.performers
-    OWNER to vote_user;
+    OWNER to postgres;
 
 CREATE TABLE data.votes
 (
     id bigserial,
     date_time timestamp without time zone NOT NULL,
     about text NOT NULL,
-    email text,
     PRIMARY KEY (id)
 );
 
 ALTER TABLE IF EXISTS data.votes
-    OWNER to vote_user;
+    OWNER to postgres;
+
+CREATE TABLE data.emails
+(
+    id bigserial,
+    email text NOT NULL,
+    isSent boolean NOT NULL,
+    sendingAttempts bigint NOT NULL,
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE IF EXISTS data.emails
+    OWNER to postgres;
 
 CREATE TABLE data.vote_genre
 (
@@ -45,7 +56,7 @@ CREATE TABLE data.vote_genre
 );
 
 ALTER TABLE IF EXISTS data.vote_genre
-    OWNER to vote_user;
+    OWNER to postgres;
 
 CREATE TABLE data.vote_performer
 (
@@ -62,4 +73,21 @@ CREATE TABLE data.vote_performer
 );
 
 ALTER TABLE IF EXISTS data.vote_performer
-    OWNER to vote_user;
+    OWNER to postgres;
+
+CREATE TABLE data.vote_email
+(
+    id_vote bigint NOT NULL,
+    id_email bigint NOT NULL,
+    CONSTRAINT email_fk FOREIGN KEY (id_email)
+        REFERENCES data.emails (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT vote_fk FOREIGN KEY (id_vote)
+        REFERENCES data.votes (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+ALTER TABLE IF EXISTS data.vote_email
+    OWNER to postgres;

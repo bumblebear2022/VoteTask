@@ -1,13 +1,13 @@
 package by.itacademy.jd2.votetask.service;
 
 import by.itacademy.jd2.votetask.dao.api.IVoteDao;
+import by.itacademy.jd2.votetask.domain.Email;
 import by.itacademy.jd2.votetask.domain.Genre;
 import by.itacademy.jd2.votetask.domain.Performer;
 import by.itacademy.jd2.votetask.domain.SavedVote;
 import by.itacademy.jd2.votetask.dto.VoteDto;
 import by.itacademy.jd2.votetask.exceptions.InvalidVoteException;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
-import by.itacademy.jd2.votetask.service.api.IMailService;
 import by.itacademy.jd2.votetask.service.api.IPerformerService;
 import by.itacademy.jd2.votetask.service.api.IVoteService;
 
@@ -35,15 +35,13 @@ public class VoteService implements IVoteService {
     private final IVoteDao voteDao;
     private final IPerformerService performerService;
     private final IGenreService genreService;
-    private final IMailService mailService;
     private final Lock lock = new ReentrantLock();
 
 
-    public VoteService(IVoteDao voteDao, IPerformerService performerService, IGenreService genreService, IMailService mailService) {
+    public VoteService(IVoteDao voteDao, IPerformerService performerService, IGenreService genreService) {
         this.voteDao = voteDao;
         this.performerService = performerService;
         this.genreService = genreService;
-        this.mailService = mailService;
     }
 
     public void addVote(VoteDto voteDto) {
@@ -53,7 +51,6 @@ public class VoteService implements IVoteService {
             boolean isLockAcquired = lock.tryLock(1, TimeUnit.SECONDS);
             if (isLockAcquired) {
                 voteDao.create(savedVote);
-                mailService.sendMail(savedVote);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -72,7 +69,7 @@ public class VoteService implements IVoteService {
 
         String about = voteDto.getAbout();
         String email = voteDto.getEmail();
-        return new SavedVote(null,new Performer(voiceForPerformer),voicesForGenreEntities,about,email);
+        return new SavedVote(null, new Performer(voiceForPerformer), voicesForGenreEntities, about, new Email(email));
     }
 
     private void validate(VoteDto voteDto) {
@@ -121,6 +118,14 @@ public class VoteService implements IVoteService {
     @Override
     public List<SavedVote> getVotes() {
         return voteDao.readAll();
+    }
+
+    public List<SavedVote> readUnsentVotes() {
+        return voteDao.readUnsentVotes();
+    }
+
+    public void updateSendingInfo(Long id, boolean isOk) {
+        voteDao.updateSendingInfo(id, isOk);
     }
 
 }

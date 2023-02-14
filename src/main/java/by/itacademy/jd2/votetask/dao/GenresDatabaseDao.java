@@ -1,7 +1,7 @@
-package by.itacademy.jd2.votetask.dao.database;
+package by.itacademy.jd2.votetask.dao;
 
-import by.itacademy.jd2.votetask.dao.api.IPerformersDao;
-import by.itacademy.jd2.votetask.domain.Performer;
+import by.itacademy.jd2.votetask.dao.api.IGenresDao;
+import by.itacademy.jd2.votetask.domain.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,20 +11,21 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-public class PerformersDatabaseDao implements IPerformersDao {
+public class GenresDatabaseDao implements IGenresDao {
+    private static final String CHECK_VOTES_FOR_GENRE = "SELECT EXISTS (SELECT * FROM data.vote_genre WHERE id_genre = ?);";
     private final EntityManagerFactory factory;
 
-    public PerformersDatabaseDao(EntityManagerFactory factory) {
+    public GenresDatabaseDao(EntityManagerFactory factory) {
         this.factory = factory;
     }
-    private static final String CHECK_VOTES_FOR_PERFORMER = "SELECT EXISTS (SELECT * FROM data.vote_performer WHERE id_performer = ?);";
+
 
     @Override
-    public void create(Performer performer) {
+    public void create(Genre genre) {
         EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            entityManager.persist(performer);
+            entityManager.persist(genre);
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -33,16 +34,17 @@ public class PerformersDatabaseDao implements IPerformersDao {
         }
     }
 
+
     @Override
-    public List<Performer> readAll() {
+    public List<Genre> readAll() {
         EntityManager entityManager = factory.createEntityManager();
-        List<Performer> resultList = null;
+        List<Genre> resultList;
         try {
             entityManager.getTransaction().begin();
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Performer> query = criteriaBuilder.createQuery(Performer.class);
-            Root<Performer> root = query.from(Performer.class);
-            CriteriaQuery<Performer> select = query.select(root);
+            CriteriaQuery<Genre> query = criteriaBuilder.createQuery(Genre.class);
+            Root<Genre> root = query.from(Genre.class);
+            CriteriaQuery<Genre> select = query.select(root);
             resultList = entityManager.createQuery(select).getResultList();
             entityManager.getTransaction().commit();
         } catch (Exception e) {
@@ -56,29 +58,29 @@ public class PerformersDatabaseDao implements IPerformersDao {
     @Override
     public boolean delete(Long id) {
         EntityManager entityManager = factory.createEntityManager();
-        boolean isVoted = isVotedForPerformer(id);
+        boolean isVoted = isVotedForGenre(id);
         if (isVoted) {
             return false;
         }
         try {
             entityManager.getTransaction().begin();
-            Performer performerToRemove = entityManager.find(Performer.class, id);
-            entityManager.remove(performerToRemove);
+            Genre genreToRemove = entityManager.find(Genre.class, id);
+            entityManager.remove(genreToRemove);
             entityManager.getTransaction().commit();
+            return true;
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
             entityManager.close();
         }
-        return true;
     }
 
     @Override
-    public void update(Performer performer) {
+    public void update(Genre genre) {
         EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            entityManager.merge(performer);
+            entityManager.merge(genre);
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -92,9 +94,9 @@ public class PerformersDatabaseDao implements IPerformersDao {
         EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            Performer performer = entityManager.find(Performer.class, id);
+            Genre genre = entityManager.find(Genre.class, id);
             entityManager.getTransaction().commit();
-            return performer != null;
+            return genre != null;
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -102,11 +104,11 @@ public class PerformersDatabaseDao implements IPerformersDao {
         }
     }
 
-    private boolean isVotedForPerformer(Long id) {
+    private boolean isVotedForGenre(Long id) {
         EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            Query query = entityManager.createNativeQuery(CHECK_VOTES_FOR_PERFORMER);
+            Query query = entityManager.createNativeQuery(CHECK_VOTES_FOR_GENRE);
             query.setParameter(1, id);
             boolean isVoted =(boolean) query.getSingleResult();
             entityManager.getTransaction().commit();

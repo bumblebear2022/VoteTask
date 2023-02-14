@@ -9,4 +9,8 @@ public interface IVoteService {
     void addVote(VoteDto voteDto);
 
     List<SavedVote> getVotes();
+
+    void updateSendingInfo(Long id, boolean isOk);
+
+    List<SavedVote> readUnsentVotes();
 }
