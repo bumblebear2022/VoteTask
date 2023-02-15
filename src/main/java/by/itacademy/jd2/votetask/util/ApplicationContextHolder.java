@@ -15,7 +15,7 @@ public class ApplicationContextHolder {
         if (instance == null) {
             synchronized (ApplicationContextHolder.class) {
                 if (instance == null) {
-                    instance = new ClassPathXmlApplicationContext("dao-context.xml", "hibernate-context.xml", "service-context.xml");
+                    instance = new ClassPathXmlApplicationContext("WEB-INF/app-context.xml");
                 }
             }
         }

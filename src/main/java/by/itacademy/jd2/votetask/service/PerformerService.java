@@ -35,11 +35,10 @@ public class PerformerService implements IPerformerService {
     }
 
     @Override
-    public void update(PerformerDto performerDto){
-        Performer performer = mapDtoToEntity(performerDto);
-        performersDao.update(performer);
+    public void update(Long id, Integer version, PerformerDto performerDto) {
+        String nickName = performerDto.getNickName();
+        performersDao.update(new Performer(id,nickName,version));
     }
-
 
     @Override
     public boolean delete(Long id) {

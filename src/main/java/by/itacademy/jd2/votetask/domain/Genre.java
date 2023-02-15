@@ -15,6 +15,7 @@ public class Genre {
     private String title;
 
     @Version
+    @Column(name = "version")
     private Integer version;
     public Genre() {
     }
@@ -29,6 +30,12 @@ public class Genre {
     public Genre(Long id, String title) {
         this.id = id;
         this.title = title;
+    }
+
+    public Genre(Long id, String title, Integer version) {
+        this.id = id;
+        this.title = title;
+        this.version = version;
     }
 
     public Long getId() {

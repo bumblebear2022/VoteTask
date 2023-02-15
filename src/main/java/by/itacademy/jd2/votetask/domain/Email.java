@@ -22,6 +22,7 @@ public class Email {
     private Long sendingAttempts;
 
     @Version
+    @Column(name = "version")
     private Integer version;
 
     public Email() {

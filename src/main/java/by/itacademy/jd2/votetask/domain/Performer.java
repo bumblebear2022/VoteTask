@@ -15,6 +15,7 @@ public class Performer {
     private  String nickName;
 
     @Version
+    @Column(name = "version")
     private Integer version;
 
     public Performer() {
@@ -26,6 +27,12 @@ public class Performer {
     public Performer(Long id, String nickName) {
         this.id = id;
         this.nickName = nickName;
+    }
+
+    public Performer(Long id, String nickName, Integer version) {
+        this.id = id;
+        this.nickName = nickName;
+        this.version = version;
     }
 
     public Long getId() {

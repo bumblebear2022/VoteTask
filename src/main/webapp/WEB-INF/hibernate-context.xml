@@ -6,10 +6,11 @@
     <bean id="dataSourceBean" class="org.apache.commons.dbcp2.BasicDataSource"
           destroy-method="close">
         <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://localhost:5432/voting"/>
+        <property name="url" value="jdbc:postgresql://localhost:5777/voteDB"/>
         <property name="username" value="postgres"/>
-        <property name="password" value="123123"/>
+        <property name="password" value="Aries1994"/>
     </bean>
+
     <bean id="EntityManagerFactoryBean"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="packagesToScan" value="by.itacademy.jd2.votetask.domain"/>
@@ -18,7 +19,7 @@
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">none</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgresPlusDialect</prop>
                 <prop key="hibernate.default_schema">"data"</prop>
             </props>
@@ -28,5 +29,4 @@
             <bean class="org.hibernate.jpa.HibernatePersistenceProvider"/>
         </property>
     </bean>
-
 </beans>

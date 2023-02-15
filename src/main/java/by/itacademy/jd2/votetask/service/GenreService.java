@@ -30,20 +30,14 @@ public class GenreService implements IGenreService {
 
     @Override
     public void create(GenreDto genreDto) {
-        Genre genre = mapDtoToEntity(genreDto);
-        genresDao.create(genre);
-    }
-
-    private Genre mapDtoToEntity(GenreDto genreDto) {
-        Long id = genreDto.getId();
         String title = genreDto.getTitle();
-        return new Genre(id, title);
+        genresDao.create(new Genre(title));
     }
 
     @Override
-    public void update(GenreDto genreDto) {
-        Genre genre = mapDtoToEntity(genreDto);
-        genresDao.update(genre);
+    public void update(Long id, Integer version, GenreDto genreDto) {
+        String title = genreDto.getTitle();
+        genresDao.update(new Genre(id,title,version));
     }
 
     @Override

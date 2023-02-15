@@ -10,7 +10,7 @@ public interface IPerformerService {
 
     void create(PerformerDto performerDto);
 
-    void update(PerformerDto performerDto);
+    void update(Long id, Integer version, PerformerDto performerDto);
 
     boolean delete(Long id);
 

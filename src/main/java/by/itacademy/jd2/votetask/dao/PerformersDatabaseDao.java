@@ -5,6 +5,7 @@ import by.itacademy.jd2.votetask.domain.Performer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.LockModeType;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -78,6 +79,7 @@ public class PerformersDatabaseDao implements IPerformersDao {
         EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
+            entityManager.lock(performer, LockModeType.OPTIMISTIC);
             entityManager.merge(performer);
             entityManager.getTransaction().commit();
         } catch (Exception e) {

@@ -40,12 +40,10 @@ public class PerformerController {
 
     @PutMapping(path = "/{id}/version/{version}")
     public void update(@PathVariable("id") Long performerId,
-                       @PathVariable("version") Long version,
+                       @PathVariable("version") Integer version,
                        @RequestBody PerformerDto performer) {
-        service.update(performer);
-//        service.update(performerId,version,performer);
+        service.update(performerId,version,performer);
     }
-
 
     @DeleteMapping(path = "/{id}")
     public void delete(@PathVariable("id") Long performerId) {

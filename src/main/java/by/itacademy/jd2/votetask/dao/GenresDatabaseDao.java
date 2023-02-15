@@ -5,6 +5,7 @@ import by.itacademy.jd2.votetask.domain.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.LockModeType;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -12,7 +13,8 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class GenresDatabaseDao implements IGenresDao {
-    private static final String CHECK_VOTES_FOR_GENRE = "SELECT EXISTS (SELECT * FROM data.vote_genre WHERE id_genre = ?);";
+    private static final String CHECK_VOTES_FOR_GENRE = "SELECT EXISTS " +
+            "(SELECT * FROM data.vote_genre WHERE id_genre = ?);";
     private final EntityManagerFactory factory;
 
     public GenresDatabaseDao(EntityManagerFactory factory) {
@@ -80,6 +82,7 @@ public class GenresDatabaseDao implements IGenresDao {
         EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
+            entityManager.lock(genre, LockModeType.OPTIMISTIC);
             entityManager.merge(genre);
             entityManager.getTransaction().commit();
         } catch (Exception e) {

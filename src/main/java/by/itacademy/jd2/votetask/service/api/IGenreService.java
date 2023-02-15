@@ -14,7 +14,7 @@ public interface IGenreService {
 
     void create(GenreDto genreDto);
 
-    void update(GenreDto genreDto);
+    void update(Long id, Integer version, GenreDto genreDto);
 
     boolean delete(Long id);
 }
