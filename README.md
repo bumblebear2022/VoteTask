@@ -11,7 +11,7 @@ Lappo Statkevich Truskouski
 * /genres
 * /performers
 * /vote
-* /vote_result
+* /vote-result
 
 ## Examples
 
@@ -46,3 +46,33 @@ To create, update or delete performers use respective POST queries:
  ```sh
  (GET)http://host:port/WarFileName/vote_result
   ```
+
+## JSON examples of DTOs
+
+### Performer
+ ```sh
+ {
+"nickName": "example"
+}
+  ```
+
+### Genre
+ ```sh
+{
+"title": "example"
+}
+  ```
+
+
+### Vote
+ ```sh
+{
+"voiceForPerformer": 1,
+"voicesForGenres": [1,2,3],
+"about": "example",
+"email": "example"
+}
+  ```
+
+
+

@@ -35,7 +35,7 @@ public class PerformerService implements IPerformerService {
     @Transactional
     public void create(PerformerDto performerDto) {
         String nickName = performerDto.getNickName();
-        performersDao.update(new Performer(nickName));
+        performersDao.create(new Performer(nickName));
     }
 
     @Override

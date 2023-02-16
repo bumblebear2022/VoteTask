@@ -5,7 +5,6 @@ import by.itacademy.jd2.votetask.domain.Performer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.LockModeType;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -24,7 +23,9 @@ public class PerformersDatabaseDao implements IPerformersDao {
     public void create(Performer performer) {
         EntityManager entityManager = factory.createEntityManager();
         try {
+            entityManager.getTransaction().begin();
             entityManager.persist(performer);
+            entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -36,7 +37,10 @@ public class PerformersDatabaseDao implements IPerformersDao {
     public Performer getById(Long id) {
         EntityManager entityManager = factory.createEntityManager();
         try {
-            return entityManager.find(Performer.class, id);
+            entityManager.getTransaction().begin();
+            Performer performer = entityManager.find(Performer.class, id);
+            entityManager.getTransaction().commit();
+            return performer;
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -49,11 +53,13 @@ public class PerformersDatabaseDao implements IPerformersDao {
         EntityManager entityManager = factory.createEntityManager();
         List<Performer> resultList;
         try {
+            entityManager.getTransaction().begin();
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Performer> query = criteriaBuilder.createQuery(Performer.class);
             Root<Performer> root = query.from(Performer.class);
             CriteriaQuery<Performer> select = query.select(root);
             resultList = entityManager.createQuery(select).getResultList();
+            entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -70,8 +76,10 @@ public class PerformersDatabaseDao implements IPerformersDao {
             return false;
         }
         try {
+            entityManager.getTransaction().begin();
             Performer performerToRemove = entityManager.find(Performer.class, id);
             entityManager.remove(performerToRemove);
+            entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -84,8 +92,9 @@ public class PerformersDatabaseDao implements IPerformersDao {
     public void update(Performer performer) {
         EntityManager entityManager = factory.createEntityManager();
         try {
-            entityManager.lock(performer, LockModeType.OPTIMISTIC);
+            entityManager.getTransaction().begin();
             entityManager.merge(performer);
+            entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -97,7 +106,9 @@ public class PerformersDatabaseDao implements IPerformersDao {
     public boolean exist(Long id) {
         EntityManager entityManager = factory.createEntityManager();
         try {
+            entityManager.getTransaction().begin();
             Performer performer = entityManager.find(Performer.class, id);
+            entityManager.getTransaction().commit();
             return performer != null;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -109,8 +120,10 @@ public class PerformersDatabaseDao implements IPerformersDao {
     private boolean isVotedForPerformer(Long id) {
         EntityManager entityManager = factory.createEntityManager();
         try {
+            entityManager.getTransaction().begin();
             Query query = entityManager.createNativeQuery(CHECK_VOTES_FOR_PERFORMER);
             query.setParameter(1, id);
+            entityManager.getTransaction().commit();
             return (boolean) query.getSingleResult();
         } catch (Exception e) {
             throw new RuntimeException(e);

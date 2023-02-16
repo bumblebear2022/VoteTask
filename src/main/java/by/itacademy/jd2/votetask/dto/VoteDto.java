@@ -9,6 +9,9 @@ public class VoteDto {
     private String about;
     private String email;
 
+    public VoteDto() {
+    }
+
     public VoteDto(Long voiceForPerformer, List<Long> voicesForGenres, String about, String email) {
         this.voiceForPerformer = voiceForPerformer;
         this.voicesForGenres = voicesForGenres;
@@ -57,12 +60,4 @@ public class VoteDto {
         return Objects.hash(voiceForPerformer, voicesForGenres, about);
     }
 
-    @Override
-    public String toString() {
-        return "VoteDto{" +
-                "voiceForPerformer=" + voiceForPerformer +
-                ", voicesForGenres=" + voicesForGenres +
-                ", about='" + about + '\'' +
-                '}';
-    }
 }

@@ -6,6 +6,9 @@ public class PerformerDto {
     private  Long id;
     private  String nickName;
 
+    public PerformerDto() {
+    }
+
     public PerformerDto(Long id, String nickName) {
         this.id = id;
         this.nickName = nickName;
@@ -32,11 +35,4 @@ public class PerformerDto {
         return Objects.hash(id, nickName);
     }
 
-    @Override
-    public String toString() {
-        return "PerformerDto{" +
-                "id=" + id +
-                ", nickName='" + nickName + '\'' +
-                '}';
-    }
 }
