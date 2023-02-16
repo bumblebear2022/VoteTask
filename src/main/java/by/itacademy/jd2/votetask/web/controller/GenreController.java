@@ -31,8 +31,8 @@ public class GenreController {
     }
 
     @GetMapping(path = "/{id}")
-    public Genre getById(@PathVariable("id") Long genreId){
-        return null;
+    public GenreDto getById(@PathVariable("id") Long genreId){
+        return service.getById(genreId);
     }
 
     @PostMapping

@@ -12,8 +12,10 @@
         http://www.springframework.org/schema/mvc
         https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+
     <context:component-scan base-package="by.itacademy.jd2.votetask.web"/>
-    <import resource="service-context.xml"/>
     <mvc:annotation-driven/>
+    <import resource="service-context.xml"/>
+
 
 </beans>

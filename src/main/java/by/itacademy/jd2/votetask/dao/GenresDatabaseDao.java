@@ -26,9 +26,7 @@ public class GenresDatabaseDao implements IGenresDao {
     public void create(Genre genre) {
         EntityManager entityManager = factory.createEntityManager();
         try {
-            entityManager.getTransaction().begin();
             entityManager.persist(genre);
-            entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -36,19 +34,28 @@ public class GenresDatabaseDao implements IGenresDao {
         }
     }
 
+    @Override
+    public Genre getById(Long id) {
+        EntityManager entityManager = factory.createEntityManager();
+        try {
+            return entityManager.find(Genre.class, id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
+        }
+    }
 
     @Override
     public List<Genre> readAll() {
         EntityManager entityManager = factory.createEntityManager();
         List<Genre> resultList;
         try {
-            entityManager.getTransaction().begin();
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Genre> query = criteriaBuilder.createQuery(Genre.class);
             Root<Genre> root = query.from(Genre.class);
             CriteriaQuery<Genre> select = query.select(root);
             resultList = entityManager.createQuery(select).getResultList();
-            entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -65,10 +72,8 @@ public class GenresDatabaseDao implements IGenresDao {
             return false;
         }
         try {
-            entityManager.getTransaction().begin();
             Genre genreToRemove = entityManager.find(Genre.class, id);
             entityManager.remove(genreToRemove);
-            entityManager.getTransaction().commit();
             return true;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -81,10 +86,8 @@ public class GenresDatabaseDao implements IGenresDao {
     public void update(Genre genre) {
         EntityManager entityManager = factory.createEntityManager();
         try {
-            entityManager.getTransaction().begin();
             entityManager.lock(genre, LockModeType.OPTIMISTIC);
             entityManager.merge(genre);
-            entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -96,9 +99,7 @@ public class GenresDatabaseDao implements IGenresDao {
     public boolean exist(Long id) {
         EntityManager entityManager = factory.createEntityManager();
         try {
-            entityManager.getTransaction().begin();
             Genre genre = entityManager.find(Genre.class, id);
-            entityManager.getTransaction().commit();
             return genre != null;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -110,12 +111,9 @@ public class GenresDatabaseDao implements IGenresDao {
     private boolean isVotedForGenre(Long id) {
         EntityManager entityManager = factory.createEntityManager();
         try {
-            entityManager.getTransaction().begin();
             Query query = entityManager.createNativeQuery(CHECK_VOTES_FOR_GENRE);
             query.setParameter(1, id);
-            boolean isVoted =(boolean) query.getSingleResult();
-            entityManager.getTransaction().commit();
-            return isVoted;
+            return (boolean) query.getSingleResult();
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {

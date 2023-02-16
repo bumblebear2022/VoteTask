@@ -8,9 +8,10 @@ import java.util.List;
 public interface IGenreService {
 
     List<Genre> getContent();
-    boolean exist(Long id);
 
-    List<Genre> getGenres();
+    GenreDto getById(Long id);
+
+    boolean exist(Long id);
 
     void create(GenreDto genreDto);
 

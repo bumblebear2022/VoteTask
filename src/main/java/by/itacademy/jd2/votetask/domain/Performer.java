@@ -2,8 +2,14 @@ package by.itacademy.jd2.votetask.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
 import java.util.Objects;
+
 @Entity
 @Table( name = "performers")
 public class Performer {
@@ -22,6 +28,10 @@ public class Performer {
     }
     public Performer(Long id) {
         this.id = id;
+    }
+
+    public Performer(String nickName) {
+        this.nickName = nickName;
     }
 
     public Performer(Long id, String nickName) {
@@ -47,19 +57,12 @@ public class Performer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Performer that = (Performer) o;
-        return Objects.equals(nickName, that.nickName);
+        Performer performer = (Performer) o;
+        return Objects.equals(id, performer.id) && Objects.equals(nickName, performer.nickName) && Objects.equals(version, performer.version);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nickName);
-    }
-
-    @Override
-    public String toString() {
-        return "PerformerDTO{" +
-                "nickName='" + nickName + '\'' +
-                '}';
+        return Objects.hash(id, nickName, version);
     }
 }

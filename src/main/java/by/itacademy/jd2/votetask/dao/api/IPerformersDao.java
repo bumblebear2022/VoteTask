@@ -5,5 +5,7 @@ import by.itacademy.jd2.votetask.domain.Performer;
 public interface IPerformersDao extends Dao<Performer> {
     boolean exist(Long id);
 
+    Performer getById(Long id);
+
     void update(Performer performer);
 }

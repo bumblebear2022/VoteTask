@@ -29,8 +29,8 @@ public class PerformerController {
     }
 
     @GetMapping(path = "/{id}")
-    public Performer getById(@PathVariable("id") Long performerId){
-        return null;
+    public PerformerDto getById(@PathVariable("id") Long performerId){
+        return service.getById(performerId);
     }
 
     @PostMapping

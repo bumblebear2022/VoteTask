@@ -8,6 +8,8 @@ import java.util.List;
 public interface IPerformerService {
     List<Performer> getContent();
 
+    PerformerDto getById(Long id);
+
     void create(PerformerDto performerDto);
 
     void update(Long id, Integer version, PerformerDto performerDto);
@@ -15,6 +17,4 @@ public interface IPerformerService {
     boolean delete(Long id);
 
     boolean exist(Long id);
-
-    List<Performer> getPerformers();
 }

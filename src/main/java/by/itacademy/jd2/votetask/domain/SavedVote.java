@@ -2,9 +2,21 @@ package by.itacademy.jd2.votetask.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "votes")
@@ -102,5 +114,19 @@ public class SavedVote {
 
     public Long getSendingAttempts() {
         return email.getSendingAttempts();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SavedVote savedVote = (SavedVote) o;
+        return Objects.equals(id, savedVote.id) && Objects.equals(createDateTime, savedVote.createDateTime) && Objects.equals(about, savedVote.about) && Objects.equals(voiceForPerformer, savedVote.voiceForPerformer) && Objects.equals(voicesForGenres, savedVote.voicesForGenres) && Objects.equals(email, savedVote.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, createDateTime, about, voiceForPerformer, voicesForGenres, email);
     }
 }
