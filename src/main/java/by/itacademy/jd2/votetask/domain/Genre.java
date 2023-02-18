@@ -2,8 +2,14 @@ package by.itacademy.jd2.votetask.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
 import java.util.Objects;
+
 @Entity
 @Table(name = "genres")
 public class Genre {
@@ -13,6 +19,10 @@ public class Genre {
     private Long id;
     @Column(name = "name")
     private String title;
+
+    @Version
+    @Column(name = "version")
+    private Integer version;
     public Genre() {
     }
     public Genre(Long id) {
@@ -28,6 +38,12 @@ public class Genre {
         this.title = title;
     }
 
+    public Genre(Long id, String title, Integer version) {
+        this.id = id;
+        this.title = title;
+        this.version = version;
+    }
+
     public Long getId() {
         return id;
     }
@@ -41,18 +57,11 @@ public class Genre {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Genre genre = (Genre) o;
-        return Objects.equals(title, genre.title);
+        return Objects.equals(id, genre.id) && Objects.equals(title, genre.title) && Objects.equals(version, genre.version);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title);
-    }
-
-    @Override
-    public String toString() {
-        return "GenreDTO{" +
-                "title='" + title + '\'' +
-                '}';
+        return Objects.hash(id, title, version);
     }
 }

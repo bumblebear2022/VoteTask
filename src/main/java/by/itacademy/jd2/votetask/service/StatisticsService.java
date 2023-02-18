@@ -39,7 +39,7 @@ public class StatisticsService implements IStatisticsService {
 
 
     private Map<String, Long> getSortedPerformerVotes(List<SavedVote> voteDtoList) {
-        List<Performer> performers = performerService.getPerformers();
+        List<Performer> performers = performerService.getContent();
         Map<Long, String> performerNamesMap = performers.stream()
                 .collect(Collectors.toMap(Performer::getId, Performer::getNickName));
 
@@ -55,7 +55,7 @@ public class StatisticsService implements IStatisticsService {
     }
 
     private Map<String, Long> getSortedGenreVotes(List<SavedVote> voteDtoList) {
-        List<Genre> genres = genreService.getGenres();
+        List<Genre> genres = genreService.getContent();
         Map<Long, String> genresTitleMap = genres.stream()
                 .collect(Collectors.toMap(Genre::getId, Genre::getTitle));
 

@@ -3,6 +3,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <import resource="hibernate-context.xml"/>
+
     <bean id="GenresDatabaseDaoBean" class="by.itacademy.jd2.votetask.dao.GenresDatabaseDao">
         <constructor-arg name="factory" ref="EntityManagerFactoryBean" />
     </bean>

@@ -3,8 +3,15 @@ package by.itacademy.jd2.votetask.dto;
 import java.util.Objects;
 
 public class GenreDto {
-    private final Long id;
-    private final String title;
+    private Long id;
+    private String title;
+
+    public GenreDto() {
+    }
+
+    public GenreDto(String title) {
+        this.title = title;
+    }
 
     public GenreDto(Long id, String title) {
         this.id = id;
@@ -15,8 +22,16 @@ public class GenreDto {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
@@ -32,11 +47,4 @@ public class GenreDto {
         return Objects.hash(id, title);
     }
 
-    @Override
-    public String toString() {
-        return "GenreDto{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                '}';
-    }
 }

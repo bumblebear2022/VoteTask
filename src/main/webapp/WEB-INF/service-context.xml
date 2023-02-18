@@ -3,6 +3,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <import resource="dao-context.xml"/>
+
     <bean id="AutoMailServiceBean" class="by.itacademy.jd2.votetask.service.AutoMailService">
         <constructor-arg name="voteService" ref="VoteServiceBean" />
         <constructor-arg name="performerService" ref="PerformerServiceBean" />

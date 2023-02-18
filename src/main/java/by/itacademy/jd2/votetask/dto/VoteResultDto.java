@@ -10,7 +10,9 @@ public class VoteResultDto {
     private final Map<String, Long> sortedGenreVotes;
     private final List<SavedVote> sortedVoteInfos;
 
-    public VoteResultDto(Map<String, Long> sortedPerformerVotes, Map<String, Long> sortedGenreVotes, List<SavedVote> sortedVoteInfos) {
+    public VoteResultDto(Map<String, Long> sortedPerformerVotes,
+                         Map<String, Long> sortedGenreVotes,
+                         List<SavedVote> sortedVoteInfos) {
         this.sortedPerformerVotes = sortedPerformerVotes;
         this.sortedGenreVotes = sortedGenreVotes;
         this.sortedVoteInfos = sortedVoteInfos;

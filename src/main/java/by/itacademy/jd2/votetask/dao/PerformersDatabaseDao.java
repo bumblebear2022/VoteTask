@@ -34,6 +34,21 @@ public class PerformersDatabaseDao implements IPerformersDao {
     }
 
     @Override
+    public Performer getById(Long id) {
+        EntityManager entityManager = factory.createEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            Performer performer = entityManager.find(Performer.class, id);
+            entityManager.getTransaction().commit();
+            return performer;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    @Override
     public List<Performer> readAll() {
         EntityManager entityManager = factory.createEntityManager();
         List<Performer> resultList;
@@ -108,9 +123,8 @@ public class PerformersDatabaseDao implements IPerformersDao {
             entityManager.getTransaction().begin();
             Query query = entityManager.createNativeQuery(CHECK_VOTES_FOR_PERFORMER);
             query.setParameter(1, id);
-            boolean isVoted =(boolean) query.getSingleResult();
             entityManager.getTransaction().commit();
-            return isVoted;
+            return (boolean) query.getSingleResult();
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {

@@ -10,6 +10,7 @@ import by.itacademy.jd2.votetask.exceptions.InvalidVoteException;
 import by.itacademy.jd2.votetask.service.api.IGenreService;
 import by.itacademy.jd2.votetask.service.api.IPerformerService;
 import by.itacademy.jd2.votetask.service.api.IVoteService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -44,6 +45,8 @@ public class VoteService implements IVoteService {
         this.genreService = genreService;
     }
 
+    @Override
+    @Transactional
     public void addVote(VoteDto voteDto) {
         validate(voteDto);
         SavedVote savedVote = mapDtoToEntity(voteDto);
@@ -116,14 +119,17 @@ public class VoteService implements IVoteService {
     }
 
     @Override
+    @Transactional
     public List<SavedVote> getVotes() {
         return voteDao.readAll();
     }
-
+    @Override
+    @Transactional
     public List<SavedVote> readUnsentVotes() {
         return voteDao.readUnsentVotes();
     }
-
+    @Override
+    @Transactional
     public void updateSendingInfo(Long id, boolean isOk) {
         voteDao.updateSendingInfo(id, isOk);
     }

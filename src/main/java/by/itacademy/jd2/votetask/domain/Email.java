@@ -2,7 +2,12 @@ package by.itacademy.jd2.votetask.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name = "emails")
@@ -20,6 +25,7 @@ public class Email {
 
     @Column(name = "sendingAttempts")
     private Long sendingAttempts;
+
 
     public Email() {
     }
@@ -67,5 +73,18 @@ public class Email {
 
     public void setSendingAttempts(Long sendingAttempts) {
         this.sendingAttempts = sendingAttempts;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Email email1 = (Email) o;
+        return isSent == email1.isSent && Objects.equals(id, email1.id) && Objects.equals(email, email1.email) && Objects.equals(sendingAttempts, email1.sendingAttempts);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, isSent, sendingAttempts);
     }
 }
