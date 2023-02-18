@@ -1,6 +1,8 @@
 package by.itacademy.jd2.votetask.dao;
 
 import by.itacademy.jd2.votetask.dao.api.IVoteDao;
+import by.itacademy.jd2.votetask.domain.Genre;
+import by.itacademy.jd2.votetask.domain.Performer;
 import by.itacademy.jd2.votetask.domain.SavedVote;
 
 import javax.persistence.EntityGraph;
@@ -11,6 +13,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class VoteDatabaseDao implements IVoteDao {
     private final EntityManagerFactory factory;
@@ -24,7 +27,19 @@ public class VoteDatabaseDao implements IVoteDao {
         EntityManager entityManager = factory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
+
+            Performer performerRefreshed = entityManager.find(Performer.class, savedVote.getVoiceForPerformer().getId());
+            savedVote.setVoiceForPerformer(performerRefreshed);
+
+            List<Genre> voicesForGenres = savedVote.getVoicesForGenres();
+            List<Genre> voicesForGenresRefreshed = voicesForGenres.stream()
+                    .map(Genre::getId)
+                    .map(id -> entityManager.find(Genre.class, id))
+                    .collect(Collectors.toList());
+            savedVote.setVoicesForGenres(voicesForGenresRefreshed);
+
             entityManager.persist(savedVote);
+
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -44,10 +59,10 @@ public class VoteDatabaseDao implements IVoteDao {
             Root<SavedVote> root = query.from(SavedVote.class);
             CriteriaQuery<SavedVote> select = query.select(root);
             EntityGraph<SavedVote> entityGraph = entityManager.createEntityGraph(SavedVote.class);
-            entityGraph.addAttributeNodes("voiceForPerformer","voicesForGenres", "email");
+            entityGraph.addAttributeNodes("voiceForPerformer", "voicesForGenres", "email");
             resultList = entityManager
                     .createQuery(select)
-                    .setHint("javax.persistence.fetchgraph",entityGraph)
+                    .setHint("javax.persistence.fetchgraph", entityGraph)
                     .getResultList();
             entityManager.getTransaction().commit();
         } catch (Exception e) {
@@ -88,8 +103,8 @@ public class VoteDatabaseDao implements IVoteDao {
                     criteriaBuilder.equal(root.get("email").get("isSent"), false)
             );
             EntityGraph<SavedVote> entityGraph = entityManager.createEntityGraph(SavedVote.class);
-            entityGraph.addAttributeNodes("voiceForPerformer","voicesForGenres", "email");
-            TypedQuery<SavedVote> typedQuery = entityManager.createQuery(select).setHint("javax.persistence.fetchgraph",entityGraph);
+            entityGraph.addAttributeNodes("voiceForPerformer", "voicesForGenres", "email");
+            TypedQuery<SavedVote> typedQuery = entityManager.createQuery(select).setHint("javax.persistence.fetchgraph", entityGraph);
             unsentVotesList = typedQuery.getResultList();
             entityManager.getTransaction().commit();
         } catch (Exception e) {

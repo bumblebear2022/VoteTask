@@ -36,7 +36,7 @@ public class SavedVote {
     @JoinTable(name = "vote_genre", joinColumns = @JoinColumn(name = "id_vote"), inverseJoinColumns = @JoinColumn(name = "id_genre"))
     private List<Genre> voicesForGenres;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     @JoinTable(name = "vote_email", joinColumns = @JoinColumn(name = "id_vote"), inverseJoinColumns = @JoinColumn(name = "id_email"))
     private Email email;
 
@@ -105,7 +105,7 @@ public class SavedVote {
     }
 
     public void setIsSent(boolean sent) {
-         email.setIsSent(sent);
+        email.setIsSent(sent);
     }
 
     public void setSendingAttempts(Long sendingAttempts) {
