@@ -2,10 +2,8 @@
  ```sh
 Lappo Statkevich Truskouski
   ```
-### Project Link: [current version](http://128.199.46.151/VoteTask-2.5.0/)
-### Project Link: [beta hibernate version](http://128.199.46.151/VoteTask-2.6.H/)
 
-
+### Project Link: [spring RESTful version](http://128.199.46.151/VoteTask-3.0.R/)
 
 ## Endpoints
 * /genres
@@ -20,52 +18,64 @@ To get a list of genres:
  ```sh
  (GET)http://host:port/WarFileName/genres
   ```
-To create, update or delete genre use respective POST queries:
+To create: 
  ```sh
- (POST)http://host:port/WarFileName/genres?create=(genre_name)
- (POST)http://host:port/WarFileName/genres?update=(genre_id)&name=(new_genre_name)
- (POST)http://host:port/WarFileName/genres?delete=(genre_id)
+ Send POST request on http://host:port/WarFileName/genres
+ 
+ And pass following in the body of request in JSON format:
+ {
+"title": "example"
+}
   ```
+To update:
+ ```sh
+ Send POST request on http://host:port/WarFileName/genres/{id}/version/{version}
+ 
+ And pass following in the body of request in JSON format:
+ {
+"title": "example"
+}
+  ```
+
+To delete:
+ ```sh
+ Send DELETE request on http://host:port/WarFileName/genres/{id}
+  ```
+
 ### /performers
 To get a list of performers:
  ```sh
  (GET)http://host:port/WarFileName/performers
   ```
-To create, update or delete performers use respective POST queries:
+To create:
  ```sh
- (POST)http://host:port/WarFileName/performers?create=(performer_name)
- (POST)http://host:port/WarFileName/performers?update=(performer_id)&name=(new_performer_name)
- (POST)http://host:port/WarFileName/performers?delete=(performer_id)
+ Send POST request on http://host:port/WarFileName/performers
+ 
+ And pass following in the body of request in JSON format:
+ {
+"nickName": "example"
+}
   ```
-### /vote (1 vote for performer, 3-5 votes for genre)
+To update:
  ```sh
- (POST)http://host:port/WarFileName/
- vote?performer=(performer_id)&genre=(genre_id)&about=(about)&email=(email)
-  ```
-### /vote_Result(typically redirected to)
- ```sh
- (GET)http://host:port/WarFileName/vote_result
-  ```
-
-## JSON examples of DTOs
-
-### Performer
- ```sh
+ Send POST request on http://host:port/WarFileName/performers/{id}/version/{version}
+ 
+ And pass following in the body of request in JSON format:
  {
 "nickName": "example"
 }
   ```
 
-### Genre
+To delete:
  ```sh
-{
-"title": "example"
-}
+ Send DELETE request on http://host:port/WarFileName/performers/{id}
   ```
 
-
-### Vote
+### /vote (1 vote for performer, 3-5 votes for genre)
  ```sh
+Send POST request on http://host:port/WarFileName/vote
+ 
+ And pass following in the body of request in JSON format:
 {
 "voiceForPerformer": 1,
 "voicesForGenres": [1,2,3],
@@ -73,6 +83,12 @@ To create, update or delete performers use respective POST queries:
 "email": "example"
 }
   ```
+
+### /vote-result
+ ```sh
+ Send GET request http://host:port/WarFileName/vote-result
+  ```
+
 
 
 
