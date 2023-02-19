@@ -9,9 +9,9 @@
     <bean id="dataSourceBean" class="org.apache.commons.dbcp2.BasicDataSource"
           destroy-method="close">
         <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://localhost:5777/voteDB"/>
-        <property name="username" value="postgres"/>
-        <property name="password" value="Aries1994"/>
+        <property name="url" value="jdbc:postgresql://change on DB url"/>
+        <property name="username" value="changeMe"/>
+        <property name="password" value="changeMe"/>
     </bean>
 
     <bean id="EntityManagerFactoryBean"
