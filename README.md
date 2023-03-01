@@ -3,8 +3,6 @@
 Lappo Statkevich Truskouski
   ```
 
-### Project Link: [spring RESTful version](http://128.199.46.151/VoteTask-3.0.R/)
-
 ## Endpoints
 * /genres
 * /performers
